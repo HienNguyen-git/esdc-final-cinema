@@ -1,0 +1,53 @@
+<div class="container">
+  <h1 class="text-primary pb-2 pt-2">List of product</h1>
+  <a href="/add" class="btn btn-success pb-2 pt-2">Add new product</a>
+  <h2 class="pb-2 pt-2">Choose one product to show detail</h2>
+  <table class="table table-striped text-center">
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+      <tr>
+        <td>{{@key}}</td>
+        <td>{{name}}</td>
+        <td>${{price}}</td>
+        <td><a href="/product/{{id}}">View</a> | <a href="/edit/{{id}}">Edit</a> | <a
+                href="/delete/{{id}}"
+                onclick="return confirm('Are you sure to delete {{name}} ?');"
+              >Delete</a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+
+<!-- Modal -->
+{{!-- Delete --}}
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <strong>Are you sure want to delete product ABC</strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Edit --}}
