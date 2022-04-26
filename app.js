@@ -1,3 +1,4 @@
+require('dotenv').config()
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -5,9 +6,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const expressHandlebars = require('express-handlebars');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var adminRouter = require('./routes/admin');
+var indexRouter = require('./routes/index.route');
+var accountRouter = require('./routes/account.route');
+var adminRouter = require('./routes/admin.route');
 
 var app = express();
 
@@ -18,23 +19,36 @@ app.engine('handlebars', expressHandlebars.engine({
 }))
 app.set('view engine', 'handlebars');
 
+app.use(require('cookie-parser')("This is code secret code"))
+app.use(require('express-session')({
+    secret: "This is some secret code",
+    resave: true,
+    saveUninitialized: true
+}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Flash message
+app.use((req, res, next) => {
+  res.locals.flash = req.session.flash;
+  delete req.session.flash
+  next()
+})
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/account', accountRouter);
 app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
