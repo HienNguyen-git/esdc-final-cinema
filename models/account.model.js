@@ -21,3 +21,8 @@ const handleLogin = (email) => {
         }
     })
 }
+
+module.exports = {
+    handleRegister,
+    handleLogin
+}

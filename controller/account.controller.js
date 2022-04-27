@@ -8,23 +8,23 @@ const loginGet = (req, res) => {
 
 const loginPost = (req, res) => {
     let resultValidate = validationResult(req);
-    console.log(resultValidate)
     if (resultValidate.errors.length === 0) {
-        if(Login.handleLogin){
-            req.session.flash = {
-                type: "success",
-                intro: "Congratulation!",
-                message: "Your account has been successfully logged in!!!!"
-            }
-            return res.redirect("/")
-        }else{
-            req.session.flash = {
-                type: "danger",
-                intro: "Oops!",
-                message: err.message
-            }
-            return res.redirect('/account/login')
-        }
+        console.log(Login.handleLogin(req.body.email))
+        // if(Login.handleLogin(req.body.email)){
+        //     req.session.flash = {
+        //         type: "success",
+        //         intro: "Congratulation!",
+        //         message: "Your account has been successfully logged in!!!!"
+        //     }
+        //     return res.redirect("/")
+        // }else{
+        //     req.session.flash = {
+        //         type: "danger",
+        //         intro: "Oops!",
+        //         message: "Your email not match"
+        //     }
+        //     return res.redirect('/account/login')
+        // }
     } else {
         const errors = resultValidate.mapped()
         console.log(errors)

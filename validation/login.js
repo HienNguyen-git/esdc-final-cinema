@@ -1,6 +1,7 @@
 
 const { check, validationResult } = require('express-validator')
-
+const connect = require('../database/db')
+const bcrypt = require('bcrypt')
 // Validator
 // ***************
 const registerValidator = [
