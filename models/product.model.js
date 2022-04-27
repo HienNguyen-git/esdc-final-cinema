@@ -1,5 +1,3 @@
-
-
 var Product = require('./config/product')
 Product.find((err, product) => {
     console.log('Checking data....')
