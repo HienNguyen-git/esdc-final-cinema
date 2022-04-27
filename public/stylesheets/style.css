@@ -43,6 +43,10 @@ header {
   text-shadow: 2px 2px 0px rgb(80, 135, 153);
 }
 
+.navbar-brand .navbar-heading:hover{
+  color: #fff;
+}
+
 .navbar-brand .navbar-container {
   flex: 1;
 }
