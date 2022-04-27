@@ -15,15 +15,28 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', expressHandlebars.engine({
-  defaultLayout: 'main'
+  defaultLayout: 'main',
+  helpers: {
+    checkPath(routerPath, navPath, options) {
+      const fnTrue = options.fn,
+        fnFalse = options.inverse;
+      return routerPath === navPath ? fnTrue(this) : fnFalse(this)
+    },
+    checkPage(routerPath, options) {
+      const fnTrue = options.fn,
+        fnFalse = options.inverse;
+      const headerPageList = ['not-header']
+      return !headerPageList.includes(routerPath) ? fnTrue(this) : fnFalse(this)
+    }
+  }
 }))
 app.set('view engine', 'handlebars');
 
 app.use(require('cookie-parser')("This is code secret code"))
 app.use(require('express-session')({
-    secret: "This is some secret code",
-    resave: true,
-    saveUninitialized: true
+  secret: "This is some secret code",
+  resave: true,
+  saveUninitialized: true
 }))
 app.use(logger('dev'));
 app.use(express.json());

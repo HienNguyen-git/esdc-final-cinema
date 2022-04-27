@@ -34,6 +34,7 @@
     <title>{{title}}</title>
   </head>
   <body>
+    {{#checkPage path}}
     <div class="header-container">
       <div class="navbar-brand">
         <a href="./">
@@ -42,16 +43,17 @@
       </div>
       <div class="navbar-container">
         <nav class="navbar">
-          <ul class="navbar-menu">
-            <li><a href="./">Home</a></li>
-            <li><a href="user_booking.php">Your booking</a></li>
-            <li><a href="logout.php">Logout</a></li>
-            <li><a href="account.php">Account</a></li>
-            <li><a href="login.php">Login</a></li>
+          <ul class="navbar-menu nav">
+            <li class="nav-item"><a href="/" class="nav-link {{#checkPath path ""}}nav-active{{/checkPath}}">Home</a></li>
+            <li class="nav-item"><a href="user_booking.php" class="nav-link {{#checkPath path "user_booking"}}nav-active{{/checkPath}}">Your booking</a></li>
+            <li class="nav-item"><a href="logout.php" class="nav-link {{#checkPath path "logout"}}nav-active{{/checkPath}}">Logout</a></li>
+            <li class="nav-item"><a href="account.php" class="nav-link {{#checkPath path "account"}}nav-active{{/checkPath}}">Account</a></li>
+            <li class="nav-item"><a href="login.php">Login</a></li>
           </ul>
         </nav>
       </div>
     </div>
+    {{/checkPage}}
     {{#if flash}}
       <div class="text-center alert alert-dismissible alert-{{flash.type}}">
         <button

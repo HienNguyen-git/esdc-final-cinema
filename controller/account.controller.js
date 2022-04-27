@@ -3,7 +3,7 @@ const Login = require('../models/account.model')
 
 // Handle login
 const loginGet = (req, res) => {
-    res.render('account/login', { title: 'Login' })
+    res.render('account/login', { title: 'Login', path: "not-header" })
 }
 
 const loginPost = async (req, res) => {
@@ -44,7 +44,7 @@ const loginPost = async (req, res) => {
 }
 
 const registerGet = (req, res) => {
-    res.render('account/register', { title: "Register" })
+    res.render('account/register', { title: "Register", path: "not-header" })
 }
 
 const registerPost = async (req, res) => {

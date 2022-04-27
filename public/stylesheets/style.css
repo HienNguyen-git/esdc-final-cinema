@@ -105,6 +105,10 @@ nav {
   right: 1%;
 }
 
+.nav-active{
+  color: #3a3a3a !important;
+}
+
 /* Footer Styling */
 
 footer {
