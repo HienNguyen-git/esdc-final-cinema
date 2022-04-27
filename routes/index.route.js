@@ -6,4 +6,5 @@ router.get('/', function (req, res, next) {
   res.render('home', { title: 'Home', path: "" });
 });
 
-module.exports = router;
+router.get('/movie-detail/:id',)
+module.exports = router;  
