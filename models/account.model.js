@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const connect = require('../database/db')
 const saltRounds = 10;
-
+    
 
 const handleRegister = (name, email, password) => new Promise((resolve, reject) => {
     const sql = "insert into account(name, email,password) values(?,?,?)"
