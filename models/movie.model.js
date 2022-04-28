@@ -7,12 +7,12 @@ const getMovieList = () => new Promise((resolve, reject) => {
     })
 })
 
-const getMovieDetailById = (id)=>{
+const getMovieDetailById = (id)=> new Promise((resolve,reject)=>{
     connect.query('select * from movietable where movieID=?',[id], (err, result) => {
         if (err) reject(err.message)
         resolve(result[0])
     })
-}
+})
 
 
 module.exports = {

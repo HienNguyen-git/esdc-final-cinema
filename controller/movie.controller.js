@@ -1,19 +1,30 @@
-const { connect } = require("../database/db");
+const { getMovieDetailById, getMovieList } = require('../models/movie.model')
 
+const getMovieDetail = async (req, res) => {
+    const id = req.query['id']
+    const data = await getMovieDetailById(id)
+    console.log(data)
+    res.render('booking/view_detail', { title: "Detail of movie", path: "", data })
+}
 
-const getMovieList = ()=> new Promise((resolve,reject)=>{
-    connect.query("select * from movietable",(err,results)=>{
-        if(err) reject(err.message)
-        resolve(results)
-    })
-})
+const getHome = async (req, res) => {
+    const data = await getMovieList()
+    console.log(data)
+    const context = data.map(movie => ({
+        id: movie.movieID,
+        img: movie.movieImg.split('/')[1],
+        title: movie.movieTitle,
+        genre: movie.movieGenre,
+        duration: movie.movieDuration,
+        date: movie.movieRelDate,
+        director: movie.movieDirector,
+        actors: movie.movieActors,
+    }))
+    console.log(context)
+    res.render('home', { title: 'Home', path: "", context })
+}
 
-const getMovieByID = (id)=>new Promise((resolve,reject)=>{
-    connect.query("select * from movietable where id=?",[id],(err,results)=>{
-        if(err) reject(err.message)
-        resolve(results[0])
-    })
-})
 module.exports = {
-
+    getMovieDetail,
+    getHome,
 }
