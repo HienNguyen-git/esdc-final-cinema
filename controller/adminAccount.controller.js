@@ -1,9 +1,9 @@
 const { validationResult } = require('express-validator');
-const Login = require('../models/account.model')
+const Login = require('../models/adminAccount.model')
 
 // Handle login
 const loginGet = (req, res) => {
-    res.render('account/login', { title: 'Login', path: "not-header" })
+    res.render('admin/login', { title: 'Login', path: "not-header",layout:"admin" })
 }
 
 const loginPost = async (req, res) => {
@@ -15,14 +15,14 @@ const loginPost = async (req, res) => {
                 intro: "Congratulation!",
                 message: "Your account has been successfully logged in!!!!"
             }
-            return res.redirect("/")
+            return res.redirect("/admin")
         } else {
             req.session.flash = {
                 type: "danger",
                 intro: "Oops!",
                 message: "Your email not match"
             }
-            return res.redirect('/account/login')
+            return res.redirect('/admin/login')
         }
     } else {
         const errors = resultValidate.mapped()
@@ -39,7 +39,7 @@ const loginPost = async (req, res) => {
             intro: "Oops!",
             message: errorMessage
         }
-        res.redirect('/account/login')
+        res.redirect('/admin/login')
     }
 }
 

@@ -16,8 +16,6 @@
 </head>
 
 <body>
-    
-    
         <div class="admin-section admin-section2">
             <div class="admin-section-column">
                 <div class="admin-section-panel admin-section-panel4">
@@ -29,29 +27,22 @@
                             <td>ID</td>
                             <td>Name</td>
                             <td>Phone</td>
-                            <td>Job</td>
                             <td>Gender</td>
+                            <td>Job</td>
                             <td>Action</td>
                         </tr>
                         <tbody id="tbody">
-                            <!-- <tr class="item">
-                                <td>1</td>
-                                <td>Nguyen Van A</td>
-                                <td>0908665356</td>
-                                <td>Receptionist</td>
-                                <td>Male</td>
-                                <td ><a href="" class="btn btn-primary">Edit</a> | 
-                                <a href="#" class="btn btn-danger">Delete</a></td>
-                            </tr>
-                            <tr class="item">
-                                <td>1</td>
-                                <td>Nguyen Van A</td>
-                                <td>0908665356</td>
-                                <td>Receptionist</td>
-                                <td>Male</td>
-                                <td ><a href="" class="btn btn-primary">Edit</a> | 
-                                <a href="#" class="btn btn-danger">Delete</a></td>
-                            </tr> -->
+                            {{#each resultArray}}
+                                <tr class="item">
+                                    <td>{{idnv}}</td>
+                                    <td>{{name}}</td>
+                                    <td>{{phone}}</td>
+                                    <td>{{gender}}</td>
+                                    <td>{{role}}</td>
+                                    <td ><a href="" class="btn btn-primary">Edit</a> | 
+                                    <a href="#" class="btn btn-danger">Delete</a></td>
+                                </tr>
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>
@@ -144,35 +135,7 @@
     <script>
     let employeeSelected;
     // tải(read)
-    function loadEmployee(){
-        $('#tbody tr').remove();
-        $.ajax({
-            type: "GET",
-            url: 'get_employees.php',
-            success: function(data){
-                // console.log(data);
-                data.forEach(employee => {
-                    // console.log(employee);
-                    let tr = $(`<tr class="item">
-                                    <td>${employee.id}</td>
-                                    <td>${employee.name}</td>
-                                    <td>${employee.phone}</td>
-                                    <td>${employee.job}</td>
-                                    <td>${employee.gender}</td>
-                                    <td><a onclick="handleModalEdit(this)" href="#">Edit</a> |
-                                        <a onclick="handleModalDel(this)" href="#" class="delete" >Delete</a>
-                                    </td>
-                                </tr>`);
-                    $('#tbody').append(tr);
-                    tr.attr('employee-info',JSON.stringify(employee));
-                })
-            },
-            dataType: 'json'
-        })
-        
-    }
-    loadEmployee();
-
+    
     //thêm(create)
     $('#add-employee-form').submit(e => { 
         e.preventDefault();
