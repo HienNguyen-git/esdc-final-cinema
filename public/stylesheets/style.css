@@ -96,7 +96,6 @@ nav {
 
 .navbar-menu li a {
   display: block;
-
   color: #fff;
   text-align: center;
   padding: 12px 36px;
@@ -211,8 +210,8 @@ footer {
   margin-bottom: 4rem;
   margin-top: -2rem;
   padding: 0 10%;
-  background-image: url(../img/poster1.jpg), url(../img/poster2.png),
-    url(../img/poster3.jpg), url(../img/poster-repeat.jpg);
+  background-image: url(../images/poster1.jpg), url(../images/poster2.png),
+    url(../images/poster3.jpg), url(../images/poster-repeat.jpg);
   height: 70vh;
   background-size: contain;
   background-repeat: no-repeat, no-repeat, no-repeat, repeat;
@@ -296,6 +295,20 @@ footer {
   padding: 10px 0;
 }
 
+.movie-btn a{
+  color: #fff;
+}
+
+.movie-btn a:hover{
+  color: #6e5a11;
+  text-decoration: none;
+  background-color: #fff;
+}
+
+
+.movie-btn a:visited{
+  color: #fff;
+}
 .account-container > table {
   padding: 0 35px 0 35px;
   font-size: 24px;
@@ -927,6 +940,57 @@ footer {
     margin: 0.4em auto;
   }
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .movies-container {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: auto;
+    padding: 10px 0;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .movies-container {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: auto auto;
+    padding: 10px 0;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .movies-container {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: auto auto auto ;
+    padding: 10px 0;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 1122px) {
+  .movies-container {
+  display: grid;
+  grid-column-gap: 10px;
+  grid-template-columns: auto auto auto auto auto;
+  padding: 10px 0;
+}
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1251px) {
+  .movies-container {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: auto auto auto auto auto auto;
+    padding: 10px 0;
+  }
+}
+
 
 /* Classes for JS */
 
