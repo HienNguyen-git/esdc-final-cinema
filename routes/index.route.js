@@ -6,4 +6,7 @@ const { getMovieDetail, getHome } = require('../controller/movie.controller')
 router.get('/', getHome);
 
 router.get('/movie-detail', getMovieDetail)
+
+router.get('/user-booking',)
+
 module.exports = router;  

@@ -9,7 +9,6 @@ const expressHandlebars = require('express-handlebars');
 var indexRouter = require('./routes/index.route');
 var accountRouter = require('./routes/account.route');
 var adminRouter = require('./routes/admin.route');
-
 var app = express();
 
 // view engine setup

@@ -6,9 +6,6 @@
         $movieImageById = mysqli_query($link,$movieQuery);
         $row = mysqli_fetch_array($movieImageById);
 ?> --}}
-    {{#each context}}
-    {{id}}
-    {{/each}}
     <div class="booking-panel">
         <div class="booking-panel-section booking-panel-section1">
             <h1>MOVIE DETAIL</h1>
@@ -18,34 +15,24 @@
         </div>
         <div class="booking-panel-section booking-panel-section3">
             <div class="movie-box">
-                {{!-- <?php
-                    echo '<img src="'.$row['movieImg'].'" alt="">';
-                    ?> --}}
+                <img src="images/poster/{{context.img}}" alt="">';
             </div>
         </div>
         <div class="booking-panel-section booking-panel-section4">
-            <div class="title">{{title}}</div>
+            <div class="title">{{context.title}}</div>
             <div class="movie-information">
                 <table>
                     <tr>
-                        <td>GENRE</td>
-                        <td>{{genre}}</td>
-                    </tr>
-                    <tr>
-                        <td>DURATION</td>
-                        <td>{{duration}}</td>
+                        <td>Overview</td>
+                        <td>{{context.overview}}</td>
                     </tr>
                     <tr>
                         <td>RELEASE DATE</td>
-                        <td>{{data}}</td>
+                        <td>{{context.release_date}}</td>
                     </tr>
                     <tr>
-                        <td>DIRECTOR</td>
-                        <td>{{director}}</td>
-                    </tr>
-                    <tr>
-                        <td>ACTORS</td>
-                        <td>{{actors}}</td>
+                        <td class="text-danger">IMDb</td>
+                        <td class="imdb">{{context.vote_average}}</td>
                     </tr>
                     <tr>
                         <td class="book-ticker-container">

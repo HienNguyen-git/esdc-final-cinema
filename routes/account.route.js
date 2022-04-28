@@ -1,7 +1,7 @@
 var express = require('express');
+var router = express.Router();
 const { loginGet, loginPost, registerGet, registerPost } = require('../controller/account.controller');
 const { registerValidator, loginValidator } = require('../validation/login');
-var router = express.Router();
 
 /* GET users listing. */
 router.get('/login', loginGet);

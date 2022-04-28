@@ -527,6 +527,15 @@ footer {
   font-weight: bold;
 }
 
+.movie-information{
+  padding: 25px;
+}
+
+.movie-information .imdb{
+  border-bottom: #969696 1px solid;
+  color: #6e5a11;
+}
+
 .movie-information > table {
   padding: 0 35px 0 35px;
   margin: auto;
@@ -535,7 +544,7 @@ footer {
 .movie-information td {
   padding: 8px 25px 8px 0;
   text-align: left;
-  color: #969696;
+  color: #212529;
 }
 
 .movie-information table tr td:first-child {
