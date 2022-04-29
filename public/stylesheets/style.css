@@ -43,7 +43,7 @@ header {
   text-shadow: 2px 2px 0px rgb(80, 135, 153);
 }
 
-.navbar-brand .navbar-heading:hover{
+.navbar-brand .navbar-heading:hover {
   color: #fff;
 }
 
@@ -108,7 +108,7 @@ nav {
   right: 1%;
 }
 
-.nav-active{
+.nav-active {
   color: #3a3a3a !important;
 }
 
@@ -217,7 +217,7 @@ footer {
   background-repeat: no-repeat, no-repeat, no-repeat, repeat;
   background-position: left, right, center, center;
   border-radius: 10px;
-  top:-4rem;
+  top: -4rem;
 }
 
 /* Movie Section Styling */
@@ -295,18 +295,17 @@ footer {
   padding: 10px 0;
 }
 
-.movie-btn a{
+.movie-btn a {
   color: #fff;
 }
 
-.movie-btn a:hover{
-  color: #6e5a11;
+.movie-btn a:hover {
+  color: #6e5a11 !important;
   text-decoration: none;
   background-color: #fff;
 }
 
-
-.movie-btn a:visited{
+.movie-btn a:visited {
   color: #fff;
 }
 .account-container > table {
@@ -527,11 +526,11 @@ footer {
   font-weight: bold;
 }
 
-.movie-information{
+.movie-information {
   padding: 25px;
 }
 
-.movie-information .imdb{
+.movie-information .imdb {
   border-bottom: #969696 1px solid;
   color: #6e5a11;
 }
@@ -941,6 +940,110 @@ footer {
   left: 47%;
 }
 
+/* Schedule Styling */
+
+.schedule-section {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.schedule-section > h1 {
+  padding: 0 0 20px 0;
+  margin: 0 0 40px 0;
+  border-bottom: 1px solid #bdbdbd;
+  color: #6e5a11;
+}
+
+.schedule-dates {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.schedule-item {
+  padding: 15px;
+  background-color: #6e5a11;
+  margin-right: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.schedule-item:hover {
+  background-color: #b6b6b6;
+  color: #6e5a11;
+}
+
+.schedule-item-selected {
+  color: #6e5a11;
+  background-color: #b6b6b6;
+  cursor: auto;
+}
+
+.schedule-table table {
+  text-align: left;
+  border-collapse: collapse;
+}
+
+.schedule-table table tr th {
+  padding: 10px 0 10px 40px;
+  background-color: #6e5a11;
+  border: 1px solid #b6b6b6;
+  color: #fff;
+}
+
+.schedule-table table tr th:first-child {
+  width: 35%;
+  border-right: 1px solid #bdbdbd;
+}
+
+.schedule-table table tr td {
+  padding: 40px;
+  border: 1px solid #bdbdbd;
+}
+
+.schedule-table table tr td > h2 {
+  margin: 0 0 15px 0px;
+}
+
+.schedule-table table tr td > h3 {
+  margin: 15px 0px;
+}
+
+.schedule-table table tr td > p {
+  margin: 0 0 15px 0px;
+}
+
+.schedule-table table tr td > i {
+  margin: 0 10px;
+}
+
+.schedule-table table tr td > .schedule-item {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  font-weight: bold;
+}
+
+.hall-type > h3 {
+  margin: 15px 0;
+}
+
+.hall-type > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hall-type > div .schedule-item {
+  cursor: auto;
+}
+
+.fade-scroll h3,
+.fade-scroll a {
+  color: #6e5a11;
+}
+
+
 /* Responsive Properties */
 
 @media all and (max-width: 30em) {
@@ -952,7 +1055,8 @@ footer {
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-  .movies-container {
+  .movies-container,
+  .hall-type {
     display: grid;
     grid-column-gap: 10px;
     grid-template-columns: auto;
@@ -962,7 +1066,8 @@ footer {
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  .movies-container {
+  .movies-container,
+  .hall-type {
     display: grid;
     grid-column-gap: 10px;
     grid-template-columns: auto auto;
@@ -972,34 +1077,36 @@ footer {
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-  .movies-container {
+  .movies-container,
+  .hall-type {
     display: grid;
     grid-column-gap: 10px;
-    grid-template-columns: auto auto auto ;
+    grid-template-columns: auto auto auto;
     padding: 10px 0;
   }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 1122px) {
-  .movies-container {
-  display: grid;
-  grid-column-gap: 10px;
-  grid-template-columns: auto auto auto auto auto;
-  padding: 10px 0;
-}
+  .movies-container,
+  .hall-type {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-template-columns: auto auto auto auto auto;
+    padding: 10px 0;
+  }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1251px) {
-  .movies-container {
+  .movies-container,
+  .hall-type {
     display: grid;
     grid-column-gap: 10px;
     grid-template-columns: auto auto auto auto auto auto;
     padding: 10px 0;
   }
 }
-
 
 /* Classes for JS */
 

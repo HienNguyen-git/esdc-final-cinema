@@ -15,7 +15,7 @@
         </div>
         <div class="booking-panel-section booking-panel-section3">
             <div class="movie-box">
-                <img src="images/poster/{{context.img}}" alt="">';
+                <img src="images/poster/{{context.img}}" alt="">
             </div>
         </div>
         <div class="booking-panel-section booking-panel-section4">
@@ -29,6 +29,10 @@
                     <tr>
                         <td>RELEASE DATE</td>
                         <td>{{context.release_date}}</td>
+                    </tr>
+                    <tr class="font-weight-bold">
+                        <td ><i class="far fa-clock"></i></td>
+                        <td >{{context.duration}} mins</td>
                     </tr>
                     <tr>
                         <td class="text-danger">IMDb</td>

@@ -4,6 +4,7 @@ const date = new Date()
 const getMovieDetail = async (req, res) => {
     const id = req.query['id']
     const data = await getMovieDetailById(id)
+    console.log(data)
     const isoDateTime = new Date(data.release_date)
     const dmyDateTime = isoDateTime.getDay()+"-"+isoDateTime.getMonth()+"-"+isoDateTime.getFullYear()
     const context = {
@@ -13,6 +14,7 @@ const getMovieDetail = async (req, res) => {
         overview: data.overview,
         vote_average: data.vote_average,
         release_date: dmyDateTime,
+        duration: data.duration
     }
     console.log(context)
     res.render('booking/view_detail', { title: "Detail of movie", path: "", context })
@@ -25,8 +27,10 @@ const getHome = async (req, res) => {
         img: movie.poster_path,
         title: movie.title,
     }))
+    console.log(context)
     res.render('home', { title: 'Home', path: "", context })
 }
+
 
 module.exports = {
     getMovieDetail,

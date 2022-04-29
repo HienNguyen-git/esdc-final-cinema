@@ -9,6 +9,7 @@ const expressHandlebars = require('express-handlebars');
 var indexRouter = require('./routes/index.route');
 var accountRouter = require('./routes/account.route');
 var adminRouter = require('./routes/admin.route');
+var bookingRouter = require('./routes/booking.route')
 var app = express();
 
 // view engine setup
@@ -53,6 +54,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/account', accountRouter);
 app.use('/admin', adminRouter);
+app.use('/booking', bookingRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
