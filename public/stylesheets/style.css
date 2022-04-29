@@ -954,7 +954,7 @@ footer {
   color: #6e5a11;
 }
 
-.schedule-dates {
+#schedule-dates {
   display: flex;
   justify-content: center;
   margin: 40px 0;
@@ -983,6 +983,8 @@ footer {
 .schedule-table table {
   text-align: left;
   border-collapse: collapse;
+  background-color: #fff;
+  opacity: 0.9;
 }
 
 .schedule-table table tr th {
@@ -1024,6 +1026,16 @@ footer {
   text-align: center;
   font-weight: bold;
 }
+
+#schedule-dates button{
+  border: 0px;
+}
+
+
+#schedule-dates button:focus{
+  outline: none;
+}
+
 
 .hall-type > h3 {
   margin: 15px 0;

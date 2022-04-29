@@ -1,11 +1,10 @@
 <div class="schedule-section">
     <h1>Schedule</h1>
-    <div class="schedule-dates">
-        <div class="schedule-item">March 10,2019</div>
-        <div class="schedule-item schedule-item-selected">March 11,2019</div>
-        <div class="schedule-item">March 12,2019</div>
-        <div class="schedule-item">March 13,2019</div>
-        <div class="schedule-item">March 14,2019</div>
+    <div id="schedule-dates">
+        {{#each scheduleDate}}
+        <button class="schedule-item" data-date="{{this}}">{{this}}</button></a>
+        {{/each}}
+        {{!-- <div class="schedule-item schedule-item-selected">March 11,2019</div> --}}
     </div>
     <div class="schedule-table">
         <table>
@@ -35,10 +34,21 @@
                     </div>
                 </td>
             </tr>
-
             {{/each}}
             
 
         </table>
     </div>
+
+    <script>
+        const scheduleDate =  document.querySelector('#schedule-dates')
+        const myLocalhost = location.origin
+        scheduleDate.addEventListener('click',async (e)=>{
+            if(e.target.classList.value==='schedule-item'){
+                const redirectDate = e.target.dataset.date.split("-").reverse().join("-")
+                console.log(redirectDate)
+                location.href = myLocalhost+"/schedule?date="+redirectDate
+            }
+        })
+    </script>
 
