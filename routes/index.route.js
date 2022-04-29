@@ -9,4 +9,8 @@ router.get('/movie-detail', getMovieDetail)
 
 router.get('/user-booking',)
 
+router.get('/popcorn',(req,res)=>{
+    res.render('booking/popcorn');
+})
+
 module.exports = router;  

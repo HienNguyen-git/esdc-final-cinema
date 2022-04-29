@@ -11,6 +11,9 @@ var accountRouter = require('./routes/account.route');
 var adminRouter = require('./routes/admin.route');
 var app = express();
 
+const bodyParser = require('body-parser'); // xử form dữ liệu
+app.use(bodyParser.urlencoded({extended: false})); //form
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', expressHandlebars.engine({
