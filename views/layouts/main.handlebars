@@ -4,11 +4,9 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	{{#if isAdmin}}
-  <link rel="stylesheet" href="./stylesheets/style2.css" />
-  {{else}}
-  <link rel="stylesheet" href="./stylesheets/style.css" />
-  {{/if}}  
+  <link rel="stylesheet" href="stylesheets/style.css" />
+	<link rel="icon" type="image/png" href="../img/logo.png">
+    
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 		crossorigin="anonymous"></script>
@@ -28,29 +26,6 @@
 
 <body style="background-color:lightblue;">
 
-  {{#if isAdmin}}
-		<div class="admin-section-header">
-			<div class="admin-logo">
-				<i class="fas fa-video"></i>
-				ESDC Cinema System
-			</div>
-			<div class="admin-login-info">
-				<a href="#">Welcome, Admin</a>
-				<img class="admin-user-avatar" src="/images/avatar.png" alt="">
-			</div>
-		</div>
-		<div class="admin-container">
-			<div class="admin-section admin-section1 ">
-				<ul>
-					<a href="/admin"><li class="{{#checkPath routerPath ""}}active-menu{{/checkPath}}" ><i class="fas fa-sliders-h"></i>Dashboard</li></a>
-					<a href="/admin/bookings"><li class="{{#checkPath routerPath "admin/bookings"}}active-menu{{/checkPath}}"><i class="fas fa-ticket-alt"></i>Bookings </i></li></a>
-					<a href="/admin/movies"><li class="{{#checkPath routerPath "admin/movies"}}active-menu{{/checkPath}}"><i class="fas fa-film"></i>Movies </li></a>
-					<a href="/admin/hall"><li class="{{#checkPath routerPath "admin/hall"}}active-menu{{/checkPath}}"><i class="fas fa-video"></i>Hall</li></a>
-					<a href="/admin/employee"><li class="{{#checkPath routerPath "admin/employee"}}active-menu{{/checkPath}}"><i class="fas fa-user-tie"></i>Employee</li></a>
-				</ul>
-			</div>
-		</div>
-	{{/if}}
 	
 	{{#checkPage path}}
 	
