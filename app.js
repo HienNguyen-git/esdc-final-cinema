@@ -9,6 +9,7 @@ const expressHandlebars = require('express-handlebars');
 var indexRouter = require('./routes/index.route');
 var accountRouter = require('./routes/account.route');
 var adminRouter = require('./routes/admin.route');
+var bookingRouter = require('./routes/booking.route')
 var app = express();
 
 const bodyParser = require('body-parser'); // xử form dữ liệu
@@ -29,6 +30,11 @@ app.engine('handlebars', expressHandlebars.engine({
         fnFalse = options.inverse;
       const headerPageList = ['not-header']
       return !headerPageList.includes(routerPath) ? fnTrue(this) : fnFalse(this)
+    },
+    checkLength(arr, options) {
+      const fnTrue = options.fn,
+        fnFalse = options.inverse;
+      return arr.length > 0 ? fnTrue(this) : fnFalse(this)
     }
   }
 }))
@@ -56,6 +62,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/account', accountRouter);
 app.use('/admin', adminRouter);
+app.use('/booking', bookingRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

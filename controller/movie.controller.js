@@ -1,11 +1,13 @@
+const { reverseDate, formatDate } = require('../config/helper')
 const { getMovieDetailById, getMovieList } = require('../models/movie.model')
+const { getTheNearestDay } = require('../models/schedule.model')
 const date = new Date()
 
 const getMovieDetail = async (req, res) => {
     const id = req.query['id']
     const data = await getMovieDetailById(id)
     const isoDateTime = new Date(data.release_date)
-    const dmyDateTime = isoDateTime.getDay()+"-"+isoDateTime.getMonth()+"-"+isoDateTime.getFullYear()
+    const dmyDateTime = isoDateTime.getDate()+"-"+isoDateTime.getMonth()+"-"+isoDateTime.getFullYear()
     const context = {
         id: data.idphim,
         img: data.poster_path,
@@ -13,6 +15,7 @@ const getMovieDetail = async (req, res) => {
         overview: data.overview,
         vote_average: data.vote_average,
         release_date: dmyDateTime,
+        duration: data.duration
     }
     console.log(context)
     res.render('booking/view_detail', { title: "Detail of movie", path: "", context })
@@ -27,6 +30,7 @@ const getHome = async (req, res) => {
     }))
     res.render('home', { title: 'Home', path: "", context })
 }
+
 
 module.exports = {
     getMovieDetail,

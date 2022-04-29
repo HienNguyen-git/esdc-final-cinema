@@ -51,14 +51,14 @@ const registerPost = async (req, res) => {
     let result = validationResult(req);
     if (result.errors.length === 0) {
         const { name, email, password } = req.body
-        if (await Login.handleRegister(name, email, password)){
+        if (await Login.handleRegister(name, email, password)) {
             req.session.flash = {
                 type: "success",
                 intro: "Congratulation!",
                 message: "Register successful, Login now!!!!"
             }
             return res.redirect('/account/register')
-        }else{
+        } else {
             req.session.flash = {
                 type: "danger",
                 intro: "Oops!",
@@ -77,9 +77,15 @@ const registerPost = async (req, res) => {
         res.redirect('/account/register')
     }
 }
+
+const logout = (req, res) => {
+    req.session.destroy()
+    res.redirect('/account/login')
+}
 module.exports = {
     loginGet,
     loginPost,
     registerGet,
-    registerPost
+    registerPost,
+    logout
 }
