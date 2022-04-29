@@ -27,6 +27,11 @@ app.engine('handlebars', expressHandlebars.engine({
         fnFalse = options.inverse;
       const headerPageList = ['not-header']
       return !headerPageList.includes(routerPath) ? fnTrue(this) : fnFalse(this)
+    },
+    checkLength(arr, options) {
+      const fnTrue = options.fn,
+        fnFalse = options.inverse;
+      return arr.length > 0 ? fnTrue(this) : fnFalse(this)
     }
   }
 }))

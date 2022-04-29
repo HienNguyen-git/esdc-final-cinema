@@ -12,7 +12,6 @@ const getScheduleList = async (req, res) => {
     if(date===""){
         date = reverseDate(scheduleDate[0])
     }
-    console.log(date)
     try {
         const movieIdList = await getALlMovieID()
         const data = await getScheduleByDate(date)
@@ -47,7 +46,6 @@ const getScheduleList = async (req, res) => {
                     }
                     )
                 })
-                console.log(tmp)
                 context = [
                     ...context,
                     {
