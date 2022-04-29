@@ -39,8 +39,10 @@
                                     <td>{{phone}}</td>
                                     <td>{{gender}}</td>
                                     <td>{{role}}</td>
-                                    <td ><a href="" class="btn btn-primary">Edit</a> | 
-                                    <a href="#" class="btn btn-danger">Delete</a></td>
+                                    <td >
+                                        <button onclick="handleModalEdit('{{idnv}}','{{name}}','{{phone}}','{{gender}}','{{role}}')" class="btn btn-primary" data-toggle="modal" data-target="#edit-employee">Edit</button> | 
+                                        <button onclick="handleModalDel('{{idnv}}','{{name}}')" class="btn btn-danger" data-toggle="modal" data-target="#modalDel" >Delete</button>
+                                    </td>
                                 </tr>
                             {{/each}}
                         </tbody>
@@ -52,15 +54,15 @@
                     <div class="admin-panel-section-header">
                         <h2>Employees</h2>
                     </div>
-                    <form id="add-employee-form" method="post"  novalidate enctype="multipart/form-data">
+                    <form  method="post" action="/admin/employee"  >
                         <label for="employeeName">Name: </label>
-                        <input id="employeeName" placeholder="Name" type="text" name="employeeName" required>
+                        <input id="employeeName" placeholder="Name" type="text" name="name" >
                         <label for="employeePhone">Phone: </label>
-                        <input  id="employeePhone" placeholder="Phone" type="text" name="employeePhone" required>
-                        <label for="employeeJob">Job: </label>
-                        <input  id="employeeJob" placeholder="Job" type="text" name="employeeJob" required>
+                        <input  id="employeePhone" placeholder="Phone" type="text" name="phone" >
                         <label for="employeeGender">Gender: </label>
-                        <input  id="employeeGender" placeholder="Gender" type="text" name="employeeGender" required>
+                        <input  id="employeeGender" placeholder="Gender" type="text" name="gender" >
+                        <label for="employeeRole">Role: </label>
+                        <input  id="employeeRole" placeholder="Role" type="text" name="role" >
                         <button type="submit"  class="form-btn">Add Employee</button>
                     </form>
                 </div>
@@ -68,7 +70,7 @@
         </div>
 
     <!-- Delete Confirm Modal -->
-    <div id="delete-employee" class="modal fade" role="dialog">
+    <div id="modalDel" class="modal fade" >
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -81,9 +83,11 @@
                     <p>Bạn có chắc rằng muốn xóa <strong class="employee-delete-name">Nguyen Thi Tu</strong> ?</p>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button id="btn-del-employee" type="submit" class="btn btn-danger" >Xóa</button>
+                    <form action="/admin/employee/delete" method="post">
+                        <input type="hidden" name="inputIdDel" id="inputIdDel">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="btn-del-employee" type="submit" class="btn btn-danger" >Xóa</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -98,23 +102,24 @@
                     <hp class="modal-title">Chỉnh sửa thông tin nhân viên</hp>
                     <button type="button" class="close" data-dismiss="modal" >&times;</button>
                 </div>
-                <form method="post" id="update-form" novalidate enctype="multipart/form-data">
+                <form method="post" action="/admin/employee/edit">
+                    <input type="hidden" id="inputIdEdit" name="inputIdEdit">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="employeeName">Name:</label>
-                            <input name="employeeName" required class="form-control" type="text" placeholder="Name" id="employeeNameUpdate">
+                            <label for="employeeName">Name: </label>
+                            <input class="form-control" id="employeeNameEdit" placeholder="Name" type="text" name="name" >
                         </div>
                         <div class="form-group">
                             <label for="employeePhone">Phone: </label>
-                            <input name="employeePhone" required class="form-control" type="text" placeholder="Phone" id="employeePhoneUpdate">
-                        </div>
-                        <div class="form-group">
-                            <label for="employeeJob">Job: </label>
-                            <input name="employeeJob" required class="form-control" type="text" placeholder="Job" id="employeeJobUpdate">
+                            <input class="form-control"  id="employeePhoneEdit" placeholder="Phone" type="text" name="phone" >
                         </div>
                         <div class="form-group">
                             <label for="employeeGender">Gender: </label>
-                            <input name="employeeGender" required class="form-control" type="text" placeholder="Gender" id="employeeGenderUpdate">
+                            <input class="form-control"  id="employeeGenderEdit" placeholder="Gender" type="text" name="gender" >
+                        </div>
+                        <div class="form-group">
+                            <label for="employeeRole">Role: </label>
+                            <input class="form-control"  id="employeeRoleEdit" placeholder="Role" type="text" name="role" >
                         </div>
                         <div class="form-group">
                             <button id="btn-edit-employee" type="submit" class="btn btn-primary px-5 mr-2">Sửa</button>
@@ -133,95 +138,24 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-    let employeeSelected;
-    // tải(read)
     
-    //thêm(create)
-    $('#add-employee-form').submit(e => { 
-        e.preventDefault();
-        // console.log('hi');
-        let data = {
-            name: $('#employeeName').val(),
-            phone: $('#employeePhone').val(),
-            job: $('#employeeJob').val(),
-            gender: $('#employeeGender').val()
-            
-        }
-        // console.log(JSON.stringify(data));
-        $.ajax({
-            type: "POST",
-            url: 'add_employee.php',
-            data: JSON.stringify(data),
-            success: function(data) {
-                console.log(data);
-                loadEmployee();
-            },
-            dataType: 'json'
-        })
-    })
-
-    //xóa(delete)
-    function handleModalDel(e){
-        console.log(e);
-        let tr = e.parentNode.parentNode;
-        let trStr = tr.getAttribute('employee-info');
-        employeeSelected = JSON.parse(trStr);
-        $('.employee-delete-name').html(employeeSelected.name);
-        $('#delete-employee').modal('show');
-    }
-    $("#btn-del-employee").click(e => {
-        let data = {
-            id: employeeSelected.id
-        } ;
-        console.log(data);
-        $.ajax({
-            type: "DELETE",
-            url: 'delete_employee.php',
-            data: JSON.stringify(data),
-            success: function(data) {
-                // console.log(data);
-                $('#delete-employee').modal('hide');
-                loadEmployee();
-            },
-            dataType: 'json'
-        })
-    })
+    function handleModalDel(id,name){
+        console.log(id);
+        $('.employee-delete-name').html(name);
+        $('#inputIdDel').val(id);
+    }    
 
     //sửa(update)
-    function handleModalEdit(e){
-        console.log(e);
-        let tr = e.parentNode.parentNode;
-        let trStr = tr.getAttribute('employee-info');
-        employeeSelected = JSON.parse(trStr);
-        $('#employeeNameUpdate').val(employeeSelected.name);
-        $('#employeePhoneUpdate').val(employeeSelected.phone);
-        $('#employeeJobUpdate').val(employeeSelected.job);
-        $('#employeeGenderUpdate').val(employeeSelected.gender);
- 
-        $('#edit-employee').modal('show');
+    function handleModalEdit(id,name,phone,gender,role){
+        console.log(id,name,phone,gender,role);
+        $('#employeeNameEdit').val(name);
+        $('#employeePhoneEdit').val(phone);
+        $('#employeeGenderEdit').val(gender);
+        $('#employeeRoleEdit').val(role);
+        $('#inputIdEdit').val(id);
+        
     }
-    $("#btn-edit-employee").click(e => {
-        e.preventDefault();
-        let data = {
-            id: employeeSelected.id,
-            name: $('#employeeNameUpdate').val(),
-            phone: $('#employeePhoneUpdate').val(),
-            job: $('#employeeJobUpdate').val(),
-            gender: $('#employeeGenderUpdate').val()
-        } ;
-        // console.log(data);
-        $.ajax({
-            type: "POST",
-            url: 'update_employee.php',
-            data: JSON.stringify(data),
-            success: function(data) {
-                // console.log(data);
-                $('#edit-employee').modal('hide');
-                loadEmployee();
-            },
-            dataType: 'json'
-        })
-    })
+    
     </script>
 </body>
 

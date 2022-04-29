@@ -50,9 +50,20 @@ const loginValidator = [
             })
         })),
 ]
+const EmployeeValidator = [
+    check('name').exists().withMessage("Please enter your name").notEmpty().withMessage("Name can not be empty"),
+    check('phone').exists().withMessage("Please enter your phone").notEmpty().withMessage("Phone can not be empty"),
+    check('gender').exists().withMessage("Please enter your gender").notEmpty().withMessage("Gender can not be empty"),
+    check('role').exists().withMessage("Please enter your role").notEmpty().withMessage("Role can not be empty"),
+]
+
+
+
+
 
 module.exports = {
     registerValidator,
     loginValidator,
+    EmployeeValidator,
     validationResult
 }
