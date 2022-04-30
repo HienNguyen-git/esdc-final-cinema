@@ -1,114 +1,258 @@
-<div class="schedule-panel">
-  <h1 class="title"><i class="far fa-clock"></i> Schedule</h1>
-  {{#each scheduleDateList}}
-    {{#each this}}
-    <div class="schedule-session">
-      <div class="schedule-date font-weight-bold">{{this.date}}</div>
-      <div class="hall-type">
-      {{#each list}}
-        <div class="schedule-item" data-show="{{idsuatchieu}}">{{start}}</div>
-      {{/each}}
-      </div>
-    {{/each}}
-    </div>
-  {{/each}}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+  integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+<div class="alert alert-warning alert-dismissible fade hide col-sm-3 position-fixed" id="warning-alert" role="alert">
+  <strong>Sorry!</strong> You have used up all of the available seats for this booking.
 </div>
-<div class="booking-panel">
-  <div class="booking-panel-section booking-panel-section1">
-    <h1>MOVIE DETAIL</h1>
-  </div>
-  <div
-    class="booking-panel-section booking-panel-section2"
-    onclick="window.history.go(-1); return false;"
-  >
-    <i class="fas fa-2x fa-times"></i>
-  </div>
-  <div class="booking-panel-section booking-panel-section3">
-    <div class="movie-box">
-      <img
-        src="images/poster/{{movieData.poster_path}}"
-        alt="{{movieData.title}}"
-      />
-    </div>
-  </div>
-  <div class="booking-panel-section booking-panel-section4">
-    <div class="title">{{movieData.title}}</div>
-    <div class="movie-information">
-      <table>
-        <tr>
-          <td>Overview</td>
-          <td>{{movieData.overview}}</td>
-        </tr>
-        <tr>
-          <td>RELEASE DATE</td>
-          <td>{{movieData.release_date}}</td>
-        </tr>
-        <tr class="font-weight-bold">
-          <td><i class="far fa-clock"></i></td>
-          <td>{{movieData.duration}} mins</td>
-        </tr>
-        <tr>
-          <td class="text-danger">IMDb</td>
-          <td class="imdb">{{movieData.vote_average}}</td>
-        </tr><div class="schedule-panel">
-  <h1 class="title"><i class="far fa-clock"></i> Schedule</h1>
-  {{#each scheduleDateList}}
-    {{#each this}}
-    <div class="schedule-session">
-      <div class="schedule-date font-weight-bold">{{this.date}}</div>
-      <div class="hall-type">
-      {{#each list}}
-        <div class="schedule-item" data-show="{{idsuatchieu}}">{{start}}</div>
-      {{/each}}
-      </div>
-    {{/each}}
-    </div>
-  {{/each}}
+
+<div class="session-panel col-sm-6">
+  <h1 class="title">BOOK TICKET
+    <i class="fa fa-ticket" aria-hidden="true"></i></h1>
 </div>
-<div class="booking-panel">
-  <div class="booking-panel-section booking-panel-section1">
-    <h1>MOVIE DETAIL</h1>
-  </div>
-  <div
-    class="booking-panel-section booking-panel-section2"
-    onclick="window.history.go(-1); return false;"
-  >
-    <i class="fas fa-2x fa-times"></i>
-  </div>
-  <div class="booking-panel-section booking-panel-section3">
-    <div class="movie-box">
-      <img
-        src="images/poster/{{movieData.poster_path}}"
-        alt="{{movieData.title}}"
-      />
+<div id="bill-info">
+  <div class="info-ticket-item">
+    <h4 id="title-film" style="font-weight: bold">MOVIE NAME</h4>
+    <div class="hours-date">
+      <span id="time">08:00</span>
+      <span id="date">- 3/5/2022</span>
+      <br />
+      <span id="screen">Show room: Screen 3</span>
     </div>
-  </div>
-  <div class="booking-panel-section booking-panel-section4">
-    <div class="title">{{movieData.title}}</div>
-    <div class="movie-information">
-      <table>
-        <tr>
-          <td>Overview</td>
-          <td>{{movieData.overview}}</td>
-        </tr>
-        <tr>
-          <td>RELEASE DATE</td>
-          <td>{{movieData.release_date}}</td>
-        </tr>
-        <tr class="font-weight-bold">
-          <td><i class="far fa-clock"></i></td>
-          <td>{{movieData.duration}} mins</td>
-        </tr>
-        <tr>
-          <td class="text-danger">IMDb</td>
-          <td class="imdb">{{movieData.vote_average}}</td>
-        </tr>
+    <div class="box-tickets">
+      <table class="table-box-1">
+        <tbody>
+          <tr>
+            <td class="td-first">Amount - Price: </td>
+            <td class="td-second align-right"><span id="count">1</span> x 45,000 VND</td>
+          </tr>
+          <tr id="seatrow1">
+            <td class="yseat" colspan="2">Your seat: (E12)</td>
+          </tr>
+        </tbody>
+      </table>
+      <h4 class="select-drink mt-3" style="font-weight: bold">FOOD &amp; BEVERAGES</h4>
+      <table class="table-box-2">
+        <tbody>
+          <tr class="tr_second align-right">
+            <td colspan="2"><span class="total-text-"><em>Total:</em></span></td>
+          </tr>
+          <tr class="align-right">
+            <td colspan="2"><span id="total">45,000</span><span
+              >VNĐ</span></td>
+          </tr>
+        </tbody>
       </table>
     </div>
+    <div class="schedule-item mt-3">Pay</div>
+  </div>
+</div>
+<div class="option-panel col-sm-6">
+  <div class="option-panel-section option-panel-section1">
+    <h1>CHOOSE YOUR SEAT</h1>
+  </div>
+  <div class="option-panel-section option-panel-section4">
+
+    <ul class="showcase">
+      <li>
+        <div class="seat"></div>
+        <small>N/A</small>
+      </li>
+      <li>
+        <div class="seat selected"></div>
+        <small>Selected</small>
+      </li>
+      <li>
+        <div class="seat occupied"></div>
+        <small>Occupied</small>
+      </li>
+    </ul>
+
+    <div class="seat-container">
+      <div class="screen"></div>
+      <div id="seat-group">
+
+        <div class="row" id="row-titles">
+          <div class="order"></div>
+          <div class="order">1</div>
+          <div class="order">2</div>
+          <div class="order">3</div>
+          <div class="order">4</div>
+          <div class="order">5</div>
+          <div class="order">6</div>
+          <div class="order">7</div>
+          <div class="order">8</div>
+        </div>
+        <div class="row">
+          <div class="order">A</div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="order">A</div>
+
+        </div>
+
+        <div class="row">
+          <div class="order">B</div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="order">B</div>
+
+        </div>
+
+        <div class="row">
+          <div class="order">C</div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="order">C</div>
+
+        </div>
+        <div class="row">
+          <div class="order">D</div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat occupied"></div>
+          <div class="seat occupied"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="order">D</div>
+
+        </div>
+        <div class="row">
+          <div class="order">E</div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat occupied"></div>
+          <div class="seat occupied"></div>
+          <div class="order">E</div>
+
+        </div>
+        <div class="row">
+          <div class="order">F</div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="order">F</div>
+
+        </div>
+        <div class="row">
+
+          <div class="order">G</div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat occupied"></div>
+          <div class="seat occupied"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="order">G</div>
+
+        </div>
+        <div class="row">
+          <div class="order">H</div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat occupied"></div>
+          <div class="seat occupied"></div>
+          <div class="seat occupied"></div>
+          <div class="seat"></div>
+          <div class="order">H</div>
+
+        </div>
+      </div>
+    </div>
+    <p class="text-light text-center mt-3">The maximum number of seats that can be reserved is <span class="text-danger">5</span>.</p>
+  </div>
+</div>
+<div class="option-panel col-sm-6">
+  <div class="option-panel-section option-panel-section1">
+    <h1>SELECT FOOD AND BEVERAGES</h1>
+  </div>
+  <div class="option-panel-section option-panel-section4">
   </div>
 </div>
 
-      </table>
-    </div>
-  </div>
-</div>
+<script>
+    let currentSeat = 0
+
+    let hideAlert = setTimeout(function () { 
+        alert.classList.remove("show")
+    }, 3000); 
+
+  const alert = document.querySelector("#warning-alert")
+  const container = document.querySelector(".seat-container"); 
+  const seats = document.querySelectorAll(".row .seat:not(.occupied)"); 
+  const count = document.getElementById("count"); 
+  const total = document.getElementById("total"); 
+  const movieSelect = document.getElementById("movie"); 
+  const rowTitle = document.querySelector('#row-titles') 
+  //Seat click event
+  container.addEventListener('click', e => { 
+      console.log(e.target)
+      if (e.target.classList.contains('seat') && !e.target.classList.contains('occupied')) {
+          if(currentSeat+1<6 || e.target.classList.contains('selected')){
+            e.target.classList.toggle('selected'); 
+          }else{
+            clearTimeout(hideAlert)
+            alert.classList.add("show")
+            
+            hideAlert = setTimeout(function () { 
+                alert.classList.remove("show")
+            }, 3000); 
+            
+          }
+        updateSelectedCount()
+    } 
+    }); 
+  // Initial count && total
+
+    
+
+    function updateSelectedCount() {
+        const selectedSeats = document.querySelectorAll('.row .seat.selected');
+        const seatIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
+
+        localStorage.setItem('selectedSeats', JSON.stringify(seatIndex));
+
+        tmp = JSON.stringify(seatIndex)
+        console.log(tmp)
+        const selectedSeatsCount = selectedSeats.length;
+        currentSeat = selectedSeatsCount
+        count.innerText = selectedSeatsCount;
+        total.innerText = selectedSeatsCount * 2;
+    }
+</script>

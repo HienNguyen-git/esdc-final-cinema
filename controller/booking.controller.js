@@ -60,7 +60,7 @@ const getScheduleList = async (req, res) => {
         console.error(error.message)
     }
 
-    await sleep(10)
+    await sleep(100)
     function sleep(ms) {
         return new Promise((resolve) => {
             setTimeout(resolve, ms);
