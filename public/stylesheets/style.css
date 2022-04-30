@@ -1315,6 +1315,10 @@ p.text span {
   color: #6feaf6;
 }
 
+.news-info{
+  background-color: white;
+  padding: 10px;
+}
 /* Responsive Properties */
 
 @media all and (max-width: 30em) {
@@ -1322,6 +1326,7 @@ p.text span {
     display: block;
     margin: 0.4em auto;
   }
+ 
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -1334,6 +1339,11 @@ p.text span {
     grid-template-columns: auto;
     padding: 10px 0;
   }
+  .news-info{
+    display: block;
+    margin-top: 10px;
+  }
+  
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -1345,6 +1355,9 @@ p.text span {
     grid-column-gap: 10px;
     grid-template-columns: auto auto;
     padding: 10px 0;
+  }
+  .news-info{
+    display: block;
   }
 }
 
@@ -1358,7 +1371,12 @@ p.text span {
     grid-template-columns: auto auto auto;
     padding: 10px 0;
   }
+  .news-info{
+    display: block;
+  }
 }
+
+
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 1122px) {
@@ -1385,6 +1403,10 @@ p.text span {
     width: 90%;
     margin: 10px auto 30px;
   } */
+  .news-info{
+    display: block;
+  }
+  
 }
 
 
@@ -1399,6 +1421,9 @@ p.text span {
     grid-template-columns: auto auto auto auto auto auto;
     padding: 10px 0;
   }
+  .news-info{
+    display: flex;
+  }
 }
 
 /* Classes for JS */
@@ -1411,4 +1436,12 @@ p.text span {
 .show {
   display: block;
   transition: all 0.7s ease;
+}
+
+
+
+
+.news-info:hover{
+
+  color: lightblue;
 }

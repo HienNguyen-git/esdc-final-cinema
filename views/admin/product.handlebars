@@ -39,8 +39,8 @@
                                         <img style="max-width: 50px;" src="/images/popcorn/{{picture_path}}" alt="{{name}}" />
                                     </td>
                                     <td >
-                                        <button onclick="handleModalEdit('{{idnv}}','{{name}}','{{phone}}','{{gender}}','{{role}}')" class="btn btn-primary" data-toggle="modal" data-target="#edit-employee">Edit</button> | 
-                                        <button onclick="handleModalDel('{{idnv}}','{{name}}')" class="btn btn-danger" data-toggle="modal" data-target="#modalDel" >Delete</button>
+                                        <button onclick="handleModalEdit('{{idsp}}','{{name}}','{{price}}','{{picture_path}}')" class="btn btn-primary" data-toggle="modal" data-target="#edit-product">Edit</button> | 
+                                        <button onclick="handleModalDel('{{idsp}}','{{name}}')" class="btn btn-danger" data-toggle="modal" data-target="#modalDel" >Delete</button>
                                     </td>
                                 </tr>
                             {{/each}}
@@ -75,18 +75,18 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <hp class="modal-title">Xóa sản phẩm</hp>
+                    <hp class="modal-title">Delete product</hp>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 
                 <div class="modal-body">
-                    <p>Bạn có chắc rằng muốn xóa <strong class="product-delete-name">Nguyen Thi Tu</strong> ?</p>
+                    <p>Are you sure want to delete product: <strong class="product-delete-name">Popcorn</strong> ?</p>
                 </div>
                 <div class="modal-footer">
                     <form action="/admin/product/delete" method="post">
                         <input type="hidden" name="inputIdDel" id="inputIdDel">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="btn-del-product" type="submit" class="btn btn-danger" >Xóa</button>
+                        <button id="btn-del-product" type="submit" class="btn btn-danger" >Delete</button>
                     </form>
                 </div>
             </div>
@@ -94,35 +94,35 @@
     </div>
 
     <!-- Edit Confirm Modal -->
-    <div id="edit-employee" class="modal fade" role="dialog">
+    <div id="edit-product" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <hp class="modal-title">Chỉnh sửa thông tin nhân viên</hp>
+                    <hp class="modal-title">Edit infomation product</hp>
                     <button type="button" class="close" data-dismiss="modal" >&times;</button>
                 </div>
-                <form method="post" action="/admin/employee/edit">
+                <form method="post" action="/admin/product/edit" enctype="multipart/form-data">
                     <input type="hidden" id="inputIdEdit" name="inputIdEdit">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="employeeName">Name: </label>
-                            <input class="form-control" id="employeeNameEdit" placeholder="Name" type="text" name="name" >
+                            <label for="productName">Name: </label>
+                            <input class="form-control" id="productNameEdit" placeholder="Name" type="text" name="name" >
                         </div>
                         <div class="form-group">
-                            <label for="employeePhone">Phone: </label>
-                            <input class="form-control"  id="employeePhoneEdit" placeholder="Phone" type="text" name="phone" >
+                            <label for="productPrice">Price: </label>
+                            <input class="form-control"  id="productPriceEdit" placeholder="Price" type="text" name="price" >
                         </div>
                         <div class="form-group">
-                            <label for="employeeGender">Gender: </label>
-                            <input class="form-control"  id="employeeGenderEdit" placeholder="Gender" type="text" name="gender" >
+                            <label for="customFile">Picture:</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile" name="image">
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="employeeRole">Role: </label>
-                            <input class="form-control"  id="employeeRoleEdit" placeholder="Role" type="text" name="role" >
-                        </div>
-                        <div class="form-group">
-                            <button id="btn-edit-employee" type="submit" class="btn btn-primary px-5 mr-2">Sửa</button>
+
+                            <button id="btn-edit-product" type="submit" class="btn btn-primary px-5 mr-2">Edit now</button>
                         </div>
                     </div>
                 </form>
@@ -146,19 +146,18 @@
       </script>
     <script>
     
+    //xóa
     function handleModalDel(id,name){
         console.log(id);
-        $('.employee-delete-name').html(name);
+        $('.product-delete-name').html(name);
         $('#inputIdDel').val(id);
     }    
 
     //sửa(update)
-    function handleModalEdit(id,name,phone,gender,role){
-        console.log(id,name,phone,gender,role);
-        $('#employeeNameEdit').val(name);
-        $('#employeePhoneEdit').val(phone);
-        $('#employeeGenderEdit').val(gender);
-        $('#employeeRoleEdit').val(role);
+    function handleModalEdit(id,name,price,picture_path){
+        console.log(id,name,price,picture_path);
+        $('#productNameEdit').val(name);
+        $('#productPriceEdit').val(price);
         $('#inputIdEdit').val(id);
         
     }

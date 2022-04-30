@@ -19,6 +19,8 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
 		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css    " />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	
 	<link rel="icon" type="image/png" href="image/logo.png" />
 
 	<title>{{title}}</title>
@@ -52,6 +54,7 @@
 					<a href="/admin/hall"><li class="{{#checkPath routerPath "admin/hall"}}active-menu{{/checkPath}}"><i class="fas fa-video"></i>Hall</li></a>
 					<a href="/admin/employee"><li class="{{#checkPath routerPath "admin/employee"}}active-menu{{/checkPath}}"><i class="fas fa-user-tie"></i>Employee</li></a>
 					<a href="/admin/product"><li class="{{#checkPath routerPath "admin/product"}}active-menu{{/checkPath}}"><i class="fa-solid fa-apple-whole"></i>Product</li></a>
+					<a href="/admin/news"><li class="{{#checkPath routerPath "admin/news"}}active-menu{{/checkPath}}"><i class="fa-solid fa-newspaper"></i>News</li></a>
 				</ul>
 			</div>
 			{{{body}}}

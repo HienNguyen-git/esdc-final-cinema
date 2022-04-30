@@ -1,28 +1,68 @@
 <section class="index-poster">
 </section>
 <section id="home-section-1" class="movie-show-container">
-  <h1>Recommend for you</h1>
-  <h3>Book a movie now</h3>
+	<h1>Recommend for you</h1>
+	<h3>Book a movie now</h3>
 
-  <div class="movies-container">
-    {{#each context}}
-      <div class="movie-box">
-        <img src="images/poster/{{img}}" alt="{{title}}" />
-        <div class="movie-info">
-          <h3>{{title}}</h3>
-          <div class="movie-btn">
-            <a
-              style="display: block;"
-              href="/movie-detail?id={{id}}"
-            ><i class="fas fa-eye"></i> View detail</a>
-            <a
-              style="display: block;"
-              href="/booking?id={{id}}"
-            ><i class="fas fa-ticket-alt"></i> Book now</a>
-          </div>
-        </div>
-      </div>
-    {{/each}}
+	<div class="movies-container">
+		{{#each context}}
+		<div class="movie-box">
+			<img src="images/poster/{{img}}" alt="{{title}}" />
+			<div class="movie-info">
+				<h3>{{title}}</h3>
+				<div class="movie-btn">
+					<a style="display: block;" href="/movie-detail?id={{id}}"><i class="fas fa-eye"></i> View detail</a>
+					<a style="display: block;" href="/booking?id={{id}}"><i class="fas fa-ticket-alt"></i> Book now</a>
+				</div>
+			</div>
+		</div>
+		{{/each}}
 
-  </div>
+	</div>
 </section>
+
+<section id="home-section-1" class="movie-show-container">
+	<h3>News</h3>
+	<div class="container-fluid">
+
+		<div class="row">
+			{{#each contextNews}}
+				<div class="col col-12 col-sm-6 col-md-4 ">
+					<a href="/news-detail/{{id}}" class="news-info" style="height: 300px; margin-top: 12px; overflow:hidden">
+						<div class="image-div" >
+
+							<img src="images/news/{{img}}" style="width:150px; object-fit: contain;" alt="">
+						</div>
+						<div class="news-infomation" style="margin-left: 10px; ">
+
+							<h3>{{title}}</h3>
+							<i  class="fa-solid fa-calendar"></i><span> {{day}}</span>
+							<p>{{content}}</p>
+						</div>
+					</a>
+				</div>
+			{{/each}}
+			
+			
+		</div>
+	</div>
+</section>
+
+
+{{!--
+<section id="home-section-2" class="movie-show-container-hot">
+	<h1>Hot movie</h1>
+	<h3 style="margin-bottom: 3rem;">Best movie of this month</h3>
+	<div>
+		<div style="font-size: 30px;" class="movie-box">
+			<img src="img/movie-poster-1.jpg" alt=" " />
+			<div class="movie-info">
+				<h3>Captain Marvel</h3>
+				<a style="display: block; padding: 2rem;" href="/movie-detail?id=23"><i class="fas fa-eye"></i>
+					View detail</a>
+				<a style="display: block; padding: 2rem;" href="booking.php?id='23'"><i class="fas fa-ticket-alt"></i>
+					Book now</a>
+			</div>
+		</div>
+	</div>
+</section> --}}
