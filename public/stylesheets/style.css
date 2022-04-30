@@ -366,6 +366,10 @@ footer {
   height: 100%;
   width: 100%;
 }
+.movie-box:hover{
+  transform: scale(1.08);
+  transition: transform 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
 
 .movie-box .movie-info {
   padding: 50% 0;
@@ -1004,8 +1008,10 @@ footer {
 }
 
 .schedule-item:hover {
-  background-color: #b6b6b6;
-  color: #6e5a11;
+  background-color: #000;
+  color: #fff;
+  transform: scale(1.2);
+  transition: transform 5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .schedule-item-selected {
@@ -1068,6 +1074,7 @@ footer {
 #schedule-dates button:focus {
   outline: none;
 }
+
 
 .hall-type > h3 {
   margin: 15px 0;

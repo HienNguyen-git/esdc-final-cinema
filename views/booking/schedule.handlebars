@@ -2,7 +2,7 @@
     <h1>Schedule</h1>
     <div id="schedule-dates">
         {{#each scheduleDate}}
-        <button class="schedule-item" data-date="{{this}}">{{this}}</button></a>
+        <button class="schedule-item {{#checkPath ../currentDate this}} schedule-item-selected {{/checkPath}}" data-date="{{this}}">{{this}}</button></a>
         {{/each}}
         {{!-- <div class="schedule-item schedule-item-selected">March 11,2019</div> --}}
     </div>
@@ -46,9 +46,9 @@
         const scheduleDate =  document.querySelector('#schedule-dates')
         const myLocalhost = location.origin
         scheduleDate.addEventListener('click',async (e)=>{
-            if(e.target.classList.value==='schedule-item'){
+            if(e.target.classList.contains('schedule-item')){
+                console.log(e.target)
                 const redirectDate = e.target.dataset.date.split("-").reverse().join("-")
-                console.log(redirectDate)
                 location.href = myLocalhost+"/schedule?date="+redirectDate
             }
         })

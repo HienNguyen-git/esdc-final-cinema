@@ -1,9 +1,9 @@
-// Load Page Parts a Home
+    // Load Page Parts a Home
 
-$(document).ready(function () {
-    $("header").load("includes/header.php");
-    $("footer").load("includes/footer.php");
-});
+    $(document).ready(function () {
+        $("header").load("includes/header.php");
+        $("footer").load("includes/footer.php");
+    });
 
 // faded scroll
 $(function () {
@@ -131,3 +131,5 @@ $(".admin-navigation-schedule").on('click', function () {
 $(".admin-navigation-schedule").on('click', function () {
     $('.admin-navigation-schedule-dropdwn').hide();
 });
+
+

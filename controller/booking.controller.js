@@ -60,7 +60,7 @@ const getScheduleList = async (req, res) => {
         console.error(error.message)
     }
 
-    await sleep(1000)
+    await sleep(10)
     function sleep(ms) {
         return new Promise((resolve) => {
             setTimeout(resolve, ms);
@@ -70,6 +70,7 @@ const getScheduleList = async (req, res) => {
     res.render('booking/schedule', {
         title: "Schedule",
         path: "schedule",
+        currentDate: reverseDate(date),
         context,
         scheduleDate
     })
@@ -78,6 +79,9 @@ const getScheduleList = async (req, res) => {
 
 const getMovieSchedule = async (req, res) => {
     const id = req.query['id']
+    if (id === undefined) {
+        return res.redirect('/')
+    }
     let movieData
     let scheduleDateList = []
     try {
@@ -104,7 +108,6 @@ const getMovieSchedule = async (req, res) => {
                     }
                 }
             ]
-            console.log(tmp)
         })
         movieRaw = await getMovieDetailById(id)
 
@@ -118,7 +121,6 @@ const getMovieSchedule = async (req, res) => {
             duration: movieRaw.duration
         }
 
-        console.log(scheduleDateList)
     } catch (error) {
         console.error(error.message)
     }
@@ -132,8 +134,15 @@ const getMovieSchedule = async (req, res) => {
 
 }
 
+const getBookingOption = async (req, res) => {
+    res.render('booking/option', {
+        path: "option"
+    })
+}
+
 
 module.exports = {
     getScheduleList,
-    getMovieSchedule
+    getMovieSchedule,
+    getBookingOption
 }

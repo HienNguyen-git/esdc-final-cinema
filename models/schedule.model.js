@@ -24,7 +24,7 @@ const getTheNearestDay = async () => new Promise((resolve, reject) => {
 })
 
 const getScheduleByMovie = async(id) => new Promise((resolve,reject)=>{
-    connect.query("SELECT * FROM showtime where idphim=? ORDER BY `day` ASC",[id], (err, result) => {
+    connect.query("SELECT * FROM showtime where idphim=? ORDER BY `start` ASC",[id], (err, result) => {
         if (err) reject(err.message)
         resolve(result)
     })
