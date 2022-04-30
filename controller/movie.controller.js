@@ -1,6 +1,7 @@
 const { reverseDate, formatDate } = require('../config/helper')
-const { getMovieDetailById, getMovieList } = require('../models/movie.model')
 const { getTheNearestDay } = require('../models/schedule.model')
+const { getMovieDetailById, getMovieList } = require('../models/movie.model')
+const { handleReadNews } = require('../models/adminNews.model');
 const date = new Date()
 
 const getMovieDetail = async (req, res) => {
@@ -28,7 +29,16 @@ const getHome = async (req, res) => {
         img: movie.poster_path,
         title: movie.title,
     }))
-    res.render('home', { title: 'Home', path: "", context })
+
+    const news = await handleReadNews();
+    const contextNews = news.map(n => ({
+        id: n.idtin,
+        title: n.title,
+        day: formatDate(n.day),
+        content: n.content,
+        img: n.picture_path,
+    }))
+    res.render('home', { title: 'Home', path: "", context,contextNews })
 }
 
 

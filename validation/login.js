@@ -66,10 +66,34 @@ const productValidator = [
     }),
 ]
 
+const productEditValidator = [
+    check('name').exists().withMessage("Please enter your name").notEmpty().withMessage("Name can not be empty"),
+    check('price').exists().withMessage("Please enter your price").notEmpty().withMessage("price can not be empty"),
+]
+
+const newsValidator = [
+    check('title').exists().withMessage("Please enter your title").notEmpty().withMessage("title can not be empty"),
+    check('day').exists().withMessage("Please enter your day").notEmpty().withMessage("day can not be empty"),
+    check('content').exists().withMessage("Please enter your Content").notEmpty().withMessage("Content can not be empty"),
+    check('image').custom((value, { req }) => {
+        if (!req.file) throw new Error("Profile Img is required");
+        return true;
+    }),
+]
+
+const newsEditValidator = [
+    check('title').exists().withMessage("Please enter your title").notEmpty().withMessage("title can not be empty"),
+    check('day').exists().withMessage("Please enter your day").notEmpty().withMessage("day can not be empty"),
+    check('content').exists().withMessage("Please enter your Content").notEmpty().withMessage("Content can not be empty"),
+]
+
 module.exports = {
     registerValidator,
     loginValidator,
     EmployeeValidator,
     productValidator,
+    productEditValidator,
+    newsValidator,
+    newsEditValidator,
     validationResult
 }

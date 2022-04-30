@@ -75,18 +75,18 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <hp class="modal-title">Xóa sản phẩm</hp>
+                    <hp class="modal-title">Delete employee</hp>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 
                 <div class="modal-body">
-                    <p>Bạn có chắc rằng muốn xóa <strong class="employee-delete-name">Nguyen Thi Tu</strong> ?</p>
+                    <p>Are you sure want to delete employee name: <strong class="employee-delete-name">Nguyen Thi Tu</strong> ?</p>
                 </div>
                 <div class="modal-footer">
                     <form action="/admin/employee/delete" method="post">
                         <input type="hidden" name="inputIdDel" id="inputIdDel">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="btn-del-employee" type="submit" class="btn btn-danger" >Xóa</button>
+                        <button id="btn-del-employee" type="submit" class="btn btn-danger" >Delete</button>
                     </form>
                 </div>
             </div>
@@ -99,7 +99,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <hp class="modal-title">Chỉnh sửa thông tin nhân viên</hp>
+                    <hp class="modal-title">Edit infomation employee</hp>
                     <button type="button" class="close" data-dismiss="modal" >&times;</button>
                 </div>
                 <form method="post" action="/admin/employee/edit">
@@ -122,7 +122,7 @@
                             <input class="form-control"  id="employeeRoleEdit" placeholder="Role" type="text" name="role" >
                         </div>
                         <div class="form-group">
-                            <button id="btn-edit-employee" type="submit" class="btn btn-primary px-5 mr-2">Sửa</button>
+                            <button id="btn-edit-employee" type="submit" class="btn btn-primary px-5 mr-2">Edit</button>
                         </div>
                     </div>
                 </form>

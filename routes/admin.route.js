@@ -3,13 +3,15 @@ var router = express.Router();
 
 const multer  = require('multer')
 const upload = multer({ dest: 'public/images/popcorn' })
-const bodyParser = require('body-parser'); // xử form dữ liệu
-router.use(bodyParser.urlencoded({extended: false})); //form
+// const bodyParser = require('body-parser'); // xử form dữ liệu
+// router.use(bodyParser.urlencoded({extended: false})); //form
+
+const { registerValidator, loginValidator,EmployeeValidator,productValidator,productEditValidator,newsValidator,newsEditValidator } = require('../validation/login');
 
 const { loginGet, loginPost, registerGet, registerPost } = require('../controller/adminAccount.controller');
-const { registerValidator, loginValidator,EmployeeValidator,productValidator } = require('../validation/login');
 const  {adminEmployeeGet,adminEmployeePost,adminEmployeeDelPost,adminEmployeeEditPost} = require('../controller/adminEmployee.controller');
-const  {adminProductGet, adminProductPost} = require('../controller/adminProduct.controller');
+const  {adminProductGet, adminProductPost, adminProductDelPost, adminProductEditPost} = require('../controller/adminProduct.controller');
+const  {adminNewsGet,adminNewsPost,adminNewsDelPost,adminNewsEditPost} = require('../controller/adminNews.controller');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -29,20 +31,24 @@ router.get('/hall', function(req, res, next) {
 });
 
 router.get('/login', loginGet);
-router.get('/register', registerGet);
-
-router.get('/employee', adminEmployeeGet);
-
-router.get('/product', adminProductGet);
-
 router.post('/login', loginValidator, loginPost);
+router.get('/register', registerGet);
 router.post('/register', registerValidator, registerPost);
 
+router.get('/employee', adminEmployeeGet);
 router.post('/employee',EmployeeValidator,adminEmployeePost);
 router.post('/employee/delete',adminEmployeeDelPost);
 router.post('/employee/edit',EmployeeValidator,adminEmployeeEditPost);
 
+router.get('/product', adminProductGet);
 router.post('/product',upload.single('image'),productValidator,adminProductPost);
+router.post('/product/delete',adminProductDelPost);
+router.post('/product/edit',upload.single('image'),productEditValidator,adminProductEditPost);
+
+router.get('/news', adminNewsGet);
+router.post('/news',upload.single('image'),newsValidator, adminNewsPost);
+router.post('/news/delete',adminNewsDelPost);
+router.post('/news/edit',upload.single('image'),newsEditValidator,adminNewsEditPost);
 
 
 
