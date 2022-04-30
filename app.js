@@ -23,6 +23,7 @@ app.engine('handlebars', expressHandlebars.engine({
     checkPath(routerPath, navPath, options) {
       const fnTrue = options.fn,
         fnFalse = options.inverse;
+        console.log(routerPath, navPath)
       return routerPath === navPath ? fnTrue(this) : fnFalse(this)
     },
     checkPage(routerPath, options) {

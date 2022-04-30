@@ -8,11 +8,12 @@ const formatDate = (date) => {
     return myDay + "-" + month + "-" + isoDateTime.getFullYear()
 }
 
-const reverseDate = (date) => {
-    return date.split("-").reverse().join("-")
-}
+const reverseDate = (date) => date.split("-").reverse().join("-")
+
+const dateProcess = (data) => Object.values(JSON.parse(JSON.stringify(data)))
 
 module.exports = {
     formatDate,
-    reverseDate
+    reverseDate,
+    dateProcess
 }

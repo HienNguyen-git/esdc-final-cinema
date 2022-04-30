@@ -1,51 +1,49 @@
-{{!-- <?php 
-        $id = $_GET['id'];
-        $link = mysqli_connect("localhost", "root", "", "cinema_db");
-
-        $movieQuery = "SELECT * FROM movieTable WHERE movieID = $id"; 
-        $movieImageById = mysqli_query($link,$movieQuery);
-        $row = mysqli_fetch_array($movieImageById);
-?> --}}
-    <div class="booking-panel">
-        <div class="booking-panel-section booking-panel-section1">
-            <h1>MOVIE DETAIL</h1>
-        </div>
-        <div class="booking-panel-section booking-panel-section2" onclick="window.history.go(-1); return false;">
-            <i class="fas fa-2x fa-times"></i>
-        </div>
-        <div class="booking-panel-section booking-panel-section3">
-            <div class="movie-box">
-                <img src="images/poster/{{context.img}}" alt="">
-            </div>
-        </div>
-        <div class="booking-panel-section booking-panel-section4">
-            <div class="title">{{context.title}}</div>
-            <div class="movie-information">
-                <table>
-                    <tr>
-                        <td>Overview</td>
-                        <td>{{context.overview}}</td>
-                    </tr>
-                    <tr>
-                        <td>RELEASE DATE</td>
-                        <td>{{context.release_date}}</td>
-                    </tr>
-                    <tr class="font-weight-bold">
-                        <td ><i class="far fa-clock"></i></td>
-                        <td >{{context.duration}} mins</td>
-                    </tr>
-                    <tr>
-                        <td class="text-danger">IMDb</td>
-                        <td class="imdb">{{context.vote_average}}</td>
-                    </tr>
-                    <tr>
-                        <td class="book-ticker-container">
-                            </td>
-                        </tr>
-                </table>
-            </div>
-            <div class="book-ticket-btn-container">
-                <a class="book-ticket-btn" href="/booking?id={{id}}"><i class="fas fa-ticket-alt"></i> Book now</a>
-            </div>
-        </div>
+<div class="booking-panel">
+  <div class="booking-panel-section booking-panel-section1">
+    <h1>MOVIE DETAIL</h1>
+  </div>
+  <div
+    class="booking-panel-section booking-panel-section2"
+    onclick="window.history.go(-1); return false;"
+  >
+    <i class="fas fa-2x fa-times"></i>
+  </div>
+  <div class="booking-panel-section booking-panel-section3">
+    <div class="movie-box">
+      <img src="images/poster/{{context.img}}" alt="" />
     </div>
+  </div>
+  <div class="booking-panel-section booking-panel-section4">
+    <div class="title">{{context.title}}</div>
+    <div class="movie-information">
+      <table>
+        <tr>
+          <td>Overview</td>
+          <td>{{context.overview}}</td>
+        </tr>
+        <tr>
+          <td>RELEASE DATE</td>
+          <td>{{context.release_date}}</td>
+        </tr>
+        <tr class="font-weight-bold">
+          <td><i class="far fa-clock"></i></td>
+          <td>{{context.duration}} mins</td>
+        </tr>
+        <tr>
+          <td class="text-danger">IMDb</td>
+          <td class="imdb">{{context.vote_average}}</td>
+        </tr>
+        <tr>
+          <td class="book-ticker-container">
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="book-ticket-btn-container">
+      <a class="book-ticket-btn" href="/booking?id={{context.id}}"><i
+          class="fas fa-ticket-alt"
+        ></i>
+        Book now</a>
+    </div>
+  </div>
+</div>

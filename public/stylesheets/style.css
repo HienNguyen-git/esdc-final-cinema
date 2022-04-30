@@ -366,6 +366,10 @@ footer {
   height: 100%;
   width: 100%;
 }
+.movie-box:hover{
+  transform: scale(1.08);
+  transition: transform 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
 
 .movie-box .movie-info {
   padding: 50% 0;
@@ -482,6 +486,35 @@ footer {
   width: 90%;
   height: 100vh;
   margin: 0 auto;
+}
+
+.schedule-panel {
+  background-color: #508799;
+  border-radius: 15px;
+  color: #fff;
+  padding: 40px;
+  box-shadow: 1px 0px 23px 3px rgba(0, 0, 0, 0.45);
+  -webkit-box-shadow: 1px 0px 23px 3px rgba(0, 0, 0, 0.45);
+  -moz-box-shadow: 1px 0px 23px 3px rgba(0, 0, 0, 0.45);
+  transition: all 0.7s ease;
+  width: fit-content;
+  height: fit-content;
+  margin: 10px auto 30px;
+}
+
+.schedule-panel .title {
+  grid-row: 3;
+  grid-column: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.schedule-panel .schedule-session {
+  display: grid;
+  align-items: center;
+  grid-gap: 25px;
+  grid-template-columns: 1fr 3fr;
 }
 
 .booking-panel-section2 > i {
@@ -606,6 +639,10 @@ footer {
   width: 30%;
   height: 42px;
   margin: 5px 0;
+}
+
+.schedule-list {
+  margin-top: 30px;
 }
 
 /* Admin Panel Styling */
@@ -967,11 +1004,14 @@ footer {
   color: #fff;
   cursor: pointer;
   transition: all 0.5s ease;
+  text-align: center;
 }
 
 .schedule-item:hover {
-  background-color: #b6b6b6;
-  color: #6e5a11;
+  background-color: #000;
+  color: #fff;
+  transform: scale(1.2);
+  transition: transform 5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .schedule-item-selected {
@@ -1027,12 +1067,11 @@ footer {
   font-weight: bold;
 }
 
-#schedule-dates button{
+#schedule-dates button {
   border: 0px;
 }
 
-
-#schedule-dates button:focus{
+#schedule-dates button:focus {
   outline: none;
 }
 
@@ -1075,6 +1114,7 @@ footer {
   .hall-type {
     display: grid;
     grid-column-gap: 10px;
+    grid-row-gap: 10px;
     grid-template-columns: auto;
     padding: 10px 0;
   }
@@ -1090,6 +1130,7 @@ footer {
   .movies-container,
   .hall-type {
     display: grid;
+    grid-row-gap: 10px;
     grid-column-gap: 10px;
     grid-template-columns: auto auto;
     padding: 10px 0;
@@ -1104,6 +1145,7 @@ footer {
   .movies-container,
   .hall-type {
     display: grid;
+    grid-row-gap: 10px;
     grid-column-gap: 10px;
     grid-template-columns: auto auto auto;
     padding: 10px 0;
@@ -1120,6 +1162,7 @@ footer {
   .movies-container,
   .hall-type {
     display: grid;
+    grid-row-gap: 10px;
     grid-column-gap: 10px;
     grid-template-columns: auto auto auto auto auto;
     padding: 10px 0;
@@ -1135,6 +1178,7 @@ footer {
   .movies-container,
   .hall-type {
     display: grid;
+    grid-row-gap: 10px;
     grid-column-gap: 10px;
     grid-template-columns: auto auto auto auto auto auto;
     padding: 10px 0;

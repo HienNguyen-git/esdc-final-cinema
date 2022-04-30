@@ -1,6 +1,6 @@
-const { formatDate, reverseDate } = require("../config/helper")
+const { formatDate, reverseDate, dateProcess } = require("../config/helper")
 const { getALlMovieID, getMovieDetailById } = require("../models/movie.model")
-const { getScheduleByDate, getScheduleDateList } = require("../models/schedule.model")
+const { getScheduleByDate, getScheduleDateList, getScheduleByMovie } = require("../models/schedule.model")
 
 
 const getScheduleList = async (req, res) => {
@@ -8,15 +8,15 @@ const getScheduleList = async (req, res) => {
     let date = req.query['date']
     let context = []
     let scheduleDate
-    scheduleDate = Object.values(JSON.parse(JSON.stringify(await getScheduleDateList()))).map(e => formatDate(e.day))
-    if(date===""){
+    scheduleDate = dateProcess(await getScheduleDateList()).map(e => formatDate(e.day))
+    if (date === "") {
         date = reverseDate(scheduleDate[0])
     }
     try {
         const movieIdList = await getALlMovieID()
         const data = await getScheduleByDate(date)
-        const scheduleValue = Object.values(JSON.parse(JSON.stringify(data)))
-        Object.values(JSON.parse(JSON.stringify(movieIdList))).forEach(async i => {
+        const scheduleValue = dateProcess(data)
+        dateProcess(movieIdList).forEach(async i => {
             let tmp = scheduleValue.filter(e => e.idphim === i.idphim)
             const movieDataRaw = await getMovieDetailById(i.idphim)
 
@@ -60,7 +60,7 @@ const getScheduleList = async (req, res) => {
         console.error(error.message)
     }
 
-    await sleep(1000)
+    await sleep(10)
     function sleep(ms) {
         return new Promise((resolve) => {
             setTimeout(resolve, ms);
@@ -70,11 +70,79 @@ const getScheduleList = async (req, res) => {
     res.render('booking/schedule', {
         title: "Schedule",
         path: "schedule",
+        currentDate: reverseDate(date),
         context,
         scheduleDate
     })
 }
 
+
+const getMovieSchedule = async (req, res) => {
+    const id = req.query['id']
+    if (id === undefined) {
+        return res.redirect('/')
+    }
+    let movieData
+    let scheduleDateList = []
+    try {
+        const scheduleDateListRaw = dateProcess(await getScheduleByMovie(id))
+        const dateList = (new Set(scheduleDateListRaw.map(e => e.day)))
+        dateList.forEach(e => {
+            let tmp = scheduleDateListRaw.filter(i => i.day === e)
+
+            tmp = tmp.map(e => ({
+                idsuatchieu: e.idsuatchieu,
+                start: e.start.slice(0, -3),
+                day: formatDate(e.day),
+                idphim: e.idphim,
+                idphongchieu: e.idphongchieu,
+                seatmap: JSON.parse(e.seatmap)
+            }
+            ))
+            scheduleDateList = [
+                ...scheduleDateList,
+                {
+                    session: {
+                        date: formatDate(e),
+                        list: tmp
+                    }
+                }
+            ]
+        })
+        movieRaw = await getMovieDetailById(id)
+
+        movieData = {
+            id: movieRaw.idphim,
+            title: movieRaw.title,
+            overview: movieRaw.overview,
+            vote_average: movieRaw.vote_average,
+            release_date: formatDate(movieRaw.release_date),
+            poster_path: movieRaw.poster_path,
+            duration: movieRaw.duration
+        }
+
+    } catch (error) {
+        console.error(error.message)
+    }
+
+    res.render("booking/book", {
+        title: "Booking",
+        path: "booking",
+        movieData,
+        scheduleDateList
+    })
+
+}
+
+const getBookingOption = async (req, res) => {
+    res.render('booking/option', {
+        path: "option"
+    })
+}
+
+
 module.exports = {
-    getScheduleList
+    getScheduleList,
+    getMovieSchedule,
+    getBookingOption
 }
