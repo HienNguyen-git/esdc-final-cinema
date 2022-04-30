@@ -484,6 +484,35 @@ footer {
   margin: 0 auto;
 }
 
+.schedule-panel {
+  background-color: #508799;
+  border-radius: 15px;
+  color: #fff;
+  padding: 40px;
+  box-shadow: 1px 0px 23px 3px rgba(0, 0, 0, 0.45);
+  -webkit-box-shadow: 1px 0px 23px 3px rgba(0, 0, 0, 0.45);
+  -moz-box-shadow: 1px 0px 23px 3px rgba(0, 0, 0, 0.45);
+  transition: all 0.7s ease;
+  width: fit-content;
+  height: fit-content;
+  margin: 10px auto 30px;
+}
+
+.schedule-panel .title {
+  grid-row: 3;
+  grid-column: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.schedule-panel .schedule-session {
+  display: grid;
+  align-items: center;
+  grid-gap: 25px;
+  grid-template-columns: 1fr 3fr;
+}
+
 .booking-panel-section2 > i {
   background-color: #b6b6b6;
   color: #fff;
@@ -606,6 +635,10 @@ footer {
   width: 30%;
   height: 42px;
   margin: 5px 0;
+}
+
+.schedule-list {
+  margin-top: 30px;
 }
 
 /* Admin Panel Styling */
@@ -967,6 +1000,7 @@ footer {
   color: #fff;
   cursor: pointer;
   transition: all 0.5s ease;
+  text-align: center;
 }
 
 .schedule-item:hover {
@@ -1027,15 +1061,13 @@ footer {
   font-weight: bold;
 }
 
-#schedule-dates button{
+#schedule-dates button {
   border: 0px;
 }
 
-
-#schedule-dates button:focus{
+#schedule-dates button:focus {
   outline: none;
 }
-
 
 .hall-type > h3 {
   margin: 15px 0;
@@ -1055,7 +1087,6 @@ footer {
   color: #6e5a11;
 }
 
-
 /* Responsive Properties */
 
 @media all and (max-width: 30em) {
@@ -1071,6 +1102,7 @@ footer {
   .hall-type {
     display: grid;
     grid-column-gap: 10px;
+    grid-row-gap: 10px;
     grid-template-columns: auto;
     padding: 10px 0;
   }
@@ -1081,6 +1113,7 @@ footer {
   .movies-container,
   .hall-type {
     display: grid;
+    grid-row-gap: 10px;
     grid-column-gap: 10px;
     grid-template-columns: auto auto;
     padding: 10px 0;
@@ -1092,6 +1125,7 @@ footer {
   .movies-container,
   .hall-type {
     display: grid;
+    grid-row-gap: 10px;
     grid-column-gap: 10px;
     grid-template-columns: auto auto auto;
     padding: 10px 0;
@@ -1103,6 +1137,7 @@ footer {
   .movies-container,
   .hall-type {
     display: grid;
+    grid-row-gap: 10px;
     grid-column-gap: 10px;
     grid-template-columns: auto auto auto auto auto;
     padding: 10px 0;
@@ -1114,6 +1149,7 @@ footer {
   .movies-container,
   .hall-type {
     display: grid;
+    grid-row-gap: 10px;
     grid-column-gap: 10px;
     grid-template-columns: auto auto auto auto auto auto;
     padding: 10px 0;

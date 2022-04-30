@@ -1,7 +1,8 @@
 var express = require('express');
+const { getMovieSchedule } = require('../controller/booking.controller');
 var router = express.Router();
 
-router.get('/',)
+router.get('/',getMovieSchedule)
 
 
 
