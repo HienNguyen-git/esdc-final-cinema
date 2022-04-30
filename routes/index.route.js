@@ -13,4 +13,8 @@ router.get('/schedule',getScheduleList)
 
 router.get('/logout', logout)
 
+router.get('/popcorn',(req,res)=>{
+    res.render('booking/popcorn');
+})
+
 module.exports = router;  

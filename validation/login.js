@@ -57,13 +57,19 @@ const EmployeeValidator = [
     check('role').exists().withMessage("Please enter your role").notEmpty().withMessage("Role can not be empty"),
 ]
 
-
-
-
+const productValidator = [
+    check('name').exists().withMessage("Please enter your name").notEmpty().withMessage("Name can not be empty"),
+    check('price').exists().withMessage("Please enter your price").notEmpty().withMessage("price can not be empty"),
+    check('image').custom((value, { req }) => {
+        if (!req.file) throw new Error("Profile Img is required");
+        return true;
+    }),
+]
 
 module.exports = {
     registerValidator,
     loginValidator,
     EmployeeValidator,
+    productValidator,
     validationResult
 }

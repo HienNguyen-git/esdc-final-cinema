@@ -12,6 +12,9 @@ var adminRouter = require('./routes/admin.route');
 var bookingRouter = require('./routes/booking.route')
 var app = express();
 
+const bodyParser = require('body-parser'); // xử form dữ liệu
+app.use(bodyParser.urlencoded({extended: false})); //form
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', expressHandlebars.engine({

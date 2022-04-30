@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin</title>
+    <link rel="icon" type="image/png" href="../img/logo.png">
+    <link rel="stylesheet" href="/stylesheets/style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+</head>
+
+<body>
+        <div class="admin-section admin-section2">
+            <div class="admin-section-column">
+                <div class="admin-section-panel admin-section-panel4">
+                    <div class="admin-panel-section-header">
+                        <h2>List Products</h2>
+                    </div>
+                    <table cellpadding="10" cellspacing="10" border="1" style="width: 100%;">
+                        <tr class="header">
+                            <td>ID</td>
+                            <td>Name</td>
+                            <td>Price</td>
+                            <td>Picture</td>
+                        </tr>
+                        <tbody id="tbody">
+                            {{#each resultArray}}
+                                <tr class="item">
+                                    <td>{{idsp}}</td>
+                                    <td>{{name}}</td>
+                                    <td>{{price}}</td>
+                                    <td>
+                                        <img style="max-width: 50px;" src="/images/popcorn/{{picture_path}}" alt="{{name}}" />
+                                    </td>
+                                    <td >
+                                        <button onclick="handleModalEdit('{{idnv}}','{{name}}','{{phone}}','{{gender}}','{{role}}')" class="btn btn-primary" data-toggle="modal" data-target="#edit-employee">Edit</button> | 
+                                        <button onclick="handleModalDel('{{idnv}}','{{name}}')" class="btn btn-danger" data-toggle="modal" data-target="#modalDel" >Delete</button>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="admin-section-column">
+                <div class="admin-section-panel admin-section-panel2">
+                    <div class="admin-panel-section-header">
+                        <h2>Products</h2>
+                    </div>
+                    <form  method="post" action="/admin/product"  enctype="multipart/form-data" >
+                        <label for="productName">Name: </label>
+                        <input id="productName" placeholder="Name" type="text" name="name" >
+                        <label for="productPrice">Price: </label>
+                        <input  id="productPrice" placeholder="Price" type="text" name="price" >
+                        <label for="customFile">Picture:</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile" name="image">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <button type="submit"  class="form-btn">Add Product</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    <!-- Delete Confirm Modal -->
+    <div id="modalDel" class="modal fade" >
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <hp class="modal-title">Xóa sản phẩm</hp>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <p>Bạn có chắc rằng muốn xóa <strong class="product-delete-name">Nguyen Thi Tu</strong> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="/admin/product/delete" method="post">
+                        <input type="hidden" name="inputIdDel" id="inputIdDel">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="btn-del-product" type="submit" class="btn btn-danger" >Xóa</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Confirm Modal -->
+    <div id="edit-employee" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <hp class="modal-title">Chỉnh sửa thông tin nhân viên</hp>
+                    <button type="button" class="close" data-dismiss="modal" >&times;</button>
+                </div>
+                <form method="post" action="/admin/employee/edit">
+                    <input type="hidden" id="inputIdEdit" name="inputIdEdit">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="employeeName">Name: </label>
+                            <input class="form-control" id="employeeNameEdit" placeholder="Name" type="text" name="name" >
+                        </div>
+                        <div class="form-group">
+                            <label for="employeePhone">Phone: </label>
+                            <input class="form-control"  id="employeePhoneEdit" placeholder="Phone" type="text" name="phone" >
+                        </div>
+                        <div class="form-group">
+                            <label for="employeeGender">Gender: </label>
+                            <input class="form-control"  id="employeeGenderEdit" placeholder="Gender" type="text" name="gender" >
+                        </div>
+                        <div class="form-group">
+                            <label for="employeeRole">Role: </label>
+                            <input class="form-control"  id="employeeRoleEdit" placeholder="Role" type="text" name="role" >
+                        </div>
+                        <div class="form-group">
+                            <button id="btn-edit-employee" type="submit" class="btn btn-primary px-5 mr-2">Sửa</button>
+                        </div>
+                    </div>
+                </form>
+            </div>  
+        </div>
+    </div>
+
+    <script src="/javascripts/jquery-3.3.1.min.js "></script>
+    <script src="/javascripts/owl.carousel.min.js "></script>
+    <script src="/javascripts/script.js "></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      // Add the following code if you want the name of the file appear on select
+      $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+      });
+      </script>
+    <script>
+    
+    function handleModalDel(id,name){
+        console.log(id);
+        $('.employee-delete-name').html(name);
+        $('#inputIdDel').val(id);
+    }    
+
+    //sửa(update)
+    function handleModalEdit(id,name,phone,gender,role){
+        console.log(id,name,phone,gender,role);
+        $('#employeeNameEdit').val(name);
+        $('#employeePhoneEdit').val(phone);
+        $('#employeeGenderEdit').val(gender);
+        $('#employeeRoleEdit').val(role);
+        $('#inputIdEdit').val(id);
+        
+    }
+    
+    </script>
+</body>
+
+</html>
