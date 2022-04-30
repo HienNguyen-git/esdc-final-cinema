@@ -34,7 +34,9 @@ const adminNewsGet = async (req, res) => {
 const getNewsDetail = async(req,res) =>{
     let id = req.params.id;
     console.log(id);
-    res.render('news/news_detail');
+    const data = await adminNews.handleReadNewsById(id);
+    console.log(data.title);
+    res.render('news/news_detail',{data});
 }
 
 
