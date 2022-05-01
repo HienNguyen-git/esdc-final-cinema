@@ -30,9 +30,17 @@ const getScheduleByMovie = async(id) => new Promise((resolve,reject)=>{
     })
 })
 
+const getScheduleByID = async(id) => new Promise((resolve,reject)=>{
+    connect.query("SELECT * FROM showtime where idsuatchieu=?",[id], (err, result) => {
+        if (err) reject(err.message)
+        resolve(result[0])
+    })
+})
+
 module.exports = {
     getScheduleByDate,
     getScheduleDateList,
     getTheNearestDay,
-    getScheduleByMovie
+    getScheduleByMovie,
+    getScheduleByID
 }

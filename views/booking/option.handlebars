@@ -9,6 +9,9 @@
   <strong>Sorry!</strong> You have used up all of the available seats for this booking.
 </div>
 
+
+{{schedule}}
+
 <div class="session-panel col-sm-6">
   <h1 class="title">BOOK TICKET
     <i class="fa fa-ticket" aria-hidden="true"></i></h1>
@@ -17,32 +20,50 @@
   <div class="info-ticket-item">
     <h4 id="title-film" style="font-weight: bold">MOVIE NAME</h4>
     <div class="hours-date">
-      <span id="time">08:00</span>
-      <span id="date">- 3/5/2022</span>
+      <span id="time">{{schedule.start}}</span>
+      <span id="date">- {{schedule.day}}</span>
       <br />
-      <span id="screen">Show room: Screen 3</span>
+      <span id="screen"><span class="title">Show room:</span> Screen {{roomMap.id}}</span>
     </div>
     <div class="box-tickets">
       <table class="table-box-1">
         <tbody>
           <tr>
-            <td class="td-first">Amount - Price: </td>
-            <td class="td-second align-right"><span id="count">1</span> x 45,000 VND</td>
+            <td class="td-first title">Amount - Price: </td>
+            <td class="td-second align-right"><span id="count" class="font-weight-bold">1</span> x 45,000 VND</td>
           </tr>
           <tr id="seatrow1">
-            <td class="yseat" colspan="2">Your seat: (E12)</td>
+            <td class="yseat" colspan="2"><span class="title">Your seat:</span> (E12)</td>
           </tr>
         </tbody>
       </table>
       <h4 class="select-drink mt-3" style="font-weight: bold">FOOD &amp; BEVERAGES</h4>
       <table class="table-box-2">
         <tbody>
-          <tr class="tr_second align-right">
-            <td colspan="2"><span class="total-text-"><em>Total:</em></span></td>
+          <tr class="tr_first">
+            <td class="td-first"><span class="names">iSHARE Combo</span></td>
+            <td class="td-second align-right" style="width: 110px">
+              <span class="sol">1</span> x 87,000 VNĐ
+            </td>
           </tr>
-          <tr class="align-right">
+          <tr class="tr_first">
+            <td class="td-first"><span class="names">iCheese Popcorn 44oz</span></td>
+            <td class="td-second align-right" style="width: 110px">
+              <span class="sol">1</span> x 55,000 VNĐ
+            </td>
+          </tr>
+          <tr class="tr_first">
+            <td class="td-first"><span class="names">iBIG SHARE Combo</span></td>
+            <td class="td-second align-right" style="width: 110px">
+              <span class="sol">1</span> x 97,000 VNĐ
+            </td>
+          </tr>
+          <tr class="align-right bill-total">
+            <td colspan="2"><span class="title">Total:</span></td>
+          </tr>
+          <tr class="align-right bill-total">
             <td colspan="2"><span id="total">45,000</span><span
-              >VNĐ</span></td>
+              > VNĐ</span></td>
           </tr>
         </tbody>
       </table>
@@ -74,9 +95,27 @@
     <div class="seat-container">
       <div class="screen"></div>
       <div id="seat-group">
-
         <div class="row" id="row-titles">
           <div class="order"></div>
+          {{!-- Generate header --}}
+          {{#forLoop roomMap.numRow 1}}
+            <div class="order">{{this}}</div>
+          {{/forLoop}}
+        </div> 
+
+        {{#forLoop roomMap.numColumn 0}}
+        <div class="row">
+          <div class="order">{{#NumToText this}} {{/NumToText}}</div>
+          {{#forLoop ../roomMap.numRow 0}}
+            <div class="seat"></div>
+          {{/forLoop}}
+          <div class="order">{{#NumToText this}} {{/NumToText}}</div>
+        </div>
+        {{/forLoop}}
+
+        
+{{!--         
+        <div class="row" id="row-titles">
           <div class="order">1</div>
           <div class="order">2</div>
           <div class="order">3</div>
@@ -85,101 +124,13 @@
           <div class="order">6</div>
           <div class="order">7</div>
           <div class="order">8</div>
-        </div>
-        <div class="row">
-          <div class="order">A</div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="order">A</div>
+        </div> 
+        --}}
 
-        </div>
+        {{!-- Generate sheet seat --}}
 
-        <div class="row">
-          <div class="order">B</div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="order">B</div>
-
-        </div>
-
-        <div class="row">
-          <div class="order">C</div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="order">C</div>
-
-        </div>
-        <div class="row">
-          <div class="order">D</div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat occupied"></div>
-          <div class="seat occupied"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="order">D</div>
-
-        </div>
-        <div class="row">
-          <div class="order">E</div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat occupied"></div>
-          <div class="seat occupied"></div>
-          <div class="order">E</div>
-
-        </div>
-        <div class="row">
-          <div class="order">F</div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="order">F</div>
-
-        </div>
-        <div class="row">
-
-          <div class="order">G</div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat occupied"></div>
-          <div class="seat occupied"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="seat"></div>
-          <div class="order">G</div>
-
-        </div>
+        
+{{!--         
         <div class="row">
           <div class="order">H</div>
           <div class="seat"></div>
@@ -191,8 +142,8 @@
           <div class="seat occupied"></div>
           <div class="seat"></div>
           <div class="order">H</div>
-
         </div>
+         --}}
       </div>
     </div>
     <p class="text-light text-center mt-3">The maximum number of seats that can be reserved is <span class="text-danger">5</span>.</p>
@@ -209,17 +160,23 @@
 <script>
     let currentSeat = 0
 
-    let hideAlert = setTimeout(function () { 
-        alert.classList.remove("show")
-    }, 3000); 
 
-  const alert = document.querySelector("#warning-alert")
+  const myAlert = document.querySelector("#warning-alert")
   const container = document.querySelector(".seat-container"); 
   const seats = document.querySelectorAll(".row .seat:not(.occupied)"); 
   const count = document.getElementById("count"); 
   const total = document.getElementById("total"); 
   const movieSelect = document.getElementById("movie"); 
-  const rowTitle = document.querySelector('#row-titles') 
+  const rowTitle = document.querySelector('#row-titles')
+
+  myAlert.addEventListener('click',(e)=>{
+      myAlert.classList.toggle('show')
+  })
+  
+    let hideAlert = setTimeout(function () { 
+        myAlert.classList.remove("show")
+    }, 3000); 
+
   //Seat click event
   container.addEventListener('click', e => { 
       console.log(e.target)
@@ -228,10 +185,10 @@
             e.target.classList.toggle('selected'); 
           }else{
             clearTimeout(hideAlert)
-            alert.classList.add("show")
+            myAlert.classList.add("show")
             
             hideAlert = setTimeout(function () { 
-                alert.classList.remove("show")
+                myAlert.classList.remove("show")
             }, 3000); 
             
           }
@@ -255,4 +212,5 @@
         count.innerText = selectedSeatsCount;
         total.innerText = selectedSeatsCount * 2;
     }
+
 </script>
