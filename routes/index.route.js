@@ -15,7 +15,6 @@ router.get('/logout', logout)
 
 
 const adminProduct = require('../models/adminProduct.model');
-const { route } = require('./admin.route');
 
 router.get('/popcorn', async(req,res)=>{
     try {
