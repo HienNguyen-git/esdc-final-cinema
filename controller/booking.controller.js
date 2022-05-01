@@ -1,5 +1,5 @@
 const { formatDate, reverseDate, dataProcess, sleep } = require("../config/helper")
-const { getRoomMapByID } = require("../models/booking.model")
+const { getRoomMapByID, getRoomByID } = require("../models/booking.model")
 const { getALlMovieID, getMovieDetailById } = require("../models/movie.model")
 const { getScheduleByDate, getScheduleDateList, getScheduleByMovie, getScheduleByID } = require("../models/schedule.model")
 
@@ -133,6 +133,7 @@ const getBookingOption = async (req, res) => {
     let schedule
     let movieData
     let roomMap
+    let roomData
     if (idSchedule === undefined) {
         return res.redirect('/')
     }
@@ -152,8 +153,7 @@ const getBookingOption = async (req, res) => {
 
         if (schedule) {
             const movieDataRaw = await getMovieDetailById(schedule.idphim)
-            const roomMapRaw = await getRoomMapByID(schedule.idphongchieu)
-            console.log(roomMapRaw)
+            const roomDataRaw = await getRoomByID(schedule.idphongchieu)
 
             movieData = {
                 id: movieDataRaw.idphim,
@@ -164,6 +164,14 @@ const getBookingOption = async (req, res) => {
                 release_date: formatDate(movieDataRaw.release_date),
                 duration: movieDataRaw.duration
             }
+
+            roomData = {
+                id: roomDataRaw.idphongchieu,
+                name: roomDataRaw.name,
+                idMap: roomDataRaw.idmap
+            }
+
+            const roomMapRaw = await getRoomMapByID(roomData.idMap)
 
             roomMap = {
                 id: roomMapRaw.id,
@@ -183,6 +191,7 @@ const getBookingOption = async (req, res) => {
         path: "option",
         movieData,
         roomMap,
+        roomData,
         schedule
     })
 }

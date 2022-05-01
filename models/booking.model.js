@@ -7,6 +7,14 @@ const getRoomMapByID = async (id) => new Promise((resolve, reject) => {
     })
 })
 
+const getRoomByID = async (id)=> new Promise((resolve, reject)=>{
+    connect.query("Select * from room where idphongchieu=?", [id], (err, result) => {
+        if (err) reject(err.message)
+        resolve(result[0])
+    })
+})
+
 module.exports = {
-    getRoomMapByID
+    getRoomMapByID,
+    getRoomByID
 }

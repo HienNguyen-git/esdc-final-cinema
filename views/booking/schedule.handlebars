@@ -42,15 +42,25 @@
 
         </table>
     </div>
-
     <script>
         const scheduleDate =  document.querySelector('#schedule-dates')
+        const scheduleTable = document.querySelector('.schedule-table')
+
         const myLocalhost = location.origin
         scheduleDate.addEventListener('click',async (e)=>{
             if(e.target.classList.contains('schedule-item')){
                 console.log(e.target)
                 const redirectDate = e.target.dataset.date.split("-").reverse().join("-")
                 location.href = myLocalhost+"/schedule?date="+redirectDate
+            }
+        })
+
+
+
+        scheduleTable.addEventListener('click', (e) => {
+            if (e.target.classList.contains("schedule-item")) {
+                console.log(e.target.dataset.show)
+                location.href = myLocalhost + "/booking/option?id=" + e.target.dataset.show
             }
         })
     </script>
