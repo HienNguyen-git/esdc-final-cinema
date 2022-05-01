@@ -45,7 +45,8 @@ app.use(require('cookie-parser')("This is code secret code"))
 app.use(require('express-session')({
   secret: "This is some secret code",
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { secure: !true }
 }))
 app.use(logger('dev'));
 app.use(express.json());
@@ -59,6 +60,12 @@ app.use((req, res, next) => {
   delete req.session.flash
   next()
 })
+
+app.use((req, res, next) => {
+  res.locals.user = req.session.user;
+  next()
+})
+
 
 app.use('/', indexRouter);
 app.use('/account', accountRouter);

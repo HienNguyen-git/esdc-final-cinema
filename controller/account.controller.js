@@ -10,6 +10,7 @@ const loginPost = async (req, res) => {
     let resultValidate = validationResult(req);
     if (resultValidate.errors.length === 0) {
         if (await Login.handleLogin(req.body.email)) {
+            req.session.user = req.body.email
             req.session.flash = {
                 type: "success",
                 intro: "Congratulation!",
@@ -50,8 +51,9 @@ const registerGet = (req, res) => {
 const registerPost = async (req, res) => {
     let result = validationResult(req);
     if (result.errors.length === 0) {
-        const { name, email, password } = req.body
-        if (await Login.handleRegister(name, email, password)) {
+        const { name,gender,phone, email, password } = req.body
+        console.log(name,gender,phone, email, password);
+        if (await Login.handleRegister(name,gender,phone, email, password)) {
             req.session.flash = {
                 type: "success",
                 intro: "Congratulation!",
@@ -78,6 +80,61 @@ const registerPost = async (req, res) => {
     }
 }
 
+
+const manageGet = async(req, res) => {
+    const data = await Login.handleLogin(req.session.user);
+    // console.log(data);
+    res.render('account/manage', { title: "Manage", path: "account/manage" ,data})
+}
+
+
+const changepasssGet = async(req,res)=>{
+    res.render('account/changepassword');
+}
+
+const changepassPost = async(req,res)=>{
+    let result = validationResult(req);
+    if (result.errors.length === 0) {
+        let {password,newpass,renewpass} = req.body;
+        // console.log(password,newpass,renewpass);
+        if(newpass !== renewpass || newpass === '' || renewpass === ''){
+            req.session.flash = {
+                type: "danger",
+                intro: "Oops!",
+                message: "New password and Renew Password have problem"
+            }
+            return res.redirect('/account/changepassword');
+        }
+        else if (await Login.handleChangePass(newpass,req.session.user)) {
+            console.log(newpass,req.session.user);
+            req.session.flash = {
+                type: "success",
+                intro: "Congratulation!",
+                message: "Change password successful"
+            }
+            return res.redirect('/account/changepassword')
+        } else {
+            req.session.flash = {
+                type: "danger",
+                intro: "Oops!",
+                message: "Some thing went wrong here2"
+            }
+            return res.redirect('/account/changepassword')
+        }
+    } else {
+        const errors = result.mapped()
+        let errorMessage = errors[Object.keys(errors)[0]].msg
+        req.session.flash = {
+            type: "danger",
+            intro: "Oops!",
+            message: errorMessage
+        }
+        res.redirect('/account/changepassword')
+    }
+
+
+}
+
 const logout = (req, res) => {
     req.session.destroy()
     res.redirect('/account/login')
@@ -85,7 +142,13 @@ const logout = (req, res) => {
 module.exports = {
     loginGet,
     loginPost,
+    
     registerGet,
     registerPost,
+    
+    manageGet,
+
+    changepasssGet,
+    changepassPost,
     logout
 }

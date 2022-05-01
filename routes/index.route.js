@@ -4,6 +4,8 @@ const { getScheduleList } = require('../controller/booking.controller');
 var router = express.Router();
 const { getMovieDetail, getHome } = require('../controller/movie.controller')
 const {getNewsDetail} = require('../controller/adminNews.controller');
+const {getPromotionDetail} = require('../controller/adminPromotion.controller');
+
 /* GET home page. */
 router.get('/', getHome);
 
@@ -27,7 +29,8 @@ router.get('/popcorn', async(req,res)=>{
     }
 })
 
-router.get('/news-detail/:id',getNewsDetail);
+router.get('/news-detail',getNewsDetail);
+router.get('/promotion-detail',getPromotionDetail);
 
 
 module.exports = router;  

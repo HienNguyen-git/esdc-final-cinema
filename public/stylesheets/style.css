@@ -1096,7 +1096,24 @@ footer {
 
 .news-info{
   background-color: white;
+  color: black;
   padding: 10px;
+  height: 250px; 
+  margin-top: 12px; 
+  overflow:hidden;
+  text-decoration: none !important;
+}
+.news-info:hover{
+
+  color: lightblue !important;
+}
+
+.image-production:hover{
+  background-color: white;
+   padding:2px;
+}
+.production-link:hover{
+  color: white !important;
 }
 /* Responsive Properties */
 
@@ -1138,6 +1155,7 @@ footer {
   .news-info{
     display: block;
   }
+  
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -1203,7 +1221,3 @@ footer {
 
 
 
-.news-info:hover{
-
-  color: lightblue;
-}
