@@ -10,10 +10,21 @@ const formatDate = (date) => {
 
 const reverseDate = (date) => date.split("-").reverse().join("-")
 
-const dateProcess = (data) => Object.values(JSON.parse(JSON.stringify(data)))
+const dataProcess = (data) => Object.values(JSON.parse(JSON.stringify(data)))
+
+function sleep(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+}
+
+const convertNumToLetter = (n) => (n + 10).toString(36).toUpperCase()
+
 
 module.exports = {
     formatDate,
     reverseDate,
-    dateProcess
+    dataProcess,
+    sleep,
+    convertNumToLetter
 }

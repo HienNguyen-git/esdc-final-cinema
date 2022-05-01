@@ -13,7 +13,8 @@ var bookingRouter = require('./routes/booking.route')
 var app = express();
 
 const bodyParser = require('body-parser'); // xử form dữ liệu
-app.use(bodyParser.urlencoded({extended: false})); //form
+const { convertNumToLetter } = require('./config/helper');
+app.use(bodyParser.urlencoded({ extended: false })); //form
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,7 +24,7 @@ app.engine('handlebars', expressHandlebars.engine({
     checkPath(routerPath, navPath, options) {
       const fnTrue = options.fn,
         fnFalse = options.inverse;
-        // console.log(routerPath, navPath)
+      // console.log(routerPath, navPath)
       return routerPath === navPath ? fnTrue(this) : fnFalse(this)
     },
     checkPage(routerPath, options) {
@@ -36,6 +37,23 @@ app.engine('handlebars', expressHandlebars.engine({
       const fnTrue = options.fn,
         fnFalse = options.inverse;
       return arr.length > 0 ? fnTrue(this) : fnFalse(this)
+    },
+    forLoop(n, a, option) {
+      let result = '';
+      let optionalParameter = +a
+      for (var i = 0; i < n; ++i)
+        result += option.fn(i + optionalParameter);
+      return result;
+    },
+    NumToText(n) {
+      return convertNumToLetter(n)
+    },
+    isInArray(arr, n,options) {
+      console.log(n)
+      console.log(arr)
+      const fnTrue = options.fn,
+        fnFalse = options.inverse;
+      return arr.includes(n)?fnTrue(this):fnFalse(this)
     }
   }
 }))

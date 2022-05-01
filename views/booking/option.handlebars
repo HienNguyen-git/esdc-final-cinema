@@ -1,114 +1,365 @@
-<div class="schedule-panel">
-  <h1 class="title"><i class="far fa-clock"></i> Schedule</h1>
-  {{#each scheduleDateList}}
-    {{#each this}}
-    <div class="schedule-session">
-      <div class="schedule-date font-weight-bold">{{this.date}}</div>
-      <div class="hall-type">
-      {{#each list}}
-        <div class="schedule-item" data-show="{{idsuatchieu}}">{{start}}</div>
-      {{/each}}
-      </div>
-    {{/each}}
-    </div>
-  {{/each}}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+  integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+<div class="alert alert-warning alert-dismissible fade hide col-sm-3 position-fixed text-center" id="warning-alert" role="alert">
+  <strong><span id="warning-message"></span></strong>
 </div>
-<div class="booking-panel">
-  <div class="booking-panel-section booking-panel-section1">
-    <h1>MOVIE DETAIL</h1>
-  </div>
-  <div
-    class="booking-panel-section booking-panel-section2"
-    onclick="window.history.go(-1); return false;"
-  >
-    <i class="fas fa-2x fa-times"></i>
-  </div>
-  <div class="booking-panel-section booking-panel-section3">
-    <div class="movie-box">
-      <img
-        src="images/poster/{{movieData.poster_path}}"
-        alt="{{movieData.title}}"
-      />
-    </div>
-  </div>
-  <div class="booking-panel-section booking-panel-section4">
-    <div class="title">{{movieData.title}}</div>
-    <div class="movie-information">
-      <table>
-        <tr>
-          <td>Overview</td>
-          <td>{{movieData.overview}}</td>
-        </tr>
-        <tr>
-          <td>RELEASE DATE</td>
-          <td>{{movieData.release_date}}</td>
-        </tr>
-        <tr class="font-weight-bold">
-          <td><i class="far fa-clock"></i></td>
-          <td>{{movieData.duration}} mins</td>
-        </tr>
-        <tr>
-          <td class="text-danger">IMDb</td>
-          <td class="imdb">{{movieData.vote_average}}</td>
-        </tr><div class="schedule-panel">
-  <h1 class="title"><i class="far fa-clock"></i> Schedule</h1>
-  {{#each scheduleDateList}}
-    {{#each this}}
-    <div class="schedule-session">
-      <div class="schedule-date font-weight-bold">{{this.date}}</div>
-      <div class="hall-type">
-      {{#each list}}
-        <div class="schedule-item" data-show="{{idsuatchieu}}">{{start}}</div>
-      {{/each}}
-      </div>
-    {{/each}}
-    </div>
-  {{/each}}
+
+
+<div id="col-value" data-col="{{roomMap.numColumn}}"></div>
+<div id="row-value" data-row="{{roomMap.numRow}}"></div>
+<div id="price" data-price="{{price}}"></div>
+<div id="occupied-seat" data-occupiedSeat="{{schedule.seatmap}}"></div>
+<div class="session-panel col-sm-6">
+  <h1 class="title">BOOK TICKET
+    <i class="fa fa-ticket" aria-hidden="true"></i></h1>
 </div>
-<div class="booking-panel">
-  <div class="booking-panel-section booking-panel-section1">
-    <h1>MOVIE DETAIL</h1>
-  </div>
-  <div
-    class="booking-panel-section booking-panel-section2"
-    onclick="window.history.go(-1); return false;"
-  >
-    <i class="fas fa-2x fa-times"></i>
-  </div>
-  <div class="booking-panel-section booking-panel-section3">
-    <div class="movie-box">
-      <img
-        src="images/poster/{{movieData.poster_path}}"
-        alt="{{movieData.title}}"
-      />
+<div id="bill-info">
+  <div class="info-ticket-item">
+    <h4 id="title-film" style="font-weight: bold">{{movieData.title}}</h4>
+    <div class="hours-date">
+      <span id="time">{{schedule.start}}</span>
+      <span id="date">- {{schedule.day}}</span>
+      <br />
+      <span id="screen"><span class="title">Show room:</span> {{roomData.name}}</span>
     </div>
-  </div>
-  <div class="booking-panel-section booking-panel-section4">
-    <div class="title">{{movieData.title}}</div>
-    <div class="movie-information">
-      <table>
-        <tr>
-          <td>Overview</td>
-          <td>{{movieData.overview}}</td>
-        </tr>
-        <tr>
-          <td>RELEASE DATE</td>
-          <td>{{movieData.release_date}}</td>
-        </tr>
-        <tr class="font-weight-bold">
-          <td><i class="far fa-clock"></i></td>
-          <td>{{movieData.duration}} mins</td>
-        </tr>
-        <tr>
-          <td class="text-danger">IMDb</td>
-          <td class="imdb">{{movieData.vote_average}}</td>
-        </tr>
+    <div class="box-tickets">
+      <table class="table-box-1" style="width: 95%;">
+        <tbody>
+          <tr>
+            <td class="td-first title">Amount - Price: </td>
+            <td class="td-second align-right" style="width:100"><span id="count" class="font-weight-bold">0</span> x <div id="ticket-price"></div>VNĐ</td>
+          </tr>
+          <tr id="seatrow1">
+            <td class="yseat" colspan="2" rowspan="2"><span class="title">Your seat: <br></span>(<span id="choose-seat"></span>) </td>
+          </tr>
+        </tbody>
+      </table>
+      <h4 class="select-drink mt-3" style="font-weight: bold">FOOD &amp; BEVERAGES</h4>
+      <table class="table-box-2">
+        <tbody>
+          <tr class="tr_first">
+            <td class="td-first"><span class="names">iSHARE Combo</span></td>
+            <td class="td-second align-right" style="width: 110px">
+              <span class="sol">1</span> x 87,000 VNĐ
+            </td>
+          </tr>
+          <tr class="tr_first">
+            <td class="td-first"><span class="names">iCheese Popcorn 44oz</span></td>
+            <td class="td-second align-right" style="width: 110px">
+              <span class="sol">1</span> x 55,000 VNĐ
+            </td>
+          </tr>
+          <tr class="tr_first">
+            <td class="td-first"><span class="names">iBIG SHARE Combo</span></td>
+            <td class="td-second align-right" style="width: 110px">
+              <span class="sol">1</span> x 97,000 VNĐ
+            </td>
+          </tr>
+          <tr class="align-right bill-total">
+            <td colspan="2"><span class="title">Total:</span></td>
+          </tr>
+          <tr class="align-right bill-total">
+            <td colspan="2"><span id="total">0</span><span
+              > VNĐ</span></td>
+          </tr>
+        </tbody>
       </table>
     </div>
+    <div  data-toggle="modal" data-target="#staticBackdrop" class="schedule-item mt-3">Choose payment method</div>
+  </div>
+</div>
+<div class="option-panel col-sm-6">
+  <div class="option-panel-section option-panel-section1">
+    <h1>CHOOSE YOUR SEAT</h1>
+  </div>
+  <div class="option-panel-section option-panel-section4">
+
+    <ul class="showcase">
+      <li>
+        <div class="seat"></div>
+        <small>N/A</small>
+      </li>
+      <li>
+        <div class="seat selected"></div>
+        <small>Selected</small>
+      </li>
+      <li>
+        <div class="seat occupied"></div>
+        <small>Occupied</small>
+      </li>
+      <li>
+        <div class="seat holding"></div>
+        <small>Occupying</small>
+      </li>
+    </ul>
+
+    <div class="seat-container">
+      <div class="screen"></div>
+      <div id="seat-group">
+        <div class="row" id="row-titles">
+          <div class="order"></div>
+          {{!-- Generate header --}}
+          {{#forLoop roomMap.numRow 1}}
+            <div class="order">{{this}}</div>
+          {{/forLoop}}
+        </div> 
+
+        {{#forLoop roomMap.numColumn 0}}
+        <div class="row">
+          <div class="order">{{#NumToText this}} {{/NumToText}}</div>
+          {{#forLoop ../roomMap.numRow 0}}
+              <div class="seat"></div>
+          {{/forLoop}}
+          <div class="order">{{#NumToText this}} {{/NumToText}}</div>
+        </div>
+        {{/forLoop}}
+
+        
+{{!--         
+        <div class="row" id="row-titles">
+          <div class="order">1</div>
+          <div class="order">2</div>
+          <div class="order">3</div>
+          <div class="order">4</div>
+          <div class="order">5</div>
+          <div class="order">6</div>
+          <div class="order">7</div>
+          <div class="order">8</div>
+        </div> 
+        --}}
+
+        {{!-- Generate sheet seat --}}
+
+        
+{{!--         
+        <div class="row">
+          <div class="order">H</div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat"></div>
+          <div class="seat occupied"></div>
+          <div class="seat occupied"></div>
+          <div class="seat occupied"></div>
+          <div class="seat"></div>
+          <div class="order">H</div>
+        </div>
+         --}}
+      </div>
+    </div>
+    <p class="text-light text-center mt-3">The maximum number of seats that can be reserved is <span class="text-warning">5</span>.</p>
+  </div>
+</div>
+<div class="option-panel col-sm-6">
+  <div class="option-panel-section option-panel-section1">
+    <h1>SELECT FOOD AND BEVERAGES</h1>
+  </div>
+  <div class="option-panel-section option-panel-section4">
   </div>
 </div>
 
-      </table>
+
+
+{{!-- Payment modal --}}
+
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
+                <div class="tabs mt-3">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation"> <a class="nav-link active" id="visa-tab" data-toggle="tab" href="#visa" role="tab" aria-controls="visa" aria-selected="true"> <img src="https://i.imgur.com/sB4jftM.png" width="80"> </a> </li>
+                        <li class="nav-item" role="presentation"> <a class="nav-link" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal" aria-selected="false"> <img src="https://i.imgur.com/yK7EDD1.png" width="80"> </a> </li>
+                        <li class="nav-item" role="presentation"> <a class="nav-link text-center" id="momo-tab" data-toggle="tab" href="#momo" role="tab" aria-controls="momo" aria-selected="false"> <img src="/images/momo.png  " width="30"> </a> </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="visa" role="tabpanel" aria-labelledby="visa-tab">
+                            <div class="mt-4 mx-4">
+                                <div class="text-center">
+                                    <h5>Credit card</h5>
+                                </div>
+                                <div class="form mt-3">
+                                    <div class="inputbox"> <input type="text" name="name" class="form-control" required="required"> <span>Cardholder Name</span> </div>
+                                    <div class="inputbox"> <input type="text" name="name" min="1" max="999" class="form-control" required="required"> <span>Card Number</span> <i class="fa fa-eye"></i> </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="inputbox"> <input type="text" name="name" min="1" max="999" class="form-control" required="required"> <span>Expiration Date</span> </div>
+                                        <div class="inputbox"> <input type="text" name="name" min="1" max="999" class="form-control" required="required"> <span>CVV</span> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="paypal" role="tabpanel" aria-labelledby="paypal-tab">
+                            <div class="px-5 mt-5">
+                                <div class="inputbox"> <input type="text" name="name" class="form-control" required="required"> <span>Paypal Email Address</span> </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="momo" role="tabpanel" aria-labelledby="momo-tab">
+                            <div class="px-5 mt-5">
+                                <div class="inputbox"> <input type="text" name="name" class="form-control" required="required"> <span>Phone number</span> </div>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="px-5 pay"> <button id="btnPay" data-dismiss="modal" class="btn btn-primary btn-block">Pay now!</button> </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+
+
+
+
+
+<script>
+    let currentSeat = 0
+    const selectedSeatList = []
+
+  const myAlert = document.querySelector("#warning-alert")
+  const container = document.querySelector(".seat-container"); 
+  const seats = document.querySelectorAll(".row .seat:not(.occupied)"); 
+  const count = document.getElementById("count"); 
+  const total = document.getElementById("total"); 
+  const movieSelect = document.getElementById("movie"); 
+  const rowTitle = document.querySelector('#row-titles')
+  const colValue = document.querySelector('#col-value').dataset.col
+  const rowValue = document.querySelector('#row-value').dataset.row
+  const btnPay = document.querySelector('#btnPay')
+  const price = document.querySelector('#price').dataset.price
+  const ticketPrice = document.querySelector('#ticket-price')
+  const warningMessage = document.querySelector('#warning-message')
+  let occupiedSeat = document.querySelector('#occupied-seat').dataset.occupiedseat
+
+  const myLocalhost = location.origin
+
+
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  const idSchedule = urlParams.get('id');
+  const chooseSeat = document.querySelector('#choose-seat')
+  
+  //const 
+
+  ticketPrice.innerHTML = price
+
+  myAlert.addEventListener('click',(e)=>{
+      myAlert.classList.toggle('show')
+  })
+  
+    let hideAlert = setTimeout(function () { 
+        myAlert.classList.remove("show")
+    }, 3000); 
+
+  //Seat click event
+  container.addEventListener('click', e => { 
+      if (e.target.classList.contains('seat') && !e.target.classList.contains('occupied')) {
+          if(currentSeat+1<6 || e.target.classList.contains('selected')){
+            e.target.classList.toggle('selected'); 
+          }else{
+
+            showAlert("You have used up all of the available seats for this booking.")
+            
+          }
+        updateSelectedCount()
+    } 
+    }); 
+
+    // Handle booking 
+
+    btnPay.addEventListener('click',async ()=>{
+      const myFetch = await fetch(myLocalhost+'/booking/ticket',{
+        method: "POST",
+        body: JSON.stringify({
+          seats: chooseSeat.dataset.seatList,
+          bookedMap: chooseSeat.dataset.bookedMap,
+          idsuatchieu: idSchedule,
+          price: price,
+          idkn: 1
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+          //'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
+      const res = await myFetch.json()
+      if(res.code){
+        showAlert(res.message)
+      } else{
+        showAlert(res.message, "alert-success")
+      }
+    })
+    
+
+    function updateSelectedCount() {
+      const selectedSeats = document.querySelectorAll('.row .seat.selected');
+      const seatIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
+
+      localStorage.setItem('selectedSeats', JSON.stringify(seatIndex));
+      tmp =seatIndex.map(e=>""+e).toString()
+
+      chooseSeat.dataset.bookedMap = tmp
+
+      const seatInfo = seatIndex.map(e=>convertIndexToSeat(e)).toString()
+      console.log(seatInfo)
+      updateSeatList(seatInfo)
+
+      const selectedSeatsCount = selectedSeats.length;
+      currentSeat = selectedSeatsCount
+
+      const seatTicket = convertIndexToSeat(seatIndex[0])
+      //console.log(seatTicket)
+
+      count.innerText = selectedSeatsCount;
+      total.innerText = selectedSeatsCount * (+price);
+    }
+
+    function convertIndexToSeat(id){
+      const tmp = id+1
+
+      const mark = Math.ceil(tmp/rowValue)
+
+      const colIndex = mark
+      const rowIndex = tmp - rowValue*(mark-1)
+
+      const letter = (colIndex+9).toString(36).toUpperCase()
+      return letter+rowIndex
+    }
+
+    function showAlert(message, type="alert-warning"){
+      warningMessage.innerHTML = message
+      clearTimeout(hideAlert)
+      myAlert.classList.add("show")
+      myAlert.classList.add(type)
+      
+      hideAlert = setTimeout(function () { 
+          myAlert.classList.remove("show")
+          myAlert.classList.remove(type)
+      }, 3000); 
+    }
+
+    function updateSeatList(a){
+      chooseSeat.dataset.seatList = a
+      chooseSeat.innerHTML = a
+    }
+
+    function updateSeatOccupied(){
+      occupiedSeat = occupiedSeat.split(",").map(e=>+e)
+      occupiedSeat.sort()
+      console.log(occupiedSeat)
+      if (occupiedSeat != null && occupiedSeat.length > 0) {
+        seats.forEach((seat, index) => {
+          if (occupiedSeat.indexOf(index) > -1) {
+            seat.classList.add("occupied");
+          }
+        });
+      }
+    }
+
+    updateSeatOccupied()  
+
+</script>
