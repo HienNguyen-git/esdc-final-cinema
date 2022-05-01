@@ -24,7 +24,7 @@ app.engine('handlebars', expressHandlebars.engine({
     checkPath(routerPath, navPath, options) {
       const fnTrue = options.fn,
         fnFalse = options.inverse;
-        // console.log(routerPath, navPath)
+      // console.log(routerPath, navPath)
       return routerPath === navPath ? fnTrue(this) : fnFalse(this)
     },
     checkPage(routerPath, options) {
@@ -47,6 +47,13 @@ app.engine('handlebars', expressHandlebars.engine({
     },
     NumToText(n) {
       return convertNumToLetter(n)
+    },
+    isInArray(arr, n,options) {
+      console.log(n)
+      console.log(arr)
+      const fnTrue = options.fn,
+        fnFalse = options.inverse;
+      return arr.includes(n)?fnTrue(this):fnFalse(this)
     }
   }
 }))

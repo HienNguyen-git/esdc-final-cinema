@@ -539,6 +539,7 @@ footer {
   -moz-box-shadow: 1px 0px 23px 3px rgba(0, 0, 0, 0.45);
   transition: all 0.7s ease;
   width: 90%;
+  min-width: 600px;
   height: fit-content;
   margin: 10px auto 30px;
 }
@@ -572,9 +573,9 @@ footer {
 }
 
 #warning-alert {
-  transform: translate(-8%, -120%);
+  transform: translate(-8%, -150%);
   right: 0;
-  z-index: 1;
+  z-index: 2;
 }
 
 /* dsa */
@@ -1223,6 +1224,7 @@ footer {
 
 #seat-group {
   width: fit-content;
+  min-width: 545px;
   height: fit-content;
   margin: 0 auto;
 }
@@ -1254,6 +1256,10 @@ footer {
   background-color: #6e5a11;
 }
 
+.seat.holding {
+  background-color: #969696;
+}
+
 #bill-info .title {
   color: #000;
 }
@@ -1264,20 +1270,25 @@ footer {
   font-size: 20px;
 }
 
-#bill-info .bill-total{
+#bill-info .bill-total {
   text-align: right;
   color: #6e5a11;
   font-weight: bold;
   font-size: 20px;
 }
 
-#bill-info .td-second{
+#bill-info .td-second {
   text-align: right;
   padding: 10px 0;
 }
 
-#bill-info .tr_first{
+#bill-info .tr_first {
   border-bottom: 1px solid #6e5a11;
+}
+
+#bill-info .table-box-1 tr {
+  min-width: 320px;
+  width: 100%;
 }
 /* 
 .seat:nth-of-type(2) {
@@ -1343,6 +1354,113 @@ p.text span {
 .news-info {
   background-color: white;
   padding: 10px;
+}
+
+/* Payment */
+
+.launch {
+  height: 50px;
+}
+
+.close {
+  font-size: 21px;
+  cursor: pointer;
+}
+
+.modal-body {
+  height: 450px;
+}
+
+.nav-tabs {
+  border: none !important;
+}
+
+.nav-tabs .nav-link.active {
+  color: #495057;
+  background-color: #fff;
+  border-color: #ffffff #ffffff #fff;
+  border-top: 3px solid blue !important;
+}
+
+.nav-tabs .nav-link {
+  margin-bottom: -1px;
+  border: 1px solid transparent;
+  border-top-left-radius: 0rem;
+  border-top-right-radius: 0rem;
+  border-top: 3px solid #eee;
+  font-size: 20px;
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: #e9ecef #ffffff #ffffff;
+}
+
+.nav-tabs {
+  display: table !important;
+  width: 100%;
+}
+
+.nav-item {
+  display: table-cell;
+}
+
+.form-control {
+  border-bottom: 1px solid #eee !important;
+  border: none;
+  font-weight: 600;
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #8bbafe;
+  outline: 0;
+  box-shadow: none;
+}
+
+.inputbox {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.inputbox span {
+  position: absolute;
+  top: 7px;
+  left: 11px;
+  transition: 0.5s;
+}
+
+.inputbox i {
+  position: absolute;
+  top: 13px;
+  right: 8px;
+  transition: 0.5s;
+  color: #3f51b5;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.inputbox input:focus ~ span {
+  transform: translateX(-0px) translateY(-25px);
+  font-size: 12px;
+}
+
+.inputbox input:valid ~ span {
+  transform: translateX(-0px) translateY(-25px);
+  font-size: 12px;
+}
+
+.pay button {
+  height: 47px;
+}
+
+.inputbox span {
+  pointer-events: none;
 }
 /* Responsive Properties */
 

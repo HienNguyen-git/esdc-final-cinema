@@ -5,11 +5,15 @@
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 />
-<div class="alert alert-warning alert-dismissible fade hide col-sm-3 position-fixed" id="warning-alert" role="alert">
-  <strong>Sorry!</strong> You have used up all of the available seats for this booking.
+<div class="alert alert-warning alert-dismissible fade hide col-sm-3 position-fixed text-center" id="warning-alert" role="alert">
+  <strong><span id="warning-message"></span></strong>
 </div>
 
 
+<div id="col-value" data-col="{{roomMap.numColumn}}"></div>
+<div id="row-value" data-row="{{roomMap.numRow}}"></div>
+<div id="price" data-price="{{price}}"></div>
+<div id="occupied-seat" data-occupiedSeat="{{schedule.seatmap}}"></div>
 <div class="session-panel col-sm-6">
   <h1 class="title">BOOK TICKET
     <i class="fa fa-ticket" aria-hidden="true"></i></h1>
@@ -24,14 +28,14 @@
       <span id="screen"><span class="title">Show room:</span> {{roomData.name}}</span>
     </div>
     <div class="box-tickets">
-      <table class="table-box-1">
+      <table class="table-box-1" style="width: 95%;">
         <tbody>
           <tr>
             <td class="td-first title">Amount - Price: </td>
-            <td class="td-second align-right"><span id="count" class="font-weight-bold">1</span> x 45,000 VND</td>
+            <td class="td-second align-right" style="width:100"><span id="count" class="font-weight-bold">0</span> x <div id="ticket-price"></div>VNĐ</td>
           </tr>
           <tr id="seatrow1">
-            <td class="yseat" colspan="2"><span class="title">Your seat:</span> (E12)</td>
+            <td class="yseat" colspan="2" rowspan="2"><span class="title">Your seat: <br></span>(<span id="choose-seat"></span>) </td>
           </tr>
         </tbody>
       </table>
@@ -60,13 +64,13 @@
             <td colspan="2"><span class="title">Total:</span></td>
           </tr>
           <tr class="align-right bill-total">
-            <td colspan="2"><span id="total">45,000</span><span
+            <td colspan="2"><span id="total">0</span><span
               > VNĐ</span></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="schedule-item mt-3">Pay</div>
+    <div  data-toggle="modal" data-target="#staticBackdrop" class="schedule-item mt-3">Choose payment method</div>
   </div>
 </div>
 <div class="option-panel col-sm-6">
@@ -88,6 +92,10 @@
         <div class="seat occupied"></div>
         <small>Occupied</small>
       </li>
+      <li>
+        <div class="seat holding"></div>
+        <small>Occupying</small>
+      </li>
     </ul>
 
     <div class="seat-container">
@@ -105,7 +113,7 @@
         <div class="row">
           <div class="order">{{#NumToText this}} {{/NumToText}}</div>
           {{#forLoop ../roomMap.numRow 0}}
-            <div class="seat"></div>
+              <div class="seat"></div>
           {{/forLoop}}
           <div class="order">{{#NumToText this}} {{/NumToText}}</div>
         </div>
@@ -144,7 +152,7 @@
          --}}
       </div>
     </div>
-    <p class="text-light text-center mt-3">The maximum number of seats that can be reserved is <span class="text-danger">5</span>.</p>
+    <p class="text-light text-center mt-3">The maximum number of seats that can be reserved is <span class="text-warning">5</span>.</p>
   </div>
 </div>
 <div class="option-panel col-sm-6">
@@ -155,9 +163,62 @@
   </div>
 </div>
 
+
+
+{{!-- Payment modal --}}
+
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
+                <div class="tabs mt-3">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation"> <a class="nav-link active" id="visa-tab" data-toggle="tab" href="#visa" role="tab" aria-controls="visa" aria-selected="true"> <img src="https://i.imgur.com/sB4jftM.png" width="80"> </a> </li>
+                        <li class="nav-item" role="presentation"> <a class="nav-link" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal" aria-selected="false"> <img src="https://i.imgur.com/yK7EDD1.png" width="80"> </a> </li>
+                        <li class="nav-item" role="presentation"> <a class="nav-link text-center" id="momo-tab" data-toggle="tab" href="#momo" role="tab" aria-controls="momo" aria-selected="false"> <img src="/images/momo.png  " width="30"> </a> </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="visa" role="tabpanel" aria-labelledby="visa-tab">
+                            <div class="mt-4 mx-4">
+                                <div class="text-center">
+                                    <h5>Credit card</h5>
+                                </div>
+                                <div class="form mt-3">
+                                    <div class="inputbox"> <input type="text" name="name" class="form-control" required="required"> <span>Cardholder Name</span> </div>
+                                    <div class="inputbox"> <input type="text" name="name" min="1" max="999" class="form-control" required="required"> <span>Card Number</span> <i class="fa fa-eye"></i> </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="inputbox"> <input type="text" name="name" min="1" max="999" class="form-control" required="required"> <span>Expiration Date</span> </div>
+                                        <div class="inputbox"> <input type="text" name="name" min="1" max="999" class="form-control" required="required"> <span>CVV</span> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="paypal" role="tabpanel" aria-labelledby="paypal-tab">
+                            <div class="px-5 mt-5">
+                                <div class="inputbox"> <input type="text" name="name" class="form-control" required="required"> <span>Paypal Email Address</span> </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="momo" role="tabpanel" aria-labelledby="momo-tab">
+                            <div class="px-5 mt-5">
+                                <div class="inputbox"> <input type="text" name="name" class="form-control" required="required"> <span>Phone number</span> </div>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="px-5 pay"> <button id="btnPay" data-dismiss="modal" class="btn btn-primary btn-block">Pay now!</button> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 <script>
     let currentSeat = 0
-
+    const selectedSeatList = []
 
   const myAlert = document.querySelector("#warning-alert")
   const container = document.querySelector(".seat-container"); 
@@ -166,6 +227,25 @@
   const total = document.getElementById("total"); 
   const movieSelect = document.getElementById("movie"); 
   const rowTitle = document.querySelector('#row-titles')
+  const colValue = document.querySelector('#col-value').dataset.col
+  const rowValue = document.querySelector('#row-value').dataset.row
+  const btnPay = document.querySelector('#btnPay')
+  const price = document.querySelector('#price').dataset.price
+  const ticketPrice = document.querySelector('#ticket-price')
+  const warningMessage = document.querySelector('#warning-message')
+  let occupiedSeat = document.querySelector('#occupied-seat').dataset.occupiedseat
+
+  const myLocalhost = location.origin
+
+
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  const idSchedule = urlParams.get('id');
+  const chooseSeat = document.querySelector('#choose-seat')
+  
+  //const 
+
+  ticketPrice.innerHTML = price
 
   myAlert.addEventListener('click',(e)=>{
       myAlert.classList.toggle('show')
@@ -177,38 +257,109 @@
 
   //Seat click event
   container.addEventListener('click', e => { 
-      console.log(e.target)
       if (e.target.classList.contains('seat') && !e.target.classList.contains('occupied')) {
           if(currentSeat+1<6 || e.target.classList.contains('selected')){
             e.target.classList.toggle('selected'); 
           }else{
-            clearTimeout(hideAlert)
-            myAlert.classList.add("show")
-            
-            hideAlert = setTimeout(function () { 
-                myAlert.classList.remove("show")
-            }, 3000); 
+
+            showAlert("You have used up all of the available seats for this booking.")
             
           }
         updateSelectedCount()
     } 
     }); 
-  // Initial count && total
 
+    // Handle booking 
+
+    btnPay.addEventListener('click',async ()=>{
+      const myFetch = await fetch(myLocalhost+'/booking/ticket',{
+        method: "POST",
+        body: JSON.stringify({
+          seats: chooseSeat.dataset.seatList,
+          bookedMap: chooseSeat.dataset.bookedMap,
+          idsuatchieu: idSchedule,
+          price: price,
+          idkn: 1
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+          //'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      })
+      const res = await myFetch.json()
+      if(res.code){
+        showAlert(res.message)
+      } else{
+        showAlert(res.message, "alert-success")
+      }
+    })
     
 
     function updateSelectedCount() {
-        const selectedSeats = document.querySelectorAll('.row .seat.selected');
-        const seatIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
+      const selectedSeats = document.querySelectorAll('.row .seat.selected');
+      const seatIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
 
-        localStorage.setItem('selectedSeats', JSON.stringify(seatIndex));
+      localStorage.setItem('selectedSeats', JSON.stringify(seatIndex));
+      tmp =seatIndex.map(e=>""+e).toString()
 
-        tmp = JSON.stringify(seatIndex)
-        console.log(tmp)
-        const selectedSeatsCount = selectedSeats.length;
-        currentSeat = selectedSeatsCount
-        count.innerText = selectedSeatsCount;
-        total.innerText = selectedSeatsCount * 2;
+      chooseSeat.dataset.bookedMap = tmp
+
+      const seatInfo = seatIndex.map(e=>convertIndexToSeat(e)).toString()
+      console.log(seatInfo)
+      updateSeatList(seatInfo)
+
+      const selectedSeatsCount = selectedSeats.length;
+      currentSeat = selectedSeatsCount
+
+      const seatTicket = convertIndexToSeat(seatIndex[0])
+      //console.log(seatTicket)
+
+      count.innerText = selectedSeatsCount;
+      total.innerText = selectedSeatsCount * (+price);
     }
+
+    function convertIndexToSeat(id){
+      const tmp = id+1
+
+      const mark = Math.ceil(tmp/rowValue)
+
+      const colIndex = mark
+      const rowIndex = tmp - rowValue*(mark-1)
+
+      const letter = (colIndex+9).toString(36).toUpperCase()
+      return letter+rowIndex
+    }
+
+    function showAlert(message, type="alert-warning"){
+      warningMessage.innerHTML = message
+      clearTimeout(hideAlert)
+      myAlert.classList.add("show")
+      myAlert.classList.add(type)
+      
+      hideAlert = setTimeout(function () { 
+          myAlert.classList.remove("show")
+          myAlert.classList.remove(type)
+      }, 3000); 
+    }
+
+    function updateSeatList(a){
+      chooseSeat.dataset.seatList = a
+      chooseSeat.innerHTML = a
+    }
+
+    function updateSeatOccupied(){
+      occupiedSeat = occupiedSeat.split(",").map(e=>+e)
+      occupiedSeat.sort()
+      console.log(occupiedSeat)
+      if (occupiedSeat != null && occupiedSeat.length > 0) {
+        seats.forEach((seat, index) => {
+          if (occupiedSeat.indexOf(index) > -1) {
+            seat.classList.add("occupied");
+          }
+        });
+      }
+    }
+
+    updateSeatOccupied()  
 
 </script>

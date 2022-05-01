@@ -1,5 +1,6 @@
+const e = require("express")
 const { formatDate, reverseDate, dataProcess, sleep } = require("../config/helper")
-const { getRoomMapByID, getRoomByID } = require("../models/booking.model")
+const { getRoomMapByID, getRoomByID, getTicketPrice, postBookTicket, handleCustomerPoint, getScheduleSeatMapByID, updateScheduleSeatMap } = require("../models/booking.model")
 const { getALlMovieID, getMovieDetailById } = require("../models/movie.model")
 const { getScheduleByDate, getScheduleDateList, getScheduleByMovie, getScheduleByID } = require("../models/schedule.model")
 
@@ -125,7 +126,6 @@ const getMovieSchedule = async (req, res) => {
         movieData,
         scheduleDateList
     })
-
 }
 
 const getBookingOption = async (req, res) => {
@@ -134,11 +134,14 @@ const getBookingOption = async (req, res) => {
     let movieData
     let roomMap
     let roomData
+    let price
     if (idSchedule === undefined) {
         return res.redirect('/')
     }
 
     try {
+        const priceRaw = await getTicketPrice()
+        price = priceRaw.price
         const scheduleRaw = await getScheduleByID(idSchedule)
         schedule = {
             idsuatchieu: scheduleRaw.idsuatchieu,
@@ -148,7 +151,6 @@ const getBookingOption = async (req, res) => {
             idphongchieu: scheduleRaw.idphongchieu,
             seatmap: JSON.parse(scheduleRaw.seatmap)
         }
-
 
 
         if (schedule) {
@@ -186,9 +188,11 @@ const getBookingOption = async (req, res) => {
 
     await sleep(100)
 
+
     res.render('booking/option', {
         title: "Book ticket & more options",
         path: "option",
+        price,
         movieData,
         roomMap,
         roomData,
@@ -196,9 +200,58 @@ const getBookingOption = async (req, res) => {
     })
 }
 
+const bookTicket = async (req, res) => {
+    console.log(req.body)
+    let { seats, bookedMap, idsuatchieu, price, idkn } = req.body
+    if (!seats) {
+        return res.json({
+            code: 1,
+            message: "Please choose your seat before paying"
+        })
+    }
+    else if (!idsuatchieu || !price || !idkn || !bookedMap) {
+        return res.json({
+            code: 1,
+            message: "Failure to book a ticket due to a lack of input data"
+        })
+    } else {
+        try {
+            if (await postBookTicket(seats, idsuatchieu, price, idkn)) {
+                // Convert string to array
+                bookedMap = bookedMap.split(",").map(e => +e)
+                // Get seat map
+                let getMap = await getScheduleSeatMapByID(idsuatchieu)
+                getMap = JSON.parse(getMap.seatmap)
+                getMap = [...getMap, ...bookedMap]
+
+                if (await updateScheduleSeatMap(idsuatchieu,JSON.stringify(getMap))==true) {
+                    return res.json({
+                        code: 0,
+                        message: "Book ticket successfully"
+                    })
+                } else {
+                    return res.json({
+                        code: 1,
+                        message: "Something went wrong!"
+                    })
+                }
+            } else {
+                return res.json({
+                    code: 1,
+                    message: "Something went wrong!"
+                })
+            }
+        } catch (error) {
+            console.log("Get some error")
+            console.error(error.message)
+        }
+    }
+}
+
 
 module.exports = {
     getScheduleList,
     getMovieSchedule,
-    getBookingOption
+    getBookingOption,
+    bookTicket
 }
