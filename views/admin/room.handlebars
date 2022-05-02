@@ -16,35 +16,29 @@
 
 <body>
     
-    
         <div class="admin-section admin-section2">
             <div class="admin-section-column">
                 <div class="admin-section-panel admin-section-panel4">
                     <div class="admin-panel-section-header">
-                        <h2>List Halls</h2>
+                        <h2>List Room</h2>
                     </div>
-                    <table cellpadding="10" cellspacing="10" border="1" style="width: 100%;">
+                    <table class="text-center" cellpadding="10" cellspacing="10" border="1" style="width: 100%;">
                         <tr class="header">
                             <td>ID</td>
                             <td>Name</td>
-                            <td>Chairs</td>
+                            <td>Map</td>
                             <td>Action</td>
                         </tr>
                         <tbody id="tbody">
-                            <!-- <tr class="item">
-                                <td>1</td>
-                                <td>A</td>
-                                <td>100</td>
-                                <td ><a href="" class="btn btn-primary">Edit</a> | 
-                                <a href="#" class="btn btn-danger">Delete</a></td>
-                            </tr>
+                            {{#each context}}
                             <tr class="item">
-                                <td>2</td>
-                                <td>B</td>
-                                <td>200</td>
-                                <td ><a href="" class="btn btn-primary">Edit</a> | 
-                                <a href="#" class="btn btn-danger">Delete</a></td>
-                            </tr> -->
+                                <td>{{idphongchieu}}</td>
+                                <td>{{name}}</td>
+                                <td>{{idmap}}</td>
+                                <td><button  class="btn btn-primary mr-3" onclick="handleModalEdit('{{idphongchieu}}')" data-toggle="modal" data-target="#edit-hall">Edit</a>
+                                <button class="btn btn-danger" onclick="handleModalDelete('{{idphongchieu}}')" data-toggle="modal" data-target="#delete-hall">Delete</button></td>
+                            </tr>
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>
@@ -52,7 +46,7 @@
             <div class="admin-section-column">
                 <div class="admin-section-panel admin-section-panel2">
                     <div class="admin-panel-section-header">
-                        <h2>Halls</h2>
+                        <h2>Rooms</h2>
                     </div>
                     <form id="add-hall-form" method="post"  novalidate enctype="multipart/form-data">
                         <label for="hallName">Name: </label>
@@ -127,34 +121,6 @@
 
     <script>
     let hallSelected;
-    // tải(read)
-    function loadHall(){
-        $('#tbody tr').remove();
-        $.ajax({
-            type: "GET",
-            url: 'get_halls.php',
-            success: function(data){
-                console.log(data);
-                data.forEach(hall => {
-                    // console.log(hall);
-                    let tr = $(`<tr class="item">
-                                    <td>${hall.id}</td>
-                                    <td>${hall.name}</td>
-                                    <td>${hall.chairs}</td>
-                                    <td><a onclick="handleModalEdit(this)" href="#">Edit</a> |
-                                        <a onclick="handleModalDel(this)" href="#" class="delete" >Delete</a>
-                                    </td>
-                                </tr>`);
-                    $('#tbody').append(tr);
-                    tr.attr('hall-info',JSON.stringify(hall));
-                })
-            },
-            dataType: 'json'
-        })
-        
-    }
-    loadHall();
-
     //thêm(create)
     $('#add-hall-form').submit(e => { 
         e.preventDefault();
@@ -179,7 +145,7 @@
     })
 
     //xóa(delete)
-    function handleModalDel(e){
+    function handleModalDelete(e){
         // console.log(e);
         let tr = e.parentNode.parentNode;
         let trStr = tr.getAttribute('hall-info');

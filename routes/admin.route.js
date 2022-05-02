@@ -19,6 +19,8 @@ const  {adminProductGet, adminProductPost, adminProductDelPost, adminProductEdit
 const  {adminNewsGet,adminNewsPost,adminNewsDelPost,adminNewsEditPost} = require('../controller/adminNews.controller');
 const  {adminPromotionGet,adminPromotionPost,adminPromotionDelPost,adminPromotionEditPost} = require('../controller/adminPromotion.controller');
 const  {adminMoviesGet,adminMoviesPost,adminMoviesDelPost,adminMoviesEditPost} = require('../controller/adminMovies.controller');
+const { adminGetRooms } = require('../controller/adminRoom.controller');
+const { getMapList } = require('../controller/adminMap.controller');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -31,9 +33,6 @@ router.get('/bookings', function(req, res, next) {
 
 
 
-router.get('/hall', function(req, res, next) {
-  res.render('admin/hall', { title: 'Hall',path: "not-header",isAdmin: true,layout:'admin' ,routerPath: 'admin/hall' });
-});
 
 router.get('/login', loginGet);
 router.post('/login', loginValidator, loginPost);
@@ -64,6 +63,10 @@ router.get('/movies',adminMoviesGet);
 router.post('/movies',upload.single('image'),moviesValidator, adminMoviesPost);
 router.post('/movies/delete',adminMoviesDelPost);
 router.post('/movies/edit',upload.single('image'),moviesEditValidator,adminMoviesEditPost);
+
+router.get('/rooms', adminGetRooms);
+
+router.get('/maps', getMapList)
 
 
 
