@@ -41,8 +41,8 @@ const handleDeleteRoomById = (id) => new Promise((resolve, reject) => {
     })
 })
 
-const handleEditRoom = (idphongchieu, name, idmap) => new Promise((resolve, reject) => {
-    const sql = 'UPDATE news SET name = ?,idmap = ? WHERE idphongchieu = ?';
+const handleEditRoom = (name, idmap,idphongchieu) => new Promise((resolve, reject) => {
+    const sql = 'UPDATE room SET name = ?,idmap = ? WHERE idphongchieu = ?';
     const value = [name, idmap, idphongchieu];
     connect.query(sql, value, (err) => {
         if (err) reject(false);

@@ -3,8 +3,6 @@ var router = express.Router();
 
 const multer  = require('multer')
 const upload = multer({ dest: 'public/images/popcorn' })
-// const bodyParser = require('body-parser'); // xử form dữ liệu
-// router.use(bodyParser.urlencoded({extended: false})); //form
 
 const { registerValidator, loginValidator,
   EmployeeValidator,
@@ -19,20 +17,17 @@ const  {adminProductGet, adminProductPost, adminProductDelPost, adminProductEdit
 const  {adminNewsGet,adminNewsPost,adminNewsDelPost,adminNewsEditPost} = require('../controller/adminNews.controller');
 const  {adminPromotionGet,adminPromotionPost,adminPromotionDelPost,adminPromotionEditPost} = require('../controller/adminPromotion.controller');
 const  {adminMoviesGet,adminMoviesPost,adminMoviesDelPost,adminMoviesEditPost} = require('../controller/adminMovies.controller');
-const { adminGetRooms } = require('../controller/adminRoom.controller');
-const { getMapList } = require('../controller/adminMap.controller');
+const { adminGetRooms,adminRoomsPost,adminRoomsDelPost,adminRoomsEditPost } = require('../controller/adminRoom.controller');
+const { getMapList,adminMapPost,adminMapDelPost,adminMapEditPost } = require('../controller/adminMap.controller');
+const { adminBookingsGet,adminBookingDelPost } = require('../controller/adminBookings.controller');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.render('admin/home', { title: 'DashBoard',path: "not-header",isAdmin: true ,layout:'admin', routerPath: ''});
 });
 
-router.get('/bookings', function(req, res, next) {
-  res.render('admin/bookings', { title: 'Bookings',path: "not-header",isAdmin: true,layout:'admin' ,routerPath: 'admin/bookings' });
-});
-
-
-
+router.get('/bookings',adminBookingsGet);
+router.post('/bookings/delete',adminBookingDelPost);
 
 router.get('/login', loginGet);
 router.post('/login', loginValidator, loginPost);
@@ -65,8 +60,16 @@ router.post('/movies/delete',adminMoviesDelPost);
 router.post('/movies/edit',upload.single('image'),moviesEditValidator,adminMoviesEditPost);
 
 router.get('/rooms', adminGetRooms);
+router.post('/rooms',adminRoomsPost);
+router.post('/rooms/delete',adminRoomsDelPost);
+router.post('/rooms/edit',adminRoomsEditPost);
 
-router.get('/maps', getMapList)
+
+router.get('/map', getMapList);
+router.post('/map',adminMapPost);
+router.post('/map/delete',adminMapDelPost);
+router.post('/map/edit',adminMapEditPost);
+
 
 
 

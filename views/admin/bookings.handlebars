@@ -19,6 +19,7 @@
 <body>
         <div class="admin-section admin-section2">
             <div class="admin-section-column">
+                {{#each bookingsList}}
                 <div class="admin-section-panel admin-section-panel2 w-60vw">
                     <div class="admin-panel-section-header">
                         <h2>Bookings</h2>
@@ -26,42 +27,85 @@
                     <div class="admin-panel-section-content">
                         <div class="admin-panel-section-booking-item">
                             <div class="admin-panel-section-booking-response">
-                                <a href="#"><i class="fas fa-wrench accept-booking" title="Change payment status"></i></a>
-                                <a href='#'><i class="fas fa-times decline-booking" title="Reject booking"></i></a>
+                                {{!-- <a href="#"><i class="fas fa-wrench accept-booking" title="Change payment status"></i></a> --}}
+                                {{!-- <a href='#'><i class="fas fa-times decline-booking" title="Reject booking"></i></a> --}}
+                                <button onclick="handleModalDel('{{idve}}')" class="btn btn-danger" data-toggle="modal" data-target="#modalDel">
+                                    <i class="fas fa-times decline-booking" title="Reject booking"></i>
+                                </button>
                             </div>
                             <div class="admin-panel-section-booking-info">
                                 <div>
-                                    <h3>movieName</h3>
+                                    <h3>Id ticket: {{idve}}</h3>
                                     <i class="fas fa-grip-lines-vertical "></i>
-                                    <h4>bookingTheatre </h4>
+                                    <h4>Price: {{price}} </h4>
                                     <i class="fas fa-grip-lines-vertical "></i>
-                                    <h4>bookingDate</h4>
+                                    <h4>Id customer: {{idkh}}</h4>
                                     <i class="fas fa-grip-lines-vertical "></i>
-                                    <h4>bookingTime</h4>
+                                    <h4>Seats: {{seat}}</h4>
+                                    <i class="fas fa-grip-lines-vertical "></i>
+                                    
                                 </div>
                                 <div>
-                                    <h4>bookingFName bookingLName</h4>
+                                    <h4>Start time: {{start}}</h4>
                                     <i class="fas fa-grip-lines-vertical"></i>
-                                    <h4>bookingPNumber</h4>
+                                    <h4>Day: {{day}}</h4>
                                     <i class="fas fa-grip-lines-vertical"></i>
+                                    <h4>Title: {{title}}</h4>
+                                    <i class="fas fa-grip-lines-vertical"></i>
+                                    <h4>Room: {{name}}</h4>
+                                    {{!-- <i class="fas fa-check-circle" style='color:lightblue'></i>
+                                    <h4>Paid</h4> --}}
                                         
-                                    <i class="fas fa-check-circle" style='color:lightblue'></i>
-                                    <h4>Paid</h4>
-                                        
-                                    <i class="fas fa-exclamation-circle" style='color:orange'></i>
-                                    <h4>Not yet paid</h4>
+                                    {{!-- <i class="fas fa-exclamation-circle" style='color:orange'></i>
+                                    <h4>Not yet paid</h4> --}}
                                        
                                 </div>
+                            </div>
+                            <div class="admin-panel-section-booking-response">
+                                {{!-- <a href="#"><i class="fas fa-wrench accept-booking" title="Change payment status"></i></a> --}}
+                                <img src="/images/poster/{{poster_path}}" style="width: 100px;" alt="">
                             </div>
                         </div>
                     </div>
                 </div>
+                {{/each}}
             </div>
         </div>
+   <!-- Delete Confirm Modal -->
+    <div id="modalDel" class="modal fade">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <hp class="modal-title">Delete ticket</hp>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
 
+                <div class="modal-body">
+                    <p>Are you sure want to delete ticket: <strong class="news-delete-name">Nên đi đâu 2022</strong> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="/admin/bookings/delete" method="post">
+                        <input type="hidden" name="inputIdDel" id="inputIdDel">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="btn-del-news" type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="/javascripts/jquery-3.3.1.min.js "></script>
     <script src="/javascripts/owl.carousel.min.js "></script>
     <script src="/javascripts/script.js "></script>
+
+    <script>
+        //xóa
+        function handleModalDel(id) {
+            console.log(id);
+            $('.news-delete-name').html(id);
+            $('#inputIdDel').val(id);
+        }
+    </script>
 </body>
 
 </html>
