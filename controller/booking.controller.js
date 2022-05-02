@@ -221,20 +221,37 @@ const bookTicket = async (req, res) => {
                 bookedMap = bookedMap.split(",").map(e => +e)
                 // Get seat map
                 let getMap = await getScheduleSeatMapByID(idsuatchieu)
+                const seatIndex = []
                 getMap = JSON.parse(getMap.seatmap)
-                getMap = [...getMap, ...bookedMap]
+                let checkCount = 0
+                for (let e of bookedMap) {
+                    if (getMap.includes(e)) {
+                        seatIndex.push(e)
+                        checkCount++
+                    }
+                }
+                if (checkCount === 0) {
+                    getMap = [...getMap, ...bookedMap]
 
-                if (await updateScheduleSeatMap(idsuatchieu,JSON.stringify(getMap))==true) {
-                    return res.json({
-                        code: 0,
-                        message: "Book ticket successfully"
-                    })
+                    if (await updateScheduleSeatMap(idsuatchieu, JSON.stringify(getMap)) == true) {
+                        return res.json({
+                            code: 0,
+                            message: "Book ticket successfully"
+                        })
+                    } else {
+                        return res.json({
+                            code: 1,
+                            message: "Something went wrong!"
+                        })
+                    }
                 } else {
                     return res.json({
                         code: 1,
-                        message: "Something went wrong!"
+                        seatIndex,
+                        message: "Someone has occupied seat "
                     })
                 }
+
             } else {
                 return res.json({
                     code: 1,
