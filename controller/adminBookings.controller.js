@@ -1,23 +1,33 @@
-const { sleep } = require("../config/helper")
-const adminMap = require("../models/adminMap.model");
+const { sleep, formatDate } = require("../config/helper")
+const adminBookings = require("../models/adminBookings.model");
 const { validationResult } = require('express-validator');
 
-const getMapList = async (req,res)=>{
-    let mapList =[]
+
+const adminBookingsGet = async (req,res)=>{
+    let bookingsList =[]
     try {
-        const mapListRaw = await adminMap.handleGetMapList();
-        mapList = mapListRaw.map(e=>({
-            id: e.id,
-            numrow: e.numrow,
-            numcolumn: e.numcolumn
+        const bookingsListRaw = await adminBookings.handleGetBookingsList();
+        // console.log(bookingsListRaw);
+        bookingsList = bookingsListRaw.map(e=>({
+            idve: e.idve,
+            price: e.price,
+            idkh: e.idkh,
+            seat: e.seat,
+            start: e.start,
+            day: formatDate(e.day),
+            title: e.title,
+            name: e.name,
+            poster_path: e.poster_path
+
         }))
+        // console.log(bookingsList);
 
 
     } catch (error) {
         console.error(error.message)
     }
     sleep(100)
-    res.render('admin/map', { title: 'Blueprint',path: "not-header",isAdmin: true,layout:'admin' ,routerPath: 'admin/map', mapList});
+    res.render('admin/bookings', { title: 'Bookings',path: "not-header",isAdmin: true,layout:'admin' ,routerPath: 'admin/bookings',bookingsList });
 }
 
 const adminMapPost = async (req, res) => {
@@ -56,24 +66,24 @@ const adminMapPost = async (req, res) => {
     }
 }
 
-const adminMapDelPost = async (req, res) => {
+const adminBookingDelPost = async (req, res) => {
     const id = req.body.inputIdDel;
     console.log(id);
     try {
-        if (await adminMap.handleDeleteRoomById(id)) {
+        if (await adminBookings.handleDeleteRoomById(id)) {
             req.session.flash = {
                 type: "success",
                 intro: "Congratulation!",
-                message: "Delete map successfully!!!!"
+                message: "Delete bookings successfully!!!!"
             }
-            return res.redirect('/admin/map')
+            return res.redirect('/admin/bookings')
         } else {
             req.session.flash = {
                 type: "danger",
                 intro: "Oops!",
                 message: "Some thing went wrong"
             }
-            return res.redirect('/admin/map')
+            return res.redirect('/admin/bookings')
         }
     } catch (error) {
         console.log(error);
@@ -121,8 +131,8 @@ const adminMapEditPost = async (req, res) => {
 }
 
 module.exports = {
-    getMapList,
+    adminBookingsGet,
     adminMapPost,
-    adminMapDelPost,
+    adminBookingDelPost,
     adminMapEditPost
 }

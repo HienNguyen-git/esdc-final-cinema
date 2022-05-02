@@ -35,8 +35,8 @@
                                 <td>{{idphongchieu}}</td>
                                 <td>{{name}}</td>
                                 <td>{{idmap}}</td>
-                                <td><button  class="btn btn-primary mr-3" onclick="handleModalEdit('{{idphongchieu}}')" data-toggle="modal" data-target="#edit-hall">Edit</a>
-                                <button class="btn btn-danger" onclick="handleModalDelete('{{idphongchieu}}')" data-toggle="modal" data-target="#delete-hall">Delete</button></td>
+                                <td><button  class="btn btn-primary mr-3" onclick="handleModalEdit('{{idphongchieu}}','{{name}}','{{idmap}}')" data-toggle="modal" data-target="#edit-hall">Edit</a>
+                                <button class="btn btn-danger" onclick="handleModalDel('{{idphongchieu}}','{{name}}')" data-toggle="modal" data-target="#delete-hall">Delete</button></td>
                             </tr>
                             {{/each}}
                         </tbody>
@@ -48,12 +48,12 @@
                     <div class="admin-panel-section-header">
                         <h2>Rooms</h2>
                     </div>
-                    <form id="add-hall-form" method="post"  novalidate enctype="multipart/form-data">
+                    <form id="add-hall-form" method="post"  >
                         <label for="hallName">Name: </label>
-                        <input id="hallNameAdd" placeholder="Name" type="text" name="hallName" required>
-                        <label for="hallChairs">Chairs: </label>
-                        <input id="hallChairsAdd" placeholder="Chairs" type="number" name="hallChairs" required>
-                        <button type="submit" class="form-btn">Add Hall</button>
+                        <input id="hallNameAdd" placeholder="Name" type="text" name="name" >
+                        <label for="hallChairs">Map: </label>
+                        <input id="hallChairsAdd" placeholder="Map" type="number" name="idmap" >
+                        <button type="submit" class="form-btn">Add Room</button>
                     </form>
                 </div>
             </div>
@@ -67,17 +67,19 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <hp class="modal-title">Xóa sản phẩm</hp>
+                    <hp class="modal-title">Delete room</hp>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 
                 <div class="modal-body">
-                    <p>Bạn có chắc rằng muốn xóa <strong class="hall-delete-name">Main Hall</strong> ?</p>
+                    <p>Are you sure want to delete room: <strong class="hall-delete-name">Room</strong> ?</p>
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button id="btn-del-hall" type="submit" class="btn btn-danger" >Xóa</button>
+                     <form action="/admin/rooms/delete" method="post">
+                        <input type="hidden" name="inputIdDel" id="inputIdDel">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="btn-del-hall" type="submit" class="btn btn-danger" >Delete</button>
+                     </form>
                 </div>
             </div>
         </div>
@@ -89,22 +91,24 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <hp class="modal-title">Chỉnh sửa thông tin nhân viên</hp>
+                    <hp class="modal-title">Edit room infomation</hp>
                     <button type="button" class="close" data-dismiss="modal" >&times;</button>
                 </div>
-                <form method="post" id="update-form" novalidate enctype="multipart/form-data">
+                <form method="post" action="/admin/rooms/edit" id="update-form" >
+                    <input type="hidden" id="inputIdEdit" name="inputIdEdit">
+
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="hallName">Name: </label>
-                            <input id="hallNameUpdate" placeholder="Name" type="text" name="hallName" required class="form-control">
+                            <label for="employeeName">Name: </label>
+                            <input class="form-control" id="employeeNameEdit" placeholder="Name" type="text" name="name" >
                         </div>
                         <div class="form-group">
-                            <label for="hallChairs">Chairs: </label>
-                            <input id="hallChairsUpdate" placeholder="Chairs" type="text" name="hallChairs" required class="form-control">
+                            <label for="employeePhone">Map: </label>
+                            <input class="form-control"  id="employeePhoneEdit" placeholder="Phone" type="num" name="idmap" >
                         </div>
                         
                         <div class="form-group">
-                            <button id="btn-edit-hall" type="submit" class="btn btn-primary px-5 mr-2">Sửa</button>
+                            <button id="btn-edit-hall" type="submit" class="btn btn-primary px-5 mr-2">Edit now</button>
                         </div>
                     </div>
                 </form>
@@ -119,92 +123,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    
     <script>
-    let hallSelected;
-    //thêm(create)
-    $('#add-hall-form').submit(e => { 
-        e.preventDefault();
-        // console.log('hi');
-        let data = {
-            name: $('#hallNameAdd').val(),
-            chairs: $('#hallChairsAdd').val(),
-            
-            
-        }
-        // console.log(JSON.stringify(data));
-        $.ajax({
-            type: "POST",
-            url: 'add_hall.php',
-            data: JSON.stringify(data),
-            success: function(data) {
-                // console.log(data);
-                loadHall();
-            },
-            dataType: 'json'
-        })
-    })
-
-    //xóa(delete)
-    function handleModalDelete(e){
-        // console.log(e);
-        let tr = e.parentNode.parentNode;
-        let trStr = tr.getAttribute('hall-info');
-        hallSelected = JSON.parse(trStr);
-        $('.hall-delete-name').html(hallSelected.name);
-        $('#delete-hall').modal('show');
-    }
-    $("#btn-del-hall").click(e => {
-        let data = {
-            id: hallSelected.id
-        } ;
-        // console.log(data);
-        $.ajax({
-            type: "DELETE",
-            url: 'delete_hall.php',
-            data: JSON.stringify(data),
-            success: function(data) {
-                // console.log(data);
-                $('#delete-hall').modal('hide');
-                loadHall();
-            },
-            dataType: 'json'
-        })
-    })
-
-    //sửa(update)
-    function handleModalEdit(e){
-        console.log(e);
-        let tr = e.parentNode.parentNode;
-        let trStr = tr.getAttribute('hall-info');
-        hallSelected = JSON.parse(trStr);
-        $('#hallNameUpdate').val(hallSelected.name);
-        $('#hallChairsUpdate').val(hallSelected.chairs);
+        function handleModalDel(id,name){
+            console.log(id.name);
+            $('.hall-delete-name').html(name);
+            $('#inputIdDel').val(id);
+        }    
+        //sửa(update)
+    function handleModalEdit(idphongchieu,name,idmap){
+        $('#employeeNameEdit').val(name);
+        $('#employeePhoneEdit').val(idmap);
+        $('#inputIdEdit').val(idphongchieu);
         
- 
-        $('#edit-hall').modal('show');
     }
-    $("#btn-edit-hall").click(e => {
-        e.preventDefault();
-        let data = {
-            id: hallSelected.id,
-            name: $('#hallNameUpdate').val(),
-            chairs: $('#hallChairsUpdate').val()
-            
-        } ;
-        // console.log(data);
-        $.ajax({
-            type: "POST",
-            url: 'update_hall.php',
-            data: JSON.stringify(data),
-            success: function(data) {
-                // console.log(data);
-                $('#edit-hall').modal('hide');
-                loadHall();
-            },
-            dataType: 'json'
-        })
-    })
     </script>
 </body>
-
 </html>

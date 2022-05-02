@@ -1,13 +1,13 @@
 const { formatDate, reverseDate } = require("../config/helper")
 
 const { validationResult } = require('express-validator');
-const Room = require('../models/adminRoom.model');
+const adminRoom = require('../models/adminRoom.model');
 
 const fs = require('fs'); //doi file name
 
 const adminGetRooms = async (req, res) => {
     try {
-        const adminRooms = await Room.getRoomList();
+        const adminRooms = await adminRoom.getRoomList();
 
         var resultArray = Object.values(JSON.parse(JSON.stringify(adminRooms)));
         // console.log(resultArray);
@@ -27,41 +27,26 @@ const adminGetRooms = async (req, res) => {
     }
 }
 
-const getNewsDetail = async(req,res) =>{
-    // let id = req.params.id;
-    const id = req.query['id'];
-    // console.log(id);
-    const data = await adminNews.handleReadNewsById(id);
-    // console.log(data.title);
-    res.render('news/news_detail',{data});
-}
-
-
-const adminNewsPost = async (req, res) => {
-    console.log(req.file, req.body);
+const adminRoomsPost = async (req, res) => {
     let result = validationResult(req);
     console.log(result);
     if (result.errors.length === 0) {
-        const { title,day,content } = req.body
-        let image = req.file;
-        let imagePath = `public\\images\\news\\${image.originalname}`;
-        fs.renameSync(image.path, imagePath);
-
+        const { name,idmap } = req.body
         try {
-            if (await adminNews.handleCreateNews(title,day,content, image.originalname)) {
+            if (await adminRoom.createNewRoom(name,idmap)) {
                 req.session.flash = {
                     type: "success",
                     intro: "Congratulation!",
-                    message: "Add news successfully!!!!"
+                    message: "Add room successfully!!!!"
                 }
-                return res.redirect('/admin/news');
+                return res.redirect('/admin/rooms');
             } else {
                 req.session.flash = {
                     type: "danger",
                     intro: "Oops!",
                     message: "Some thing went wrong"
                 }
-                return res.redirect('/admin/news');
+                return res.redirect('/admin/rooms');
             }
         } catch (error) {
             console.log(error);
@@ -74,76 +59,58 @@ const adminNewsPost = async (req, res) => {
             intro: "Oops!",
             message: errorMessage
         }
-        res.redirect('/admin/news');
+        res.redirect('/admin/rooms');
     }
 }
 
-const adminNewsDelPost = async (req, res) => {
-
+const adminRoomsDelPost = async (req, res) => {
     const id = req.body.inputIdDel;
     console.log(id);
-    // res.send("ok");
     try {
-        if (await adminNews.handleDeleteNews(id)) {
+        if (await adminRoom.handleDeleteRoomById(id)) {
             req.session.flash = {
                 type: "success",
                 intro: "Congratulation!",
-                message: "Delete news successfully!!!!"
+                message: "Delete room successfully!!!!"
             }
-            return res.redirect('/admin/news')
+            return res.redirect('/admin/rooms')
         } else {
             req.session.flash = {
                 type: "danger",
                 intro: "Oops!",
                 message: "Some thing went wrong"
             }
-            return res.redirect('/admin/news')
+            return res.redirect('/admin/rooms')
         }
     } catch (error) {
         console.log(error);
     }
 }
-const adminNewsEditPost = async (req, res) => {
+
+const adminRoomsEditPost = async (req, res) => {
     // console.log(req.file, req.body);
     let result = validationResult(req);
     console.log(result);
 
     if (result.errors.length === 0) {
-        const { title,day,content } = req.body
-        let image = req.file;
+        const { name,idmap } = req.body
         const id = req.body.inputIdEdit;
 
-        let imageFileName;
-        if (image == undefined) {
-
-            try {
-                const adminNewsById = await adminNews.handleReadNewsById(id);
-                imageFileName = adminNewsById.picture_path
-            } catch (error) {
-                console.log(error);
-            }
-        } else {
-            let imagePath = `public\\images\\news\\${image.originalname}`;
-            fs.renameSync(image.path, imagePath);
-            imageFileName = image.originalname;
-        }
-
-
         try {
-            if (await adminNews.handleEditNews(title,day,content, imageFileName, id)) {
+            if (await adminRoom.handleEditRoom(name,idmap, id)) {
                 req.session.flash = {
                     type: "success",
                     intro: "Congratulation!",
-                    message: "Edit news successfully!!!!"
+                    message: "Edit room successfully!!!!"
                 }
-                return res.redirect('/admin/news');
+                return res.redirect('/admin/rooms');
             } else {
                 req.session.flash = {
                     type: "danger",
                     intro: "Oops!",
                     message: "Some thing went wrong"
                 }
-                return res.redirect('/admin/news');
+                return res.redirect('/admin/rooms');
             }
         } catch (error) {
             console.log(error);
@@ -156,11 +123,14 @@ const adminNewsEditPost = async (req, res) => {
             intro: "Oops!",
             message: errorMessage
         }
-        res.redirect('/admin/news');
+        res.redirect('/admin/rooms');
     }
 }
 
 
 module.exports = {
-    adminGetRooms
+    adminGetRooms,
+    adminRoomsPost,
+    adminRoomsDelPost,
+    adminRoomsEditPost
 }
