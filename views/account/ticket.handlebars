@@ -1,0 +1,35 @@
+<div id="ticket-container">
+    <div class="ticket">
+    <div class="left">
+      <div class="ticket-info">
+        <p class="date">
+          <span>{{schedule.day}}</span>
+          <span class="june-29">{{schedule.month}} {{schedule.date}}</span>
+          <span>{{schedule.year}}</span>
+        </p>
+        <div class="show-name">
+          <h1>MOVIE NAME</h1>
+          <h2>USER BOOKING</h2>
+        </div>
+        <div class="time">
+          <p><span>TIME</span> {{schedule.start}}</p>
+          <p><span>ROOM</span> {{room}}</p>
+        </div>
+        <p class="location"><span>ESDC Cinema</span>
+          <span class="separator"><i class="fa-solid fa-film"></i></span><span>Nguyen
+            Huu Tho, HCM</span>
+        </p>
+      </div>
+    </div>
+    <div class="right"> 
+      <div class="right-info-container">
+        <div class="show-name">
+          <h2>{{ticket.seat}}</h2>
+        </div>
+        <p class="ticket-number">
+          SEAT
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

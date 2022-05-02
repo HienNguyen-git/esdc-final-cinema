@@ -1,3 +1,7 @@
+var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+
 
 const formatDate = (date) => {
     const isoDateTime = new Date(date)
@@ -20,11 +24,35 @@ function sleep(ms) {
 
 const convertNumToLetter = (n) => (n + 10).toString(36).toUpperCase()
 
+const getDays = (date) => {
+    const isoDateTime = new Date(date)
+    return days[isoDateTime.getDay()]
+}
+
+const getMonths = (date)=>{
+    const isoDateTime = new Date(date)
+    return months[isoDateTime.getMonth()]
+}
+
+const getDates = (date)=>{
+    const isoDateTime = new Date(date)
+    return isoDateTime.getDate()
+}
+
+const getYears = (date)=>{
+    const isoDateTime = new Date(date)
+    return isoDateTime.getFullYear()
+}
+
 
 module.exports = {
     formatDate,
     reverseDate,
     dataProcess,
     sleep,
-    convertNumToLetter
+    convertNumToLetter,
+    getDays,
+    getMonths,
+    getDates,
+    getYears
 }

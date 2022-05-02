@@ -1,5 +1,8 @@
 const { validationResult } = require('express-validator');
-const Login = require('../models/account.model')
+const { formatDate, getDays, getMonths, getDates, getYears } = require('../config/helper');
+const Login = require('../models/account.model');
+const { getMovieDetailById } = require('../models/movie.model');
+const { getScheduleByID } = require('../models/schedule.model');
 
 // Handle login
 const loginGet = (req, res) => {
@@ -51,9 +54,9 @@ const registerGet = (req, res) => {
 const registerPost = async (req, res) => {
     let result = validationResult(req);
     if (result.errors.length === 0) {
-        const { name,gender,phone, email, password } = req.body
-        console.log(name,gender,phone, email, password);
-        if (await Login.handleRegister(name,gender,phone, email, password)) {
+        const { name, gender, phone, email, password } = req.body
+        console.log(name, gender, phone, email, password);
+        if (await Login.handleRegister(name, gender, phone, email, password)) {
             req.session.flash = {
                 type: "success",
                 intro: "Congratulation!",
@@ -81,23 +84,23 @@ const registerPost = async (req, res) => {
 }
 
 
-const manageGet = async(req, res) => {
+const manageGet = async (req, res) => {
     const data = await Login.handleLogin(req.session.user);
     // console.log(data);
-    res.render('account/manage', { title: "Manage", path: "account/manage" ,data})
+    res.render('account/manage', { title: "Manage", path: "account/manage", data })
 }
 
 
-const changepasssGet = async(req,res)=>{
+const changepasssGet = async (req, res) => {
     res.render('account/changepassword');
 }
 
-const changepassPost = async(req,res)=>{
+const changepassPost = async (req, res) => {
     let result = validationResult(req);
     if (result.errors.length === 0) {
-        let {password,newpass,renewpass} = req.body;
+        let { password, newpass, renewpass } = req.body;
         // console.log(password,newpass,renewpass);
-        if(newpass !== renewpass || newpass === '' || renewpass === ''){
+        if (newpass !== renewpass || newpass === '' || renewpass === '') {
             req.session.flash = {
                 type: "danger",
                 intro: "Oops!",
@@ -105,8 +108,8 @@ const changepassPost = async(req,res)=>{
             }
             return res.redirect('/account/changepassword');
         }
-        else if (await Login.handleChangePass(newpass,req.session.user)) {
-            console.log(newpass,req.session.user);
+        else if (await Login.handleChangePass(newpass, req.session.user)) {
+            console.log(newpass, req.session.user);
             req.session.flash = {
                 type: "success",
                 intro: "Congratulation!",
@@ -139,16 +142,68 @@ const logout = (req, res) => {
     req.session.destroy()
     res.redirect('/account/login')
 }
+
+const getTicket = async (req, res) => {
+    const id = req.query["id"]
+    if (id === undefined) return res.redirect('/')
+    let ticket
+    let schedule
+    let movie
+    let customer
+    let room
+    try {
+        // Get ticket
+        const ticketRaw = await Login.getTicketByID(id)
+        ticket = {
+            id: ticketRaw.idve,
+            price: ticketRaw.price,
+            seat: ticketRaw.seat,
+            idsuatchieu: ticketRaw.idsuatchieu,
+            idkh: ticketRaw.idkh,
+        }
+        // Get schedule
+        const scheduleRaw = await getScheduleByID(ticket.idsuatchieu)
+        schedule = {
+            idsuatchieu: scheduleRaw.idsuatchieu,
+            start: scheduleRaw.start.slice(0, -3),
+            day: getDays(scheduleRaw.day),
+            date: getDates(scheduleRaw.day),
+            month: getMonths(scheduleRaw.day),
+            year: getYears(scheduleRaw.day),
+            idphim: scheduleRaw.idphim,
+            idphongchieu: scheduleRaw.idphongchieu,
+        }
+        // Get movie
+        const movieRaw = await getMovieDetailById(schedule.idphim)
+        movie = movieRaw.title
+        // Get customer
+        const customerRaw = await Login.getCustomerById(ticket.idkh)
+        customer = customerRaw.name
+        // Get room
+        const roomRaw = await Login.getRoomById(schedule.idphongchieu)
+        room = roomRaw.name
+        console.log(ticket)
+    } catch (error) {
+        console.log(error.message)
+    }
+    console.log(schedule)
+    res.render('account/ticket', {
+        ticket,
+        schedule,
+        movie,
+        customer,
+        room
+    })
+}
+
 module.exports = {
     loginGet,
     loginPost,
-    
     registerGet,
     registerPost,
-    
     manageGet,
-
     changepasssGet,
     changepassPost,
-    logout
+    logout,
+    getTicket
 }

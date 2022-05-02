@@ -34,8 +34,38 @@ const handleLogin = (email) => new Promise((resolve, reject) => {
     })
 })
 
+const getTicketByID = (id) => new Promise((resolve,reject)=>{
+    connect.query('select * from ticket where idve=?', [id], (err, result) => {
+        if (err) reject(err.message)
+        else {
+            resolve(result[0])
+        }
+    })
+})
+
+const getCustomerById = (id) => new Promise((resolve,reject)=>{
+    connect.query('select * from customer where idkh=?', [id], (err, result) => {
+        if (err) reject(err.message)
+        else {
+            resolve(result[0])
+        }
+    })
+})
+
+const getRoomById = (id) => new Promise((resolve,reject)=>{
+    connect.query('select * from room where idphongchieu=?', [id], (err, result) => {
+        if (err) reject(err.message)
+        else {
+            resolve(result[0])
+        }
+    })
+})
+
 module.exports = {
     handleRegister,
     handleLogin,
-    handleChangePass
+    handleChangePass,
+    getTicketByID,
+    getCustomerById,
+    getRoomById
 }

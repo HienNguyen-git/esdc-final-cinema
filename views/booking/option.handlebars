@@ -133,16 +133,16 @@
         <div class="row" id="row-titles">
           <div class="order"></div>
           {{!-- Generate header --}}
-          {{#forLoop roomMap.numRow 1}}
+          {{#forLoop roomMap.numColumn 1}}
             <div class="order">{{this}}</div>
           {{/forLoop}}
           <div class="order"></div>
         </div> 
 
-        {{#forLoop roomMap.numColumn 0}}
+        {{#forLoop roomMap.numRow 0}}
         <div class="row">
           <div class="order">{{#NumToText this}} {{/NumToText}}</div>
-          {{#forLoop ../roomMap.numRow 0}}
+          {{#forLoop ../roomMap.numColumn 0}}
               <div class="seat"></div>
           {{/forLoop}}
           <div class="order">{{#NumToText this}} {{/NumToText}}</div>
@@ -187,7 +187,7 @@
 </div>
 <div class="option-panel col-sm-6">
   <div class="option-panel-section option-panel-section1">
-    <h1>SELECT FOOD AND BEVERAGES</h1>
+    <h1>SELECT FOOD AND BEVERAGES <span style="color: aliceblue;">(OPTIONAL)</span></h1>
   </div>
   <div class="user-booking-table">
             <section class="py-5 ">
@@ -303,8 +303,8 @@
   const total = document.getElementById("total"); 
   const movieSelect = document.getElementById("movie"); 
   const rowTitle = document.querySelector('#row-titles')
-  const colValue = document.querySelector('#col-value').dataset.col
-  const rowValue = document.querySelector('#row-value').dataset.row
+  const rowValue = document.querySelector('#col-value').dataset.col
+  const colValue = document.querySelector('#row-value').dataset.row
   const btnPay = document.querySelector('#btnPay')
   const price = document.querySelector('#price').dataset.price
   const ticketPrice = document.querySelector('#ticket-price')
