@@ -26,134 +26,25 @@
             </div>
         </div>
         
-        <div class="admin-section-column" id="preview-map">
+        <div class="admin-section-column">
             <div class="admin-section-panel admin-section-panel2">
                 <div class="admin-panel-section-header">
                     <h2>Rooms</h2>
                 </div>
                 <form id="add-hall-form" method="post"  novalidate enctype="multipart/form-data">
                     <label for="hallName">Column: </label>
-                    <input id="colNum" placeholder="Name" type="number" name="colNum" required>
+                    <input id="colNum" placeholder="0" type="number" name="colNum" value="0" min="0" required>
                     <label for="hallChairs">Row: </label>
-                    <input id="rowNum" placeholder="Chairs" type="number" name="rowNum" required>
+                    <input id="rowNum" placeholder="0" type="number" name="rowNum" value="0" min="0" required>
                     <button type="submit" class="form-btn">Add Hall</button>
                 </form>
             </div>
-            <div class="admin-section-panel admin-section-panel2">
+            <div class="admin-section-panel admin-section-panel2" id="preview-map" style="position: absolute;width: fit-content;transform: translateX(-50%);">
                 <div class="admin-panel-section-header">
                     <h2>Preview blueprint</h2>
                 </div>
                 <div class="seat-container">
                     <div class="screen"></div>
-                    <div class="row" id="row-titles">
-                        <div class="order">1</div>
-                        <div class="order">2</div>
-                        <div class="order">3</div>
-                        <div class="order">4</div>
-                        <div class="order">5</div>
-                        <div class="order">6</div>
-                        <div class="order">7</div>
-                        <div class="order">8</div>
-                    </div> 
-                    <div class="row">
-                        <div class="order">H</div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="order">H</div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="order">H</div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>  
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="order">H</div>
-                    </div>
-
-                    <div class="row">
-                        <div class="order">H</div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="order">H</div>
-                    </div>
-                    <div class="row">
-                        <div class="order">H</div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat occupied"></div>
-                        <div class="seat occupied"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="order">H</div>
-                    </div>
-                    <div class="row">
-                        <div class="order">H</div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat occupied"></div>
-                        <div class="seat occupied"></div>
-                        <div class="order">H</div>
-                    </div>
-                    <div class="row">
-                        <div class="order">H</div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="order">H</div>
-                    </div>
-                    <div class="row">
-                        <div class="order">H</div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat occupied"></div>
-                        <div class="seat occupied"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="order">H</div>
-                    </div>
-                    <div class="row">
-                        <div class="order">H</div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat"></div>
-                        <div class="seat occupied"></div>
-                        <div class="seat occupied"></div>
-                        <div class="seat occupied"></div>
-                        <div class="seat"></div>
-                        <div class="order">H</div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -212,7 +103,87 @@
 
 <script>
     const previewMap = document.querySelector("#preview-map")
-    const seatContainer = document.querySelector('#seat-container')
+    const seatContainer = document.querySelector('.seat-container')
+    const colNum = document.querySelector('#colNum')
+    const rowNum = document.querySelector('#rowNum')
 
 
+
+    function checkRowAndColIsValid(){
+        const colValue = +colNum.value
+        const rowValue = +rowNum.value
+        console.log(colValue<1||rowValue<1)
+        if(colValue<1&&rowValue<1){
+            previewMap.style.display = "none"
+        }else{
+            previewMap.style.display = ""
+        }
+        return colValue<1&&rowValue<1
+    }
+
+    checkRowAndColIsValid()
+
+    colNum.addEventListener('input',()=>{
+        if(!checkRowAndColIsValid()) createPreviewMap()
+    })
+
+    rowNum.addEventListener('input',()=>{
+        if(!checkRowAndColIsValid()) createPreviewMap()
+    })
+
+    function createPreviewMap(){
+        let labelRow =""
+        let mapBody = ""
+
+        for(let i=0;i<rowNum.value;i++){
+            labelRow+= `
+            <div class="order">${i+1}</div>
+            `;
+        }
+        for(let i=0;i<colNum.value;i++){
+            let wrapper =`
+            <div class="order">${(i+10).toString(36).toUpperCase()}</div>
+            `
+            let bodyMain = ""
+            for(let j=0;j<rowNum.value;j++){
+                bodyMain+=`
+                <div class="seat"></div>
+                `
+            }
+            mapBody+=`
+            <div class="row">
+                ${wrapper+bodyMain+wrapper}
+            </div>
+            ` 
+        }
+        const result =  `
+            <div class="row" id="row-titles">
+                ${labelRow}
+            </div> 
+            ${mapBody}
+        `
+        seatContainer.innerHTML = ""
+        seatContainer.insertAdjacentHTML('beforeend',result)
+    }
 </script>
+
+{{!-- <div id="seat-group">
+    <div class="row" id="row-titles">
+        <div class="order"></div>
+        {{!-- Generate header --}}
+        {{#forLoop roomMap.numRow 1}}
+        <div class="order">{{this}}</div>
+        {{/forLoop}}
+        <div class="order"></div>
+    </div> 
+
+    {{#forLoop roomMap.numColumn 0}}
+    <div class="row">
+        <div class="order">{{#NumToText this}} {{/NumToText}}</div>
+        {{#forLoop ../roomMap.numRow 0}}
+            <div class="seat"></div>
+        {{/forLoop}}
+        <div class="order">{{#NumToText this}} {{/NumToText}}</div>
+    </div>
+    {{/forLoop}}
+</div> --}}
