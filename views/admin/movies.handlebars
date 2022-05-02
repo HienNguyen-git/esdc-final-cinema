@@ -1,177 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin</title>
-    <link rel="icon" type="image/png" href="../img/logo.png">
-    <link rel="stylesheet" href="/stylesheets/style2.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
-        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-</head>
-
-<body>
-        <div class="admin-section admin-section2">
-            <!-- <div class="admin-section-column"> -->
-                <div class="admin-section-panel admin-section-panel4">
-                    <div class="admin-panel-section-header">
-                        <h2>List Movies</h2>
-                        <a class="addbtn"  data-toggle="modal" data-target="#add-movie">Add Movie</a>
-                    </div>
-                    <table cellpadding="10" cellspacing="10" border="1" style="width: 100%;">
-                        <tr class="header">
-                            <td>ID</td>
-                            <td>Title</td>
-                            <td>Overview</td>
-                            <td>Vote average</td>
-                            <td>Release date</td>
-                            <td>Image</td>
-                            <td>Duration</td>
-                            <td>Action</td>
-                        </tr>
-                        <tbody id="tbody" class="p-3">
-                            {{#each context}}
-                                <tr class="item">
-                                    <td>{{idphim}}</td>
-                                    <td>{{title}}</td>
-                                    <td>{{overview}}</td>
-                                    <td>{{vote_average}}</td>
-                                    <td>{{release_date}}</td>
-                                    <td>
-                                        <img style="max-width: 50px;" src="/images/poster/{{poster_path}}" alt="{{name}}" />
-                                    </td>
-                                    <td>{{duration}} minutes</td>
-                                   <td>
-                                        <button
-                                            onclick="handleModalEdit('{{idphim}}','{{title}}','{{overview}}','{{vote_average}}','{{release_date}}','{{duration}}')"
-                                            class="btn btn-primary" data-toggle="modal" data-target="#edit-news">Edit</button> |
-                                        <button onclick="handleModalDel('{{idphim}}','{{title}}')" class="btn btn-danger"
-                                            data-toggle="modal" data-target="#modalDel">Delete</button>
-                                    </td>
-                                </tr>
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-            <!-- </div> -->
-            <!-- <div class="admin-section-column"> -->
-            <div id="add-movie" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <hp class="modal-title">Movies</hp>
-                            <button type="button" class="close" data-dismiss="modal" >&times;</button>
-                        </div>
-                        <form method="post" action="/admin/movies" enctype="multipart/form-data">
-                            <div class="modal-body">
-                                <div class="form-group">
-
-                                    <label for="newsTitle">Title: </label>
-                                    <input class="form-control" id="newsTitle" placeholder="Title" type="text" name="title">
-                                </div>
-                                <div class="form-group">
-
-                                    <label for="newsOverview">Overview: </label>
-                                    <input class="form-control" id="newsOverview" placeholder="Overview" type="text" name="overview">
-                                </div>
-                                <div class="form-group">
-
-                                    <label for="newsVoteAverage">Vote average: </label>
-                                    <input class="form-control" id="newsVoteAverage" placeholder="Vote Average" type="number" name="vote_average">
-                                </div>
-                                <div class="form-group">
-
-                                    <label for="newsReleaseDate">Release date: </label>
-                                    <input class="form-control" id="newsReleaseDate" placeholder="Release Date" type="date" name="release_date">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="customFile">Picture:</label>
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="customFile" name="image">
-                                        <label class="custom-file-label" for="customFile">Choose file</label>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-
-                                    <label for="newsDuration">Duration: </label>
-                                    <input class="form-control" id="newsDuration" placeholder="Duration" type="number" name="duration">
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                    <div class="preview-images"></div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-
-                                    <button type="submit" class="form-btn btn btn-primary px-5 mr-2">Add Movie</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>  
-                </div>
-            </div>
-              
+<div class="admin-section admin-section2">
+    <!-- <div class="admin-section-column"> -->
+    <div class="admin-section-panel admin-section-panel4">
+        <div class="admin-panel-section-header">
+            <h2>List Movies</h2>
+            <a class="addbtn" data-toggle="modal" data-target="#add-movie">Add Movie</a>
         </div>
-
-    <!-- Delete Confirm Modal -->
-    <div id="modalDel" class="modal fade">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <hp class="modal-title">Delete movie</hp>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <div class="modal-body">
-                    <p>Are you sure want to delete movie: <strong class="news-delete-name">Nên đi đâu 2022</strong> ?</p>
-                </div>
-                <div class="modal-footer">
-                    <form action="/admin/movies/delete" method="post">
-                        <input type="hidden" name="inputIdDel" id="inputIdDel">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button id="btn-del-news" type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <table cellpadding="10" cellspacing="10" border="1" style="width: 100%;">
+            <tr class="header">
+                <td>ID</td>
+                <td>Title</td>
+                <td>Overview</td>
+                <td>Vote average</td>
+                <td>Release date</td>
+                <td>Image</td>
+                <td>Duration</td>
+                <td>Action</td>
+            </tr>
+            <tbody id="tbody" class="p-3">
+                {{#each context}}
+                <tr class="item">
+                    <td>{{idphim}}</td>
+                    <td>{{title}}</td>
+                    <td>{{overview}}</td>
+                    <td>{{vote_average}}</td>
+                    <td>{{release_date}}</td>
+                    <td>
+                        <img style="max-width: 50px;" src="/images/poster/{{poster_path}}" alt="{{name}}" />
+                    </td>
+                    <td>{{duration}} minutes</td>
+                    <td>
+                        <button
+                            onclick="handleModalEdit('{{idphim}}','{{title}}','{{overview}}','{{vote_average}}','{{release_date}}','{{duration}}')"
+                            class="btn btn-primary" data-toggle="modal" data-target="#edit-news">Edit</button> |
+                        <button onclick="handleModalDel('{{idphim}}','{{title}}')" class="btn btn-danger"
+                            data-toggle="modal" data-target="#modalDel">Delete</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
     </div>
-
-    <!-- Edit Confirm Modal -->
-    <div id="edit-news" class="modal fade" role="dialog">
+    <!-- </div> -->
+    <!-- <div class="admin-section-column"> -->
+    <div id="add-movie" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <hp class="modal-title">Edit infomation movies</hp>
+                    <hp class="modal-title">Movies</hp>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form method="post" action="/admin/movies/edit" enctype="multipart/form-data">
-                    <input type="hidden" id="inputIdEdit" name="inputIdEdit">
+                <form method="post" action="/admin/movies" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="newsTitleEdit">Title: </label>
-                            <input class="form-control" id="newsTitleEdit" placeholder="Title" type="text" name="title">
+
+                            <label for="newsTitle">Title: </label>
+                            <input class="form-control" id="newsTitle" placeholder="Title" type="text" name="title">
                         </div>
                         <div class="form-group">
+
                             <label for="newsOverview">Overview: </label>
-                            <input class="form-control" id="newsOverviewEdit" placeholder="Overview" type="text" name="overview">
+                            <input class="form-control" id="newsOverview" placeholder="Overview" type="text"
+                                name="overview">
                         </div>
                         <div class="form-group">
-                            <label for="newsVoteAverage">VoteAverage: </label>
-                            <input class="form-control" id="newsVoteAverageEdit" placeholder="VoteAverage" type="number" name="vote_average">
+
+                            <label for="newsVoteAverage">Vote average: </label>
+                            <input class="form-control" id="newsVoteAverage" placeholder="Vote Average" type="number"
+                                name="vote_average">
                         </div>
                         <div class="form-group">
-                            <label for="newsReleaseDateEdit">ReleaseDate: </label>
-                            <input class="form-control" id="newsReleaseDateEdit" placeholder="ReleaseDate" type="date" name="release_date">
+
+                            <label for="newsReleaseDate">Release date: </label>
+                            <input class="form-control" id="newsReleaseDate" placeholder="Release Date" type="date"
+                                name="release_date">
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="customFile">Picture:</label>
                             <div class="custom-file">
@@ -180,12 +84,19 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="newsDurationEdit">Duration: </label>
-                            <input class="form-control" id="newsDurationEdit" placeholder="Duration" type="text" name="duration">
+
+                            <label for="newsDuration">Duration: </label>
+                            <input class="form-control" id="newsDuration" placeholder="Duration" type="number"
+                                name="duration">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="preview-images"></div>
+                            </div>
                         </div>
                         <div class="form-group">
 
-                            <button id="btn-edit-news" type="submit" class="btn btn-primary px-5 mr-2">Edit now</button>
+                            <button type="submit" class="form-btn btn btn-primary px-5 mr-2">Add Movie</button>
                         </div>
                     </div>
                 </form>
@@ -193,41 +104,112 @@
         </div>
     </div>
 
-    <script src="/javascripts/jquery-3.3.1.min.js "></script>
-    <script src="/javascripts/owl.carousel.min.js "></script>
-    <script src="/javascripts/script.js "></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
- <script>
-        
-        // Add the following code if you want the name of the file appear on select
-        $(".custom-file-input").on("change", function () {
-            var fileName = $(this).val().split("\\").pop();
-            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-        });
-    </script>
-    <script>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div id="modalDel" class="modal fade">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <hp class="modal-title">Delete movie</hp>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure want to delete movie: <strong class="news-delete-name">Nên đi đâu 2022</strong> ?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <form action="/admin/movies/delete" method="post">
+                    <input type="hidden" name="inputIdDel" id="inputIdDel">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btn-del-news" type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Confirm Modal -->
+<div id="edit-news" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <hp class="modal-title">Edit infomation movies</hp>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form method="post" action="/admin/movies/edit" enctype="multipart/form-data">
+                <input type="hidden" id="inputIdEdit" name="inputIdEdit">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="newsTitleEdit">Title: </label>
+                        <input class="form-control" id="newsTitleEdit" placeholder="Title" type="text" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="newsOverview">Overview: </label>
+                        <input class="form-control" id="newsOverviewEdit" placeholder="Overview" type="text"
+                            name="overview">
+                    </div>
+                    <div class="form-group">
+                        <label for="newsVoteAverage">VoteAverage: </label>
+                        <input class="form-control" id="newsVoteAverageEdit" placeholder="VoteAverage" type="number"
+                            name="vote_average">
+                    </div>
+                    <div class="form-group">
+                        <label for="newsReleaseDateEdit">ReleaseDate: </label>
+                        <input class="form-control" id="newsReleaseDateEdit" placeholder="ReleaseDate" type="date"
+                            name="release_date">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customFile">Picture:</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="customFile" name="image">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="newsDurationEdit">Duration: </label>
+                        <input class="form-control" id="newsDurationEdit" placeholder="Duration" type="text"
+                            name="duration">
+                    </div>
+                    <div class="form-group">
+
+                        <button id="btn-edit-news" type="submit" class="btn btn-primary px-5 mr-2">Edit now</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+
+    // Add the following code if you want the name of the file appear on select
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+</script>
+<script>
     //xóa
-        function handleModalDel(id, name) {
-            console.log(id);
-            $('.news-delete-name').html(name);
-            $('#inputIdDel').val(id);
-        }
+    function handleModalDel(id, name) {
+        console.log(id);
+        $('.news-delete-name').html(name);
+        $('#inputIdDel').val(id);
+    }
 
-        //sửa(update)
-        function handleModalEdit(id, title, overview, vote_average, release_date,duration) {
-            //console.log(id,title,day,content,picture_path);
-            var newdate = release_date.split("-").reverse().join("-");
-            $('#newsTitleEdit').val(title);
-            $('#newsOverviewEdit').val(overview);
-            $('#newsVoteAverageEdit').val(vote_average);
-            $('#newsReleaseDateEdit').val(newdate);
-            $('#newsDurationEdit').val(duration);
-            $('#inputIdEdit').val(id);
+    //sửa(update)
+    function handleModalEdit(id, title, overview, vote_average, release_date, duration) {
+        //console.log(id,title,day,content,picture_path);
+        var newdate = release_date.split("-").reverse().join("-");
+        $('#newsTitleEdit').val(title);
+        $('#newsOverviewEdit').val(overview);
+        $('#newsVoteAverageEdit').val(vote_average);
+        $('#newsReleaseDateEdit').val(newdate);
+        $('#newsDurationEdit').val(duration);
+        $('#inputIdEdit').val(id);
 
-        }
-    </script>
-</body>
-
-</html>
+    }
+</script>
