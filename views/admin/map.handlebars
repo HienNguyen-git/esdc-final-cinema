@@ -1,0 +1,189 @@
+    <div class="admin-section admin-section2">
+        <div class="admin-section-column">
+            <div class="admin-section-panel admin-section-panel4">
+                <div class="admin-panel-section-header">
+                    <h2>List Room</h2>
+                </div>
+                <table class="text-center" cellpadding="10" cellspacing="10" border="1" style="width: 100%;">
+                    <tr class="header">
+                        <td>ID</td>
+                        <td>Row</td>
+                        <td>Column</td>
+                        <td>Action</td>
+                    </tr>
+                    <tbody id="tbody">
+                        {{#each mapList}}
+                        <tr class="item">
+                            <td>{{id}}</td>
+                            <td>{{numrow}}</td>
+                            <td>{{numcolumn}}</td>
+                            <td><button  class="btn btn-primary mr-3" onclick="handleModalEdit('{{id}}')" data-toggle="modal" data-target="#edit-hall">Edit</a>
+                            <button class="btn btn-danger" onclick="handleModalDelete('{{id}}')" data-toggle="modal" data-target="#delete-hall">Delete</button></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="admin-section-column">
+            <div class="admin-section-panel admin-section-panel2">
+                <div class="admin-panel-section-header">
+                    <h2>Rooms</h2>
+                </div>
+                <form id="add-hall-form" method="post"  novalidate enctype="multipart/form-data">
+                    <label for="hallName">Column: </label>
+                    <input id="colNum" placeholder="0" type="number" name="colNum" value="0" min="0" required>
+                    <label for="hallChairs">Row: </label>
+                    <input id="rowNum" placeholder="0" type="number" name="rowNum" value="0" min="0" required>
+                    <button type="submit" class="form-btn">Add Hall</button>
+                </form>
+            </div>
+            <div class="admin-section-panel admin-section-panel2" id="preview-map" style="position: absolute;width: fit-content;transform: translateX(-50%);">
+                <div class="admin-panel-section-header">
+                    <h2>Preview blueprint</h2>
+                </div>
+                <div class="seat-container">
+                    <div class="screen"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Delete Confirm Modal -->
+<div id="delete-hall" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <hp class="modal-title">Xóa sản phẩm</hp>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Bạn có chắc rằng muốn xóa <strong class="hall-delete-name">Main Hall</strong> ?</p>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="btn-del-hall" type="submit" class="btn btn-danger" >Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Confirm Modal -->
+<div id="edit-hall" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <hp class="modal-title">Chỉnh sửa thông tin nhân viên</hp>
+                <button type="button" class="close" data-dismiss="modal" >&times;</button>
+            </div>
+            <form method="post" id="update-form" novalidate enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="hallName">Name: </label>
+                        <input id="hallNameUpdate" placeholder="Name" type="text" name="hallName" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="hallChairs">Chairs: </label>
+                        <input id="hallChairsUpdate" placeholder="Chairs" type="text" name="hallChairs" required class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <button id="btn-edit-hall" type="submit" class="btn btn-primary px-5 mr-2">Sửa</button>
+                    </div>
+                </div>
+            </form>
+        </div>  
+    </div>
+</div>
+
+<script>
+    const previewMap = document.querySelector("#preview-map")
+    const seatContainer = document.querySelector('.seat-container')
+    const colNum = document.querySelector('#colNum')
+    const rowNum = document.querySelector('#rowNum')
+
+
+
+    function checkRowAndColIsValid(){
+        const colValue = +colNum.value
+        const rowValue = +rowNum.value
+        console.log(colValue<1||rowValue<1)
+        if(colValue<1&&rowValue<1){
+            previewMap.style.display = "none"
+        }else{
+            previewMap.style.display = ""
+        }
+        return colValue<1&&rowValue<1
+    }
+
+    checkRowAndColIsValid()
+
+    colNum.addEventListener('input',()=>{
+        if(!checkRowAndColIsValid()) createPreviewMap()
+    })
+
+    rowNum.addEventListener('input',()=>{
+        if(!checkRowAndColIsValid()) createPreviewMap()
+    })
+
+    function createPreviewMap(){
+        let labelRow =""
+        let mapBody = ""
+
+        for(let i=0;i<rowNum.value;i++){
+            labelRow+= `
+            <div class="order">${i+1}</div>
+            `;
+        }
+        for(let i=0;i<colNum.value;i++){
+            let wrapper =`
+            <div class="order">${(i+10).toString(36).toUpperCase()}</div>
+            `
+            let bodyMain = ""
+            for(let j=0;j<rowNum.value;j++){
+                bodyMain+=`
+                <div class="seat"></div>
+                `
+            }
+            mapBody+=`
+            <div class="row">
+                ${wrapper+bodyMain+wrapper}
+            </div>
+            ` 
+        }
+        const result =  `
+            <div class="row" id="row-titles">
+                ${labelRow}
+            </div> 
+            ${mapBody}
+        `
+        seatContainer.innerHTML = ""
+        seatContainer.insertAdjacentHTML('beforeend',result)
+    }
+</script>
+
+{{!-- <div id="seat-group">
+    <div class="row" id="row-titles">
+        <div class="order"></div>
+        {{!-- Generate header --}}
+        {{#forLoop roomMap.numRow 1}}
+        <div class="order">{{this}}</div>
+        {{/forLoop}}
+        <div class="order"></div>
+    </div> 
+
+    {{#forLoop roomMap.numColumn 0}}
+    <div class="row">
+        <div class="order">{{#NumToText this}} {{/NumToText}}</div>
+        {{#forLoop ../roomMap.numRow 0}}
+            <div class="seat"></div>
+        {{/forLoop}}
+        <div class="order">{{#NumToText this}} {{/NumToText}}</div>
+    </div>
+    {{/forLoop}}
+</div> --}}

@@ -125,10 +125,6 @@
         <div class="seat occupied"></div>
         <small>Occupied</small>
       </li>
-      <li>
-        <div class="seat holding"></div>
-        <small>Occupying</small>
-      </li>
     </ul>
 
     <div class="seat-container">
@@ -354,7 +350,6 @@
     }); 
 
     // Handle booking 
-
     btnPay.addEventListener('click',async ()=>{
       const myFetch = await fetch(myLocalhost+'/booking/ticket',{
         method: "POST",
