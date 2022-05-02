@@ -20,8 +20,8 @@
         <!-- <div class="admin-section-column"> -->
         <div class="admin-section-panel admin-section-panel4">
             <div class="admin-panel-section-header">
-                <h2>List News</h2>
-                <a class="addbtn" data-toggle="modal" data-target="#add-news">Add News</a>
+                <h2>List Promotion</h2>
+                <a class="addbtn" data-toggle="modal" data-target="#add-promotion">Add promotion</a>
 
             </div>
             <table cellpadding="10" cellspacing="10" border="1" style="width: 100%;">
@@ -30,7 +30,9 @@
                     <td>Title</td>
                     <td>Day</td>
                     <td>Content</td>
+                    <td>Note</td>
                     <td>Picture</td>
+                    <td>Action</td>
                 </tr>
                 <tbody id="tbody" class="p-3">
                     {{#each context}}
@@ -39,12 +41,13 @@
                         <td>{{title}}</td>
                         <td>{{day}}</td>
                         <td>{{content}}</td>
+                        <td>{{note}}</td>
                         <td>
-                            <img style="max-width: 50px;" src="/images/news/{{picture_path}}" alt="{{name}}" />
+                            <img style="max-width: 50px;" src="/images/promotion/{{picture_path}}" alt="{{name}}" />
                         </td>
                         <td>
                             <button
-                                onclick="handleModalEdit('{{idtin}}','{{title}}','{{day}}','{{content}}','{{picture_path}}')"
+                                onclick="handleModalEdit('{{idtin}}','{{title}}','{{day}}','{{content}}','{{note}}','{{picture_path}}')"
                                 class="btn btn-primary" data-toggle="modal" data-target="#edit-news">Edit</button> |
                             <button onclick="handleModalDel('{{idtin}}','{{title}}')" class="btn btn-danger"
                                 data-toggle="modal" data-target="#modalDel">Delete</button>
@@ -56,15 +59,15 @@
         </div>
     </div>
 
-    <div id="add-news" class="modal fade" role="dialog">
+    <div id="add-promotion" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <hp class="modal-title">News</hp>
+                    <hp class="modal-title">Promotions</hp>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form method="post" action="/admin/news" enctype="multipart/form-data">
+                <form method="post" action="/admin/promotion" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="form-group">
 
@@ -82,7 +85,11 @@
                             <input class="form-control" id="newsContent" placeholder="Content" type="text"
                                 name="content">
                         </div>
-
+                        <div class="form-group">
+                            <label for="newsNote">Note: </label>
+                            <input class="form-control" id="newsNote" placeholder="Note" type="text"
+                                name="note">
+                        </div>
                         <div class="form-group">
                             <label for="customFile">Picture:</label>
                             <div class="custom-file">
@@ -90,6 +97,7 @@
                                 <label class="custom-file-label" for="customFile">Choose file</label>
                             </div>
                         </div>
+                        
                         <div class="row">
                             <div class="col-sm-12">
                             <div class="preview-images"></div>
@@ -97,7 +105,7 @@
                         </div>
                         <div class="form-group">
 
-                            <button type="submit" class="form-btn btn btn-primary px-5 mr-2">Add News</button>
+                            <button type="submit" class="form-btn btn btn-primary px-5 mr-2">Add Promotion</button>
                         </div>
                     </div>
                 </form>
@@ -112,15 +120,15 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <hp class="modal-title">Delete news</hp>
+                    <hp class="modal-title">Delete promotion</hp>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <div class="modal-body">
-                    <p>Are you sure want to delete news: <strong class="news-delete-name">Nên đi đâu 2022</strong> ?</p>
+                    <p>Are you sure want to delete promotion: <strong class="news-delete-name">Nên đi đâu 2022</strong> ?</p>
                 </div>
                 <div class="modal-footer">
-                    <form action="/admin/news/delete" method="post">
+                    <form action="/admin/promotion/delete" method="post">
                         <input type="hidden" name="inputIdDel" id="inputIdDel">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button id="btn-del-news" type="submit" class="btn btn-danger">Delete</button>
@@ -136,24 +144,29 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <hp class="modal-title">Edit infomation news</hp>
+                    <hp class="modal-title">Edit infomation promotion</hp>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form method="post" action="/admin/news/edit" enctype="multipart/form-data">
+                <form method="post" action="/admin/promotion/edit" enctype="multipart/form-data">
                     <input type="hidden" id="inputIdEdit" name="inputIdEdit">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="newsTitleEdit">Title: </label>
+                            <label for="newsTitle">Title: </label>
                             <input class="form-control" id="newsTitleEdit" placeholder="Title" type="text" name="title">
                         </div>
                         <div class="form-group">
-                            <label for="newsDayEdit">Day: </label>
+                            <label for="newsDay">Day: </label>
                             <input class="form-control" id="newsDayEdit" placeholder="Day" type="date" name="day">
                         </div>
                         <div class="form-group">
-                            <label for="newsContentEdit">Content: </label>
+                            <label for="newsContent">Content: </label>
                             <input class="form-control" id="newsContentEdit" placeholder="Content" type="text"
                                 name="content">
+                        </div>
+                        <div class="form-group">
+                            <label for="newsNote">Note: </label>
+                            <input class="form-control" id="newsNoteEdit" placeholder="Note" type="text"
+                                name="note">
                         </div>
                         <div class="form-group">
                             <label for="customFile">Picture:</label>
@@ -197,17 +210,35 @@
         }
 
         //sửa(update)
-        function handleModalEdit(id, title, day, content, picture_path) {
-            //console.log(id,title,day,content,picture_path);
+        function handleModalEdit(id, title, day, content,note, picture_path) {
+            console.log(note);
             var newdate = day.split("-").reverse().join("-");
             $('#newsTitleEdit').val(title);
             $('#newsDayEdit').val(newdate);
             $('#newsContentEdit').val(content);
+            $('#newsNoteEdit').val(note);
             $('#inputIdEdit').val(id);
-
         }
+        $(function(){
+            var dtToday = new Date();
+            
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if(month < 10)
+                month = '0' + month.toString();
+            if(day < 10)
+                day = '0' + day.toString();
+            
+            var maxDate = year + '-' + month + '-' + day;
 
+            // or instead:
+            // var maxDate = dtToday.toISOString().substr(0, 10);
+
+            $('#newsDay').attr('min', maxDate);
+        });
     </script>
+    
 </body>
 
 </html>

@@ -1,0 +1,47 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Mlem Cinema</title>
+</head>
+<body>
+    <section class="user-booking-container">
+        <div class="header-container" style="background-color: white; ">
+            <div class="navbar-brand">
+                <a href="./">
+                    <h1 class="navbar-heading" style="color:lightblue">Promotion</h1>
+                </a>
+            </div>
+        </div> 
+        {{#with data}}
+             <div class="container">
+            <div class="row">
+                <div class="col mb-5" >
+                    <h1>{{title}}</h1>
+                    <p>{{content}}</p>
+                    <span>
+
+                        <img style="display:block; margin-left: auto; margin-right:auto; " src="/images/promotion/{{picture_path}}" alt="">
+                    </span>
+                    {{note}}
+                </div>
+            </div>
+        </div>
+        {{/with}}
+       
+    </section>
+
+
+    <script src="/javascripts/jquery-3.3.1.min.js "></script>
+<script src="/javascripts/script.js "></script>
+    
+</body>
+</html>

@@ -1,71 +1,72 @@
 const { formatDate, reverseDate } = require("../config/helper")
 
 const { validationResult } = require('express-validator');
-const adminNews = require('../models/adminNews.model');
+const adminPromotion = require('../models/adminPromotion.model');
 
 const fs = require('fs'); //doi file name
 
-const adminNewsGet = async (req, res) => {
+const adminPromotionGet = async (req, res) => {
     try {
-        const adminNewsss = await adminNews.handleReadNews();
-        // console.log(adminNewsss);
+        const adminPromote = await adminPromotion.handleReadPromotion();
+        // console.log(adminPromote);
 
-        var resultArray = Object.values(JSON.parse(JSON.stringify(adminNewsss)));
+        var resultArray = Object.values(JSON.parse(JSON.stringify(adminPromote)));
         // console.log(resultArray);
         let context = [];
         resultArray.forEach(result => {
             // console.log(result)
             context = [...context, {
-                idtin: result.idtin,
+                idtin: result.idkm,
                 title: result.title,
                 content: result.content,
                 day: formatDate(result.day),
+                note: result.note,
                 picture_path: result.picture_path
             }]
 
         })
         // console.log(context)
-        res.render('admin/news', { title: 'News', path: "not-header", isAdmin: true, layout: 'admin', routerPath: 'admin/news', context });
+        res.render('admin/promotion', { title: 'Promotion', path: "not-header", isAdmin: true, layout: 'admin', routerPath: 'admin/promotion', context });
     } catch (error) {
         console.log(error);
     }
 }
 
-const getNewsDetail = async(req,res) =>{
+const getPromotionDetail = async(req,res) =>{
     // let id = req.params.id;
     const id = req.query['id'];
     // console.log(id);
-    const data = await adminNews.handleReadNewsById(id);
+    const data = await adminPromotion.handleReadPromotionById(id);
     // console.log(data.title);
-    res.render('news/news_detail',{data});
+    res.render('promotion/promotion_detail',{data});
 }
 
 
-const adminNewsPost = async (req, res) => {
+const adminPromotionPost = async (req, res) => {
     console.log(req.file, req.body);
     let result = validationResult(req);
     console.log(result);
     if (result.errors.length === 0) {
-        const { title,day,content } = req.body
+        const { title,day,content,note } = req.body
         let image = req.file;
-        let imagePath = `public\\images\\news\\${image.originalname}`;
+        let imagePath = `public\\images\\promotion\\${image.originalname}`;
         fs.renameSync(image.path, imagePath);
 
         try {
-            if (await adminNews.handleCreateNews(title,day,content, image.originalname)) {
+            if (await adminPromotion.handleCreatePromotion(title,day,content,note, image.originalname)) {
                 req.session.flash = {
                     type: "success",
                     intro: "Congratulation!",
-                    message: "Add news successfully!!!!"
+                    message: "Add promotion successfully!!!!"
                 }
-                return res.redirect('/admin/news');
+                return res.redirect('/admin/promotion');
             } else {
                 req.session.flash = {
                     type: "danger",
                     intro: "Oops!",
                     message: "Some thing went wrong"
                 }
-                return res.redirect('/admin/news');
+                return res.redirect('/admin/promotion');
             }
         } catch (error) {
             console.log(error);
@@ -78,42 +79,42 @@ const adminNewsPost = async (req, res) => {
             intro: "Oops!",
             message: errorMessage
         }
-        res.redirect('/admin/news');
+        res.redirect('/admin/promotion');
     }
 }
 
-const adminNewsDelPost = async (req, res) => {
+const adminPromotionDelPost = async (req, res) => {
 
     const id = req.body.inputIdDel;
     console.log(id);
     // res.send("ok");
     try {
-        if (await adminNews.handleDeleteNews(id)) {
+        if (await adminPromotion.handleDeletePromotion(id)) {
             req.session.flash = {
                 type: "success",
                 intro: "Congratulation!",
-                message: "Delete news successfully!!!!"
+                message: "Delete promotion successfully!!!!"
             }
-            return res.redirect('/admin/news')
+            return res.redirect('/admin/promotion')
         } else {
             req.session.flash = {
                 type: "danger",
                 intro: "Oops!",
                 message: "Some thing went wrong"
             }
-            return res.redirect('/admin/news')
+            return res.redirect('/admin/promotion')
         }
     } catch (error) {
         console.log(error);
     }
 }
-const adminNewsEditPost = async (req, res) => {
+const adminPromotionEditPost = async (req, res) => {
     // console.log(req.file, req.body);
     let result = validationResult(req);
     console.log(result);
 
     if (result.errors.length === 0) {
-        const { title,day,content } = req.body
+        const { title,day,content,note } = req.body
         let image = req.file;
         const id = req.body.inputIdEdit;
 
@@ -121,33 +122,33 @@ const adminNewsEditPost = async (req, res) => {
         if (image == undefined) {
 
             try {
-                const adminNewsById = await adminNews.handleReadNewsById(id);
+                const adminNewsById = await adminPromotion.handleReadPromotionById(id);
                 imageFileName = adminNewsById.picture_path
             } catch (error) {
                 console.log(error);
             }
         } else {
-            let imagePath = `public\\images\\news\\${image.originalname}`;
+            let imagePath = `public\\images\\promotion\\${image.originalname}`;
             fs.renameSync(image.path, imagePath);
             imageFileName = image.originalname;
         }
 
 
         try {
-            if (await adminNews.handleEditNews(title,day,content, imageFileName, id)) {
+            if (await adminPromotion.handleEditPromotion(title,day,content,note, imageFileName, id)) {
                 req.session.flash = {
                     type: "success",
                     intro: "Congratulation!",
-                    message: "Edit news successfully!!!!"
+                    message: "Edit promotion successfully!!!!"
                 }
-                return res.redirect('/admin/news');
+                return res.redirect('/admin/promotion');
             } else {
                 req.session.flash = {
                     type: "danger",
                     intro: "Oops!",
                     message: "Some thing went wrong"
                 }
-                return res.redirect('/admin/news');
+                return res.redirect('/admin/promotion');
             }
         } catch (error) {
             console.log(error);
@@ -160,14 +161,14 @@ const adminNewsEditPost = async (req, res) => {
             intro: "Oops!",
             message: errorMessage
         }
-        res.redirect('/admin/news');
+        res.redirect('/admin/promotion');
     }
 }
 
 module.exports = {
-    adminNewsGet,
-    getNewsDetail,
-    adminNewsPost,
-    adminNewsDelPost,
-    adminNewsEditPost,
+    adminPromotionGet,
+    getPromotionDetail,
+    adminPromotionPost,
+    adminPromotionDelPost,
+    adminPromotionEditPost,
 }

@@ -38,16 +38,19 @@
 		<div class="navbar-container">
 			<nav class="navbar">
 				<ul class="navbar-menu nav">
-					<li class="nav-item"><a href="/"
-							class="nav-link {{#checkPath path ""}}nav-active{{/checkPath}}">Home</a></li>
-					<li class="nav-item"><a href="/schedule?date="
-							class="nav-link {{#checkPath path "schedule"}}nav-active{{/checkPath}}">Schedule</a></li>
-					<li class="nav-item"><a href="/logout" class="nav-link {{#checkPath path "
-							logout"}}nav-active{{/checkPath}}">Logout</a></li>
+					<li class="nav-item"><a href="/" class="nav-link {{#checkPath path ""}}nav-active{{/checkPath}}">Home</a></li>
+					<li class="nav-item"><a href="/schedule?date=" class="nav-link {{#checkPath path "schedule"}}nav-active{{/checkPath}}">Schedule</a></li>
+					<li class="nav-item"><a href="/logout" class="nav-link {{#checkPath path "logout"}}nav-active{{/checkPath}}">Logout</a></li>
 					<li class="nav-item">
-						<a href="/account" class="nav-link {{#checkPath path "
-							account"}}nav-active{{/checkPath}}"><i class="fa fa-user" aria-hidden="true"></i></a></li>
-					<li class="nav-item"><a href="/login">Login</a></li>
+						<a href="/account/manage" class="nav-link {{#checkPath path "account/manage"}}nav-active{{/checkPath}}"><i class="fa fa-user" aria-hidden="true"></i></a>
+					</li>
+					{{#if user}}
+					<li class="nav-item"><a href="#"></a></li>
+
+					{{else}}
+					<li class="nav-item"><a href="/account/login">Login</a></li>
+					{{/if}}
+
 				</ul>
 			</nav>
 		</div>
