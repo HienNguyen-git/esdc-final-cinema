@@ -166,24 +166,3 @@
         seatContainer.insertAdjacentHTML('beforeend',result)
     }
 </script>
-
-{{!-- <div id="seat-group">
-    <div class="row" id="row-titles">
-        <div class="order"></div>
-        {{!-- Generate header --}}
-        {{#forLoop roomMap.numRow 1}}
-        <div class="order">{{this}}</div>
-        {{/forLoop}}
-        <div class="order"></div>
-    </div> 
-
-    {{#forLoop roomMap.numColumn 0}}
-    <div class="row">
-        <div class="order">{{#NumToText this}} {{/NumToText}}</div>
-        {{#forLoop ../roomMap.numRow 0}}
-            <div class="seat"></div>
-        {{/forLoop}}
-        <div class="order">{{#NumToText this}} {{/NumToText}}</div>
-    </div>
-    {{/forLoop}}
-</div> --}}
