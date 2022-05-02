@@ -3,7 +3,7 @@ const { formatDate, reverseDate, dataProcess, sleep } = require("../config/helpe
 const { getRoomMapByID, getRoomByID, getTicketPrice, postBookTicket, handleCustomerPoint, getScheduleSeatMapByID, updateScheduleSeatMap } = require("../models/booking.model")
 const { getALlMovieID, getMovieDetailById } = require("../models/movie.model")
 const { getScheduleByDate, getScheduleDateList, getScheduleByMovie, getScheduleByID } = require("../models/schedule.model")
-
+const adminProduct = require('../models/adminProduct.model');
 
 const getScheduleList = async (req, res) => {
     // const date = "2022-05-18";
@@ -140,6 +140,10 @@ const getBookingOption = async (req, res) => {
     }
 
     try {
+        //popcorn
+        const adminProducts = await adminProduct.handleReadProduct();
+        var resultArray = Object.values(JSON.parse(JSON.stringify(adminProducts)));
+        //ticket seat
         const priceRaw = await getTicketPrice()
         price = priceRaw.price
         const scheduleRaw = await getScheduleByID(idSchedule)
@@ -196,7 +200,8 @@ const getBookingOption = async (req, res) => {
         movieData,
         roomMap,
         roomData,
-        schedule
+        schedule,
+        resultArray
     })
 }
 

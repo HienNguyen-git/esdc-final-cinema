@@ -41,14 +41,16 @@
       </table>
       <h4 class="select-drink mt-3" style="font-weight: bold">FOOD &amp; BEVERAGES</h4>
       <table class="table-box-2" style="width: 100%;" >
-        <tbody>
-          <tr class="tr_first">
-            <td class="td-first"><span class="names">iSHARE Combo</span></td>
-            <td class="td-second align-right" style="width: 110px">
-              <span class="sol">1</span> x 87,000 VNĐ
-            </td>
-          </tr>
-          <tr class="tr_first">
+        <tbody id="table-tbody-2">
+          {{#each resultArray}}
+            <tr class="tr_first" data-product="{{idsp}}" style="display: none;">
+              <td class="td-first"><span class="names">{{name}}</span></td>
+              <td class="td-second align-right" style="width: 110px">
+                <span class="sol">1</span> x {{price}} VNĐ
+              </td>
+            </tr>
+          {{/each}}
+          {{!-- <tr class="tr_first">
             <td class="td-first"><span class="names">iCheese Popcorn 44oz</span></td>
             <td class="td-second align-right" style="width: 110px">
               <span class="sol">1</span> x 55,000 VNĐ
@@ -59,7 +61,38 @@
             <td class="td-second align-right" style="width: 110px">
               <span class="sol">1</span> x 97,000 VNĐ
             </td>
+          </tr> --}}
+          {{!-- <tr class="align-right bill-total">
+            <td colspan="2"><span class="title">Total:</span></td>
           </tr>
+          <tr class="align-right bill-total">
+            <td colspan="2"><span id="total">0</span><span
+              > VNĐ</span></td>
+          </tr> --}}
+        </tbody>
+      </table>
+      <table class="table-box-2" style="width: 100%;" >
+        <tbody >
+          {{!-- {{#each resultArray}}
+          <tr class="tr_first" style="display: none;">
+            <td class="td-first"><span class="names">{{name}}</span></td>
+            <td class="td-second align-right" style="width: 110px">
+              <span class="sol">1</span> x 87,000 VNĐ
+            </td>
+          </tr>
+          {{/each}} --}}
+          {{!-- <tr class="tr_first">
+            <td class="td-first"><span class="names">iCheese Popcorn 44oz</span></td>
+            <td class="td-second align-right" style="width: 110px">
+              <span class="sol">1</span> x 55,000 VNĐ
+            </td>
+          </tr>
+          <tr class="tr_first">
+            <td class="td-first"><span class="names">iBIG SHARE Combo</span></td>
+            <td class="td-second align-right" style="width: 110px">
+              <span class="sol">1</span> x 97,000 VNĐ
+            </td>
+          </tr> --}}
           <tr class="align-right bill-total">
             <td colspan="2"><span class="title">Total:</span></td>
           </tr>
@@ -160,6 +193,49 @@
   <div class="option-panel-section option-panel-section1">
     <h1>SELECT FOOD AND BEVERAGES</h1>
   </div>
+  <div class="user-booking-table">
+            <section class="py-5 ">
+            <div class="container px-4 px-lg-5 mt-5">
+                {{!-- <h2 class="fw-bolder mb-4">Popcorn Drinks</h2>
+                <h2 class="fw-bolder mb-4">Total: <strong class="total-price">0 </strong> VND</h2> --}}
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    {{#each resultArray}}
+                    <div class="col col-12 col-sm-4 col-md-3 mb-5">
+                        <div class="card h-100" data-productid="{{idsp}}">
+                            <!-- Product image-->
+                            <img   class="card-img-top" src="/images/popcorn/{{picture_path}}" alt="{{name}}" />
+                            <!-- Product details-->
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder ">{{name}}</h5>
+                                    <!-- Product price-->
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="price" style="text-align: center;"><strong class="price-num">{{price}}</strong> VND</div>
+                                <div class="quantity" style="text-align: center;">
+                                    <i class="fa fa-minus-circle" onclick="minusproduct(this)"></i>
+                                    <span>
+                                        <input class="inputPrice" style="text-align: center; width:50px" type="hidden" value="{{idsp}}" readonly>
+
+                                        <input class="inputQuantity" style="text-align: center; width:50px" type="text" value="0" readonly>
+                                    </span>
+                                    <i class="fa fa-plus-circle"  onclick="plusproduct(this)"></i>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                    
+                    
+                </div>
+            </div>
+        </section>
+  </div>
+  <p class="text-light text-center mt-3">The maximum number of each product that you can order is <span class="text-warning">5</span> and total product is <span class="text-warning">10</span>.</p>
   <div class="option-panel-section option-panel-section4">
   </div>
 </div>
@@ -308,7 +384,7 @@
       }
       ////////////////*******************
     })
-    
+    let total1=0
 
     function updateSelectedCount() {
       const selectedSeats = document.querySelectorAll('.row .seat.selected');
@@ -328,7 +404,9 @@
       //console.log(seatTicket)
 
       count.innerText = selectedSeatsCount;
-      total.innerText = selectedSeatsCount * (+price);
+      //total.innerText = selectedSeatsCount * (+price);
+      total1 = selectedSeatsCount * (+price);
+      totalprice(total1,sum);
     }
 
     // convertIndexToSeat
@@ -365,7 +443,8 @@
 
     // Update seat occupied
     function updateSeatOccupied(){
-      if(occupiedSeat.length){
+      if(document.querySelector('#occupied-seat').dataset.occupiedseat.length > 0){
+        //console.log(occupiedSeat);
         occupiedSeat.sort()
         if (occupiedSeat != null && occupiedSeat.length > 0) {
           seats.forEach((seat, index) => {
@@ -390,3 +469,77 @@
     updateSeatOccupied()  
 
 </script>
+<script>
+        let sum = 0;
+        let countFood = 0;
+        function minusproduct(obj){
+            let ob = $(obj).parent().parent();
+            let quanlity = Number($(ob).find('.inputQuantity').val());
+            let sl = quanlity - 1;
+            if(sl < 0){
+                sl = 0;
+                showAlert("Minimun is 0 per each");
+            }else{
+              $(ob).find('.inputQuantity').val(sl );
+              let price = Number($(ob).find('.price-num').html());
+              sum-= price;
+              let idsanpham = $(ob).find('.inputPrice').val()
+              selectTrAll(idsanpham,sl);
+              totalprice(total1,sum);
+              countFood-=1;
+              stopAddFood(countFood);
+            }
+        }
+
+        function plusproduct(obj){
+            let ob = $(obj).parent().parent();
+            let quanlity = Number($(ob).find('.inputQuantity').val());
+            let sl = quanlity + 1;
+            
+            if(sl > 5 ){
+                sl = 5;
+                showAlert("Maximum is 5 per each");
+            }else{
+              $(ob).find('.inputQuantity').val(sl);
+              let price = Number($(ob).find('.price-num').html());
+              sum+= price;
+              let idsanpham = $(ob).find('.inputPrice').val()
+              //console.log(idsanpham);
+              selectTrAll(idsanpham,sl);
+              totalprice(total1,sum);
+              countFood+=1;
+              stopAddFood(countFood);
+            }
+        }
+
+        //lấy id trong food so sánh với bill
+        let trfirst = document.querySelectorAll('.tr_first');
+        function selectTrAll(id,count){
+          trfirst.forEach(e => {
+            if(id === e.dataset.product){
+              e.style.display = '';
+              e.querySelector('.sol').innerHTML = count
+              //remove Popcorn Bill
+              if(count === 0){
+                e.style.display = 'none';
+              }
+            }
+            });
+        }
+        
+        function totalprice(t1,t2){
+          total.innerHTML = t1+t2
+        }
+        //console.log(circle)
+        function stopAddFood(countF){
+          console.log(countF)
+          let circle = document.querySelectorAll('.fa-plus-circle');
+          if(countF>=10){
+                showAlert("Maximum is 10 products");
+
+            circle.forEach(cir => cir.style.pointerEvents = "none");
+          }else{
+            circle.forEach(cir => cir.style.pointerEvents = "auto");
+          }
+        }
+    </script>
