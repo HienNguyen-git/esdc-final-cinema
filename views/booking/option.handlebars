@@ -348,15 +348,17 @@
     }
 
     function updateSeatOccupied(){
-      occupiedSeat = occupiedSeat.split(",").map(e=>+e)
-      occupiedSeat.sort()
-      console.log(occupiedSeat)
-      if (occupiedSeat != null && occupiedSeat.length > 0) {
-        seats.forEach((seat, index) => {
-          if (occupiedSeat.indexOf(index) > -1) {
-            seat.classList.add("occupied");
-          }
-        });
+      if(occupiedSeat.length){
+        occupiedSeat = occupiedSeat.split(",").map(e=>+e)
+        occupiedSeat.sort()
+        console.log(occupiedSeat)
+        if (occupiedSeat != null && occupiedSeat.length > 0) {
+          seats.forEach((seat, index) => {
+            if (occupiedSeat.indexOf(index) > -1) {
+              seat.classList.add("occupied");
+            }
+          });
+        }
       }
     }
 
