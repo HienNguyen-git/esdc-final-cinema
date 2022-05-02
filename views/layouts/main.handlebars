@@ -42,13 +42,11 @@
 				<ul class="navbar-menu nav">
 					<li class="nav-item"><a href="/" class="nav-link {{#checkPath path ""}}nav-active{{/checkPath}}">Home</a></li>
 					<li class="nav-item"><a href="/schedule?date=" class="nav-link {{#checkPath path "schedule"}}nav-active{{/checkPath}}">Schedule</a></li>
-					<li class="nav-item"><a href="/logout" class="nav-link {{#checkPath path "logout"}}nav-active{{/checkPath}}">Logout</a></li>
+					{{#if user}}
 					<li class="nav-item">
 						<a href="/account/manage" class="nav-link {{#checkPath path "account/manage"}}nav-active{{/checkPath}}"><i class="fa fa-user" aria-hidden="true"></i></a>
 					</li>
-					{{#if user}}
-					<li class="nav-item"><a href="#"></a></li>
-
+					<li class="nav-item"><a href="/logout" class="nav-link {{#checkPath path "logout"}}nav-active{{/checkPath}}">Logout</a></li>
 					{{else}}
 					<li class="nav-item"><a href="/account/login">Login</a></li>
 					{{/if}}
