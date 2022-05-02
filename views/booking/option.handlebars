@@ -5,7 +5,7 @@
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 />
-<div class="alert alert-warning alert-dismissible fade hide col-sm-3 position-fixed text-center" id="warning-alert" role="alert">
+<div class="alert alert-dismissible fade hide col-sm-3 position-fixed text-center" id="warning-alert" role="alert">
   <strong><span id="warning-message"></span></strong>
 </div>
 
@@ -70,7 +70,7 @@
         </tbody>
       </table>
     </div>
-    <div  data-toggle="modal" data-target="#staticBackdrop" class="schedule-item mt-3">Choose payment method</div>
+    <div  data-toggle="modal" data-target="#staticBackdrop" style="margin-right: 0;" class="schedule-item mt-3">Choose payment method</div>
   </div>
 </div>
 <div class="option-panel col-sm-6">
@@ -107,6 +107,7 @@
           {{#forLoop roomMap.numRow 1}}
             <div class="order">{{this}}</div>
           {{/forLoop}}
+          <div class="order"></div>
         </div> 
 
         {{#forLoop roomMap.numColumn 0}}
@@ -235,6 +236,8 @@
   const warningMessage = document.querySelector('#warning-message')
   let occupiedSeat = document.querySelector('#occupied-seat').dataset.occupiedseat
 
+  occupiedSeat = occupiedSeat.split(",").map(e=>+e)
+
   const myLocalhost = location.origin
 
 
@@ -286,20 +289,30 @@
           //'Content-Type': 'application/x-www-form-urlencoded',
         },
       })
+      ////////////////*******************
+      // Send booking ticket request to server
       const res = await myFetch.json()
       if(res.code){
-        showAlert(res.message)
+        if(res.seatIndex!= undefined && res.seatIndex.length!=0){
+          const seatIndex = res.seatIndex
+          const seatLabel = seatIndex.map(e=>convertIndexToSeat(e))
+          occupiedSeat = [...occupiedSeat, ...seatIndex]
+          updateSeatOccupied()  
+          updateChooseSeatSubmit(seatLabel)
+          showAlert(res.message+":"+seatLabel.toString())
+        }else{
+          showAlert(res.message)
+        }
       } else{
         showAlert(res.message, "alert-success")
       }
+      ////////////////*******************
     })
     
 
     function updateSelectedCount() {
       const selectedSeats = document.querySelectorAll('.row .seat.selected');
       const seatIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
-
-      localStorage.setItem('selectedSeats', JSON.stringify(seatIndex));
       tmp =seatIndex.map(e=>""+e).toString()
 
       chooseSeat.dataset.bookedMap = tmp
@@ -318,6 +331,7 @@
       total.innerText = selectedSeatsCount * (+price);
     }
 
+    // convertIndexToSeat
     function convertIndexToSeat(id){
       const tmp = id+1
 
@@ -330,6 +344,7 @@
       return letter+rowIndex
     }
 
+    // showAlert
     function showAlert(message, type="alert-warning"){
       warningMessage.innerHTML = message
       clearTimeout(hideAlert)
@@ -342,24 +357,34 @@
       }, 3000); 
     }
 
+    // Update seat list
     function updateSeatList(a){
       chooseSeat.dataset.seatList = a
       chooseSeat.innerHTML = a
     }
 
+    // Update seat occupied
     function updateSeatOccupied(){
       if(occupiedSeat.length){
-        occupiedSeat = occupiedSeat.split(",").map(e=>+e)
         occupiedSeat.sort()
-        console.log(occupiedSeat)
         if (occupiedSeat != null && occupiedSeat.length > 0) {
           seats.forEach((seat, index) => {
             if (occupiedSeat.indexOf(index) > -1) {
+              seat.classList.remove("selected")
               seat.classList.add("occupied");
             }
           });
         }
       }
+    }
+
+    function updateChooseSeatSubmit(a){
+      let result = chooseSeat.dataset.seatList.split(",")
+      for(let j of a){
+        result.splice(result.indexOf(j),1)
+      }
+      updateSeatList(result.toString())
+      updateSelectedCount()
     }
 
     updateSeatOccupied()  
