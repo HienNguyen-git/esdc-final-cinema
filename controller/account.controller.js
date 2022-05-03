@@ -244,6 +244,7 @@ const getTicket = async (req, res) => {
 const printTicket = async (req, res) => {
     const id = req.query["id"]
     if (id === undefined) return res.redirect('/')
+
     let ticket
     let schedule
     let movie
@@ -286,11 +287,8 @@ const printTicket = async (req, res) => {
         console.log(error.message)
     }
 
-
     // File setting
-    const fileName = path.join(__dirname, 'docs', `${ticket.id}.pdf`)
-
-    const filepath = `http://localhost:${process.env.PORT}/docs/` + fileName;
+    const filepath = path.join(__dirname, 'docs', `${ticket.id}.pdf`)
     res.render('account/ticket', {
         layout: false,
         ticket,
