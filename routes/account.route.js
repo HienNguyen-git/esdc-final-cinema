@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { loginGet, loginPost, registerGet,manageGet, registerPost,changepasssGet,changepassPost, getTicket } = require('../controller/account.controller');
+const { loginGet, loginPost, registerGet,manageGet, registerPost,changepasssGet,changepassPost, getTicket, printTicket } = require('../controller/account.controller');
 const { registerValidator, loginValidator,changePassValidator } = require('../validation/login');
 
 /* GET users listing. */
@@ -8,7 +8,8 @@ router.get('/login', loginGet);
 router.get('/register', registerGet);
 router.get('/manage', manageGet);
 router.get('/changepassword', changepasssGet);
-router.get('/ticket', getTicket)
+router.get('/ticket-preview', getTicket)
+router.get('/print-ticket', printTicket)
 router.get('/demo', (req,res)=>{
     res.render("account/ticket")
 })

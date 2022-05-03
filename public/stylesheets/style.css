@@ -1531,7 +1531,6 @@ input::-webkit-inner-spin-button {
   -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.52);
   -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.52);
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.52);
-  transform: scale(0.5);
 }
 
 .ticket {
