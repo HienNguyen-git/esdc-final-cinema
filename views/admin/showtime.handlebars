@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin</title>
+    <link rel="icon" type="image/png" href="../img/logo.png">
+    <link rel="stylesheet" href="/stylesheets/style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+
+<body>
+    <div class="admin-section admin-section2">
+        <!-- <div class="admin-section-column"> -->
+        <div class="admin-section-panel admin-section-panel4">
+            <div class="admin-panel-section-header">
+                <h2>List Showtime</h2>
+                <a class="addbtn" data-toggle="modal" data-target="#add-promotion">Add promotion</a>
+
+            </div>
+            <table cellpadding="10" cellspacing="10" border="1" style="width: 100%;">
+                <tr class="header">
+                    <td>ID</td>
+                    <td>Start time</td>
+                    <td>Day</td>
+                    <td>ID movie</td>
+                    <td>ID room</td>
+                    <td>Total seats booked</td>
+                    <td>Action</td>
+                </tr>
+                <tbody id="tbody" class="p-3">
+                    {{#each mapList}}
+                    <tr class="item">
+                        <td>{{idsuatchieu}}</td>
+                        <td>{{start}}</td>
+                        <td>{{day}}</td>
+                        <td>{{idphim}}</td>
+                        <td>{{idphongchieu}}</td>
+                        <td>{{seatmap}}</td>
+                        <td>
+                            <button
+                                onclick="handleModalEdit('{{idsuatchieu}}','{{start}}','{{day}}','{{idphim}}','{{idphongchieu}}')"
+                                class="btn btn-primary" data-toggle="modal" data-target="#edit-news">Edit</button> |
+                            <button onclick="handleModalDel('{{idsuatchieu}}')" class="btn btn-danger"
+                                data-toggle="modal" data-target="#modalDel">Delete</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="add-promotion" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <hp class="modal-title">Promotions</hp>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form method="post" action="/admin/showtime" >
+                    <div class="modal-body">
+                        <div class="form-group">
+
+                            <label for="newsTitle">Start time: </label>
+                            <input class="form-control" id="newsTitle" placeholder="Start time" type="text" name="start">
+                        </div>
+                        <div class="form-group">
+
+                            <label for="newsDay">Day: </label>
+                            <input class="form-control" id="newsDay" placeholder="Day" type="date" name="day">
+                        </div>
+                        <div class="form-group">
+
+                            <label for="newsContent">ID movie: </label>
+                            <input class="form-control" id="newsContent" placeholder="ID movie" type="number" name="idphim">
+                        </div>
+                        <div class="form-group">
+                            <label for="newsNote">ID room: </label>
+                            <input class="form-control" id="newsNote" placeholder="ID room" type="number" name="idphongchieu">
+                        </div>
+                        <div class="form-group">
+
+                            <button type="submit" class="form-btn btn btn-primary px-5 mr-2">Add Showtime</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirm Modal -->
+    <div id="modalDel" class="modal fade">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <hp class="modal-title">Delete promotion</hp>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Are you sure want to delete showtime: <strong class="news-delete-name">Showtime</strong> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="/admin/showtime/delete" method="post">
+                        <input type="hidden" name="inputIdDel" id="inputIdDel">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button id="btn-del-news" type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Confirm Modal -->
+    <div id="edit-news" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <hp class="modal-title">Edit infomation promotion</hp>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form method="post" action="/admin/showtime/edit" >
+                    <input type="hidden" id="inputIdEdit" name="inputIdEdit">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="newsTitle">Start time: </label>
+                            <input class="form-control" id="newsTitleEdit" placeholder="Start time" type="text" name="start">
+                        </div>
+                        <div class="form-group">
+                            <label for="newsDay">Day: </label>
+                            <input class="form-control" id="newsDayEdit" placeholder="Day" type="date" name="day">
+                        </div>
+                        <div class="form-group">
+                            <label for="newsContent">ID movie: </label>
+                            <input class="form-control" id="newsContentEdit" placeholder="ID movie" type="number" name="idphim">
+                        </div>
+                        <div class="form-group">
+                            <label for="newsNote">ID room: </label>
+                            <input class="form-control" id="newsNoteEdit" placeholder="ID room" type="number" name="idphongchieu">
+                        </div>
+                        <div class="form-group">
+
+                            <button id="btn-edit-news" type="submit" class="btn btn-primary px-5 mr-2">Edit now</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/javascripts/jquery-3.3.1.min.js "></script>
+    <script src="/javascripts/owl.carousel.min.js "></script>
+    <script src="/javascripts/script.js "></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+    <script>
+
+        //xóa
+        function handleModalDel(id) {
+            console.log(id);
+            $('.news-delete-name').html(id);
+            $('#inputIdDel').val(id);
+        }
+
+        //sửa(update)
+        function handleModalEdit(idsuatchieu, start, day, idphim,idphongchieu) {
+            var newdate = day.split("-").reverse().join("-");
+            $('#newsTitleEdit').val(start);
+            $('#newsDayEdit').val(newdate);
+            $('#newsContentEdit').val(idphim);
+            $('#newsNoteEdit').val(idphongchieu);
+            $('#inputIdEdit').val(idsuatchieu);
+        }
+        $(function(){
+            var dtToday = new Date();
+            
+            var month = dtToday.getMonth() + 1;
+            var day = dtToday.getDate();
+            var year = dtToday.getFullYear();
+            if(month < 10)
+                month = '0' + month.toString();
+            if(day < 10)
+                day = '0' + day.toString();
+            
+            var maxDate = year + '-' + month + '-' + day;
+
+            // or instead:
+            // var maxDate = dtToday.toISOString().substr(0, 10);
+
+            $('#newsDay').attr('min', maxDate);
+            $('#newsDayEdit').attr('min', maxDate);
+        });
+    </script>
+    
+</body>
+
+</html>

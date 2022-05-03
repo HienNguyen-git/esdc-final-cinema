@@ -1,45 +1,51 @@
-const { sleep } = require("../config/helper")
+const { sleep, formatDate } = require("../config/helper")
 const { validationResult } = require('express-validator');
-const adminMap = require("../models/adminMap.model");
+const adminShowtime = require("../models/adminShowtime.model");
 
-const getMapList = async (req,res)=>{
+const adminGetShowtime = async (req,res)=>{
     let mapList =[]
     try {
-        const mapListRaw = await adminMap.handleGetMapList();
+        const mapListRaw = await adminShowtime.handleGetMapList();
+        //console.log(mapListRaw)
         mapList = mapListRaw.map(e=>({
-            id: e.id,
-            numrow: e.numrow,
-            numcolumn: e.numcolumn
+            idsuatchieu: e.idsuatchieu,
+            start: e.start,
+            day: formatDate(e.day),
+            idphim: e.idphim,
+            idphongchieu: e.idphongchieu,
+            seatmap: e.seatmap.length - 2
         }))
+        //console.log(mapList)
 
 
     } catch (error) {
         console.error(error.message)
     }
     sleep(100)
-    res.render('admin/map', { title: 'Blueprint',path: "not-header",isAdmin: true,layout:'admin' ,routerPath: 'admin/map', mapList});
+    res.render('admin/showtime', { title: 'Showtime',path: "not-header",isAdmin: true,layout:'admin' ,routerPath: 'admin/showtime', mapList});
 }
 
-const adminMapPost = async (req, res) => {
+const adminShowtimePost = async (req, res) => {
     let result = validationResult(req);
     console.log(result);
     if (result.errors.length === 0) {
-        const { rowNum,colNum } = req.body
+        const { start,day,idphim,idphongchieu } = req.body
+        console.log(start,day,idphim,idphongchieu);
         try {
-            if (await adminMap.createNewMap(rowNum,colNum)) {
+            if (await adminShowtime.createNewMap(start,day,idphim,idphongchieu)) {
                 req.session.flash = {
                     type: "success",
                     intro: "Congratulation!",
-                    message: "Add map successfully!!!!"
+                    message: "Add showtime successfully!!!!"
                 }
-                return res.redirect('/admin/map');
+                return res.redirect('/admin/showtime');
             } else {
                 req.session.flash = {
                     type: "danger",
                     intro: "Oops!",
                     message: "Some thing went wrong"
                 }
-                return res.redirect('/admin/map');
+                return res.redirect('/admin/showtime');
             }
         } catch (error) {
             console.log(error);
@@ -52,58 +58,58 @@ const adminMapPost = async (req, res) => {
             intro: "Oops!",
             message: errorMessage
         }
-        res.redirect('/admin/map');
+        res.redirect('/admin/showtime');
     }
 }
 
-const adminMapDelPost = async (req, res) => {
+const adminShowtimeDelPost = async (req, res) => {
     const id = req.body.inputIdDel;
     console.log(id);
     try {
-        if (await adminMap.handleDeleteRoomById(id)) {
+        if (await adminShowtime.handleDeleteRoomById(id)) {
             req.session.flash = {
                 type: "success",
                 intro: "Congratulation!",
-                message: "Delete map successfully!!!!"
+                message: "Delete showtime successfully!!!!"
             }
-            return res.redirect('/admin/map')
+            return res.redirect('/admin/showtime')
         } else {
             req.session.flash = {
                 type: "danger",
                 intro: "Oops!",
                 message: "Some thing went wrong"
             }
-            return res.redirect('/admin/map')
+            return res.redirect('/admin/showtime')
         }
     } catch (error) {
         console.log(error);
     }
 }
 
-const adminMapEditPost = async (req, res) => {
+const adminShowtimeEditPost = async (req, res) => {
     // console.log(req.file, req.body);
     let result = validationResult(req);
     console.log(result);
 
     if (result.errors.length === 0) {
-        const { rowNum,colNum } = req.body
-        const id = req.body.inputIdEdit;
-
+        const { start,day,idphim,idphongchieu } = req.body
+        const idsuatchieu = req.body.inputIdEdit;
+        console.log(start,day,idphim,idphongchieu,idphongchieu)
         try {
-            if (await adminMap.handleEditRoom(rowNum,colNum, id)) {
+            if (await adminShowtime.handleEditRoom(start,day,idphim,idphongchieu, idsuatchieu)) {
                 req.session.flash = {
                     type: "success",
                     intro: "Congratulation!",
-                    message: "Edit map successfully!!!!"
+                    message: "Edit showtime successfully!!!!"
                 }
-                return res.redirect('/admin/map');
+                return res.redirect('/admin/showtime');
             } else {
                 req.session.flash = {
                     type: "danger",
                     intro: "Oops!",
                     message: "Some thing went wrong"
                 }
-                return res.redirect('/admin/map');
+                return res.redirect('/admin/showtime');
             }
         } catch (error) {
             console.log(error);
@@ -116,13 +122,13 @@ const adminMapEditPost = async (req, res) => {
             intro: "Oops!",
             message: errorMessage
         }
-        res.redirect('/admin/map');
+        res.redirect('/admin/showtime');
     }
 }
 
 module.exports = {
-    getMapList,
-    adminMapPost,
-    adminMapDelPost,
-    adminMapEditPost
+    adminGetShowtime,
+    adminShowtimePost,
+    adminShowtimeDelPost,
+    adminShowtimeEditPost
 }

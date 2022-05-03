@@ -9,7 +9,10 @@ const { registerValidator, loginValidator,
   productValidator,productEditValidator,
   newsValidator,newsEditValidator,
   promotionValidator,promotionEditValidator,
-  moviesValidator,moviesEditValidator } = require('../validation/login');
+  moviesValidator,moviesEditValidator,
+  roomsValidator,
+  mapValidator,
+  showtimeValidator } = require('../validation/login');
 
 const { loginGet, loginPost, registerGet, registerPost } = require('../controller/adminAccount.controller');
 const  {adminEmployeeGet,adminEmployeePost,adminEmployeeDelPost,adminEmployeeEditPost} = require('../controller/adminEmployee.controller');
@@ -20,6 +23,7 @@ const  {adminMoviesGet,adminMoviesPost,adminMoviesDelPost,adminMoviesEditPost} =
 const { adminGetRooms,adminRoomsPost,adminRoomsDelPost,adminRoomsEditPost } = require('../controller/adminRoom.controller');
 const { getMapList,adminMapPost,adminMapDelPost,adminMapEditPost } = require('../controller/adminMap.controller');
 const { adminBookingsGet,adminBookingDelPost } = require('../controller/adminBookings.controller');
+const { adminGetShowtime,adminShowtimePost,adminShowtimeDelPost,adminShowtimeEditPost } = require('../controller/adminShowtime.controller');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -60,18 +64,19 @@ router.post('/movies/delete',adminMoviesDelPost);
 router.post('/movies/edit',upload.single('image'),moviesEditValidator,adminMoviesEditPost);
 
 router.get('/rooms', adminGetRooms);
-router.post('/rooms',adminRoomsPost);
+router.post('/rooms',roomsValidator,adminRoomsPost);
 router.post('/rooms/delete',adminRoomsDelPost);
-router.post('/rooms/edit',adminRoomsEditPost);
-
+router.post('/rooms/edit',roomsValidator,adminRoomsEditPost);
 
 router.get('/map', getMapList);
-router.post('/map',adminMapPost);
+router.post('/map',mapValidator,adminMapPost);
 router.post('/map/delete',adminMapDelPost);
-router.post('/map/edit',adminMapEditPost);
+router.post('/map/edit',mapValidator,adminMapEditPost);
 
-
-
+router.get('/showtime', adminGetShowtime);
+router.post('/showtime',showtimeValidator,adminShowtimePost);
+router.post('/showtime/delete',adminShowtimeDelPost);
+router.post('/showtime/edit',showtimeValidator,adminShowtimeEditPost);
 
 
 
