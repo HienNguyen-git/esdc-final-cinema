@@ -1290,6 +1290,18 @@ footer {
   min-width: 320px;
   width: 100%;
 }
+
+#ticket-container .td-second{
+  text-align: right;
+  padding: 10px 0;
+}
+
+#ticket-container .tr_first {
+  border-bottom: 1px solid #6e5a11;
+}
+
+
+
 /* 
 .seat:nth-of-type(2) {
   margin-right: 18px;
@@ -1515,6 +1527,10 @@ input::-webkit-inner-spin-button {
   color: black;
   font-size: 14px;
   letter-spacing: 0.1em;
+  transform: translateY(50%);
+  -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.52);
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.52);
 }
 
 .ticket {
@@ -1528,15 +1544,6 @@ input::-webkit-inner-spin-button {
 .left {
   display: flex;
 }
-
-.image {
-  height: 250px;
-  width: 250px;
-  background-image: url("https://media.pitchfork.com/photos/60db53e71dfc7ddc9f5086f9/1:1/w_1656,h_1656,c_limit/Olivia-Rodrigo-Sour-Prom.jpg");
-  background-size: contain;
-  opacity: 0.85;
-}
-
 .admit-one {
   position: absolute;
   color: darkgray;
@@ -1573,6 +1580,19 @@ input::-webkit-inner-spin-button {
   align-items: center;
   min-width: 500px;
   text-transform: uppercase;
+}
+
+.food-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.85;
+  border-right: 1px dashed #404040;
+}
+
+.food-info .ticket-number{
+  transform: rotate(90deg);
+  padding-top: 40px;
 }
 
 .date {

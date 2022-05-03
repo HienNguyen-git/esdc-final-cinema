@@ -18,6 +18,9 @@
     "express-handlebars": "^6.0.5",
     "express-session": "^1.17.2",
     "express-validator": "^6.14.0",
+    "fs-extra": "^10.1.0",
+    "html-pdf": "^3.0.1",
+    "html-pdf-node": "^1.0.7",
     "http-errors": "~1.6.3",
     "jade": "^0.29.0",
     "morgan": "~1.9.1",
@@ -25,6 +28,8 @@
     "multiparty": "^4.2.3",
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.1",
+    "pdf-creator-node": "^2.3.4", 
+    "puppeteer": "^13.7.0",
     "throttle": "^1.0.3"
   }
 }
