@@ -11,6 +11,7 @@ var accountRouter = require('./routes/account.route');
 var adminRouter = require('./routes/admin.route');
 var bookingRouter = require('./routes/booking.route')
 var app = express();
+const moment = require('moment')
 
 const bodyParser = require('body-parser'); // xử form dữ liệu
 const { convertNumToLetter } = require('./config/helper');
@@ -54,6 +55,12 @@ app.engine('handlebars', expressHandlebars.engine({
       const fnTrue = options.fn,
         fnFalse = options.inverse;
       return arr.includes(n)?fnTrue(this):fnFalse(this)
+    },
+    formatDate(date){
+      return moment(date).format("MMM Do YY")
+    },
+    printValue(value){
+      return value
     }
   }
 }))

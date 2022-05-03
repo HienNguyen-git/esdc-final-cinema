@@ -46,48 +46,6 @@
     />
 
     <title>{{title}}</title>
-    <style>
-
-      /* Ticket */ #ticket-container { height: fit-content; display: grid;
-      font-family: "Staatliches", cursive; background: #6e5a11; color: black;
-      font-size: 14px; letter-spacing: 0.1em;transform: inherit;
-      -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.52); -moz-box-shadow:
-      0px 0px 20px 0px rgba(0, 0, 0, 0.52); box-shadow: 0px 0px 20px 0px rgba(0,
-      0, 0, 0.52); } .ticket { margin: auto; display: flex; background: white;
-      box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px
-      12px; } .left { display: flex; } .admit-one { position: absolute; color:
-      darkgray; height: 250px; padding: 0 10px; letter-spacing: 0.15em; display:
-      flex; text-align: center; justify-content: space-around; writing-mode:
-      vertical-rl; transform: rotate(-180deg); } .admit-one span:nth-child(2) {
-      color: white; font-weight: 700; } .left .ticket-number { height: 250px;
-      width: 250px; display: flex; justify-content: flex-end; align-items:
-      flex-end; padding: 5px; } .ticket-info { padding: 10px 30px; display:
-      flex; flex-direction: column; text-align: center; justify-content:
-      space-between; align-items: center; min-width: 500px; text-transform:
-      uppercase; } .food-info { display: flex; justify-content: center;
-      align-items: center; opacity: 0.85; border-right: 1px dashed #404040; }
-      .food-info .ticket-number{ transform: rotate(90deg); padding-top: 40px; }
-      .date { border-top: 1px solid gray; border-bottom: 1px solid gray;
-      padding: 5px 0; font-weight: 700; display: flex; align-items: center;
-      justify-content: space-around; } .date span { width: 100px; } .date
-      span:first-child { text-align: left; } .date span:last-child { text-align:
-      right; } .date .june-29 { color: #6e5a11; font-size: 20px; } .show-name {
-      font-size: 32px; font-family: "Nanum Pen Script", cursive; color: #6e5a11;
-      } .show-name h1 { font-size: 48px; font-weight: 700; letter-spacing:
-      0.1em; color: #4a437e; } .time { padding: 10px 0; color: #4a437e;
-      text-align: center; display: flex; flex-direction: column; gap: 10px;
-      font-weight: 700; } .time span { font-weight: 400; color: gray; } .left
-      .time { font-size: 16px; } .location { display: flex; justify-content:
-      space-around; align-items: center; width: 100%; padding-top: 8px;
-      border-top: 1px solid gray; } .location .separator { font-size: 20px; }
-      .right { width: 180px; border-left: 1px dashed #404040; display: flex;
-      align-items: center; justify-content: center; } .right .admit-one { color:
-      darkgray; } .right .admit-one span:nth-child(2) { color: gray; } .right
-      .right-info-container { padding: 30px; display: flex; flex-direction:
-      column; justify-content: space-around; align-items: center; transform:
-      rotate(-90deg); } .right .show-name h2 { font-weight: 700; } .barcode img
-      { height: 100%; } .right .ticket-number { color: gray; }
-    </style>
   </head>
 
   <body>
@@ -174,9 +132,22 @@
         </div>
       </div>
     </div>
-
+    <div
+      class="btn-container text-light"
+      style="position: fixed;
+            top: 0;
+            left: 40%;
+            transform: translateX(10px);
+            margin: 10px;"
+    >
+      <a class="btn btn-primary " href="/">Back to home</a>
+      <btn id="printBtn" data-id="{{ticket.id}}" class="btn btn-danger">Print</btn>
+    </div>
   </body>
-  <script src="/javascripts/jquery-3.3.1.min.js "></script>
-  <script src="/javascripts/script.js "></script>
-
+  <script>
+    const myRoot = location.origin
+    document.querySelector('#printBtn').addEventListener('click',(e)=>{
+      location.href = myRoot+"/account/print-ticket?id="+e.target.dataset.id
+    })
+  </script>
 </html>

@@ -60,7 +60,7 @@ const changePassValidator = [
                 else if (!result.length) reject(new Error("Something went wrong here1!"))
                 else {
                     const accPass = result[0].password
-                    
+
                     const isMatch = bcrypt.compareSync(value, accPass)
                     if (!isMatch) reject("Old password not match")
                     resolve(isMatch)
@@ -162,15 +162,15 @@ module.exports = {
     registerValidator,
     loginValidator,
     changePassValidator,
-    
+
     EmployeeValidator,
-    
+
     productValidator,
     productEditValidator,
 
     newsValidator,
     newsEditValidator,
-    
+
     promotionValidator,
     promotionEditValidator,
 
@@ -182,6 +182,6 @@ module.exports = {
     mapValidator,
 
     showtimeValidator,
-    
+
     validationResult
 }
