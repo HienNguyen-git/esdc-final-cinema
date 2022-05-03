@@ -60,7 +60,7 @@ const changePassValidator = [
                 else if (!result.length) reject(new Error("Something went wrong here1!"))
                 else {
                     const accPass = result[0].password
-                    
+
                     const isMatch = bcrypt.compareSync(value, accPass)
                     if (!isMatch) reject("Old password not match")
                     resolve(isMatch)
@@ -70,15 +70,15 @@ const changePassValidator = [
 ]
 
 const EmployeeValidator = [
-    check('name').exists().withMessage("Please enter your name").notEmpty().withMessage("Name can not be empty"),
-    check('phone').exists().withMessage("Please enter your phone").notEmpty().withMessage("Phone can not be empty"),
-    check('gender').exists().withMessage("Please enter your gender").notEmpty().withMessage("Gender can not be empty"),
-    check('role').exists().withMessage("Please enter your role").notEmpty().withMessage("Role can not be empty"),
+    check('name').exists().withMessage("Please enter employee name").notEmpty().withMessage("Employee Name can not be empty"),
+    check('phone').exists().withMessage("Please enter employee phone").notEmpty().withMessage("Employee Phone can not be empty"),
+    check('gender').exists().withMessage("Please enter employee gender").notEmpty().withMessage("Employee Gender can not be empty"),
+    check('role').exists().withMessage("Please enter employee role").notEmpty().withMessage("Employee Role can not be empty"),
 ]
 
 const productValidator = [
-    check('name').exists().withMessage("Please enter your name").notEmpty().withMessage("Name can not be empty"),
-    check('price').exists().withMessage("Please enter your price").notEmpty().withMessage("price can not be empty"),
+    check('name').exists().withMessage("Please enter product name").notEmpty().withMessage("Product Name can not be empty"),
+    check('price').exists().withMessage("Please enter product price").notEmpty().withMessage("Product price can not be empty"),
     check('image').custom((value, { req }) => {
         if (!req.file) throw new Error("Profile Img is required");
         return true;
@@ -86,14 +86,14 @@ const productValidator = [
 ]
 
 const productEditValidator = [
-    check('name').exists().withMessage("Please enter your name").notEmpty().withMessage("Name can not be empty"),
-    check('price').exists().withMessage("Please enter your price").notEmpty().withMessage("price can not be empty"),
+    check('name').exists().withMessage("Please enter product name").notEmpty().withMessage("Product Name can not be empty"),
+    check('price').exists().withMessage("Please enter product price").notEmpty().withMessage("Product price can not be empty"),
 ]
 
 const newsValidator = [
-    check('title').exists().withMessage("Please enter your title").notEmpty().withMessage("title can not be empty"),
-    check('day').exists().withMessage("Please enter your day").notEmpty().withMessage("day can not be empty"),
-    check('content').exists().withMessage("Please enter your Content").notEmpty().withMessage("Content can not be empty"),
+    check('title').exists().withMessage("Please enter news title").notEmpty().withMessage("News title can not be empty"),
+    check('day').exists().withMessage("Please enter news day").notEmpty().withMessage("News day can not be empty"),
+    check('content').exists().withMessage("Please enter news Content").notEmpty().withMessage("News Content can not be empty"),
     check('image').custom((value, { req }) => {
         if (!req.file) throw new Error("Profile Img is required");
         return true;
@@ -101,15 +101,15 @@ const newsValidator = [
 ]
 
 const newsEditValidator = [
-    check('title').exists().withMessage("Please enter your title").notEmpty().withMessage("title can not be empty"),
-    check('day').exists().withMessage("Please enter your day").notEmpty().withMessage("day can not be empty"),
-    check('content').exists().withMessage("Please enter your Content").notEmpty().withMessage("Content can not be empty"),
+    check('title').exists().withMessage("Please enter news title").notEmpty().withMessage("News title can not be empty"),
+    check('day').exists().withMessage("Please enter news day").notEmpty().withMessage("News day can not be empty"),
+    check('content').exists().withMessage("Please enter news Content").notEmpty().withMessage("News Content can not be empty"),
 ]
 
 const promotionValidator = [
-    check('title').exists().withMessage("Please enter your title").notEmpty().withMessage("title can not be empty"),
-    check('day').exists().withMessage("Please enter your day").notEmpty().withMessage("day can not be empty"),
-    check('content').exists().withMessage("Please enter your Content").notEmpty().withMessage("Content can not be empty"),
+    check('title').exists().withMessage("Please enter promotion title").notEmpty().withMessage("Promotion title can not be empty"),
+    check('day').exists().withMessage("Please enter promotion day").notEmpty().withMessage("Promotion day can not be empty"),
+    check('content').exists().withMessage("Please enter promotion Content").notEmpty().withMessage("Promotion Content can not be empty"),
     check('image').custom((value, { req }) => {
         if (!req.file) throw new Error("Profile Img is required");
         return true;
@@ -117,17 +117,17 @@ const promotionValidator = [
 ]
 
 const promotionEditValidator = [
-    check('title').exists().withMessage("Please enter your title").notEmpty().withMessage("title can not be empty"),
-    check('day').exists().withMessage("Please enter your day").notEmpty().withMessage("day can not be empty"),
-    check('content').exists().withMessage("Please enter your Content").notEmpty().withMessage("Content can not be empty"),
+    check('title').exists().withMessage("Please enter promotion title").notEmpty().withMessage("Promotion title can not be empty"),
+    check('day').exists().withMessage("Please enter promotion day").notEmpty().withMessage("Promotion day can not be empty"),
+    check('content').exists().withMessage("Please enter promotion Content").notEmpty().withMessage("Promotion Content can not be empty"),
 ]
 
 const moviesValidator = [
-    check('title').exists().withMessage("Please enter your title").notEmpty().withMessage("title can not be empty"),
-    check('overview').exists().withMessage("Please enter your overview").notEmpty().withMessage("overview can not be empty"),
-    check('vote_average').exists().withMessage("Please enter your vote_average").notEmpty().withMessage("vote_average can not be empty"),
-    check('release_date').exists().withMessage("Please enter your release_date").notEmpty().withMessage("release_date can not be empty"),
-    check('duration').exists().withMessage("Please enter your duration").notEmpty().withMessage("duration can not be empty"),
+    check('title').exists().withMessage("Please enter movie title").notEmpty().withMessage("Movie title can not be empty"),
+    check('overview').exists().withMessage("Please enter movie overview").notEmpty().withMessage("Movie overview can not be empty"),
+    check('vote_average').exists().withMessage("Please enter movie vote_average").notEmpty().withMessage("Movie vote_average can not be empty"),
+    check('release_date').exists().withMessage("Please enter movie release_date").notEmpty().withMessage("Movie release_date can not be empty"),
+    check('duration').exists().withMessage("Please enter movie duration").notEmpty().withMessage("Movie duration can not be empty"),
     check('image').custom((value, { req }) => {
         if (!req.file) throw new Error("Profile Img is required");
         return true;
@@ -135,31 +135,53 @@ const moviesValidator = [
 ]
 
 const moviesEditValidator = [
-    check('title').exists().withMessage("Please enter your title").notEmpty().withMessage("title can not be empty"),
-    check('overview').exists().withMessage("Please enter your overview").notEmpty().withMessage("overview can not be empty"),
-    check('vote_average').exists().withMessage("Please enter your vote_average").notEmpty().withMessage("vote_average can not be empty"),
-    check('release_date').exists().withMessage("Please enter your release_date").notEmpty().withMessage("release_date can not be empty"),
-    check('duration').exists().withMessage("Please enter your duration").notEmpty().withMessage("duration can not be empty"),
+    check('title').exists().withMessage("Please enter movie title").notEmpty().withMessage("Movie title can not be empty"),
+    check('overview').exists().withMessage("Please enter movie overview").notEmpty().withMessage("Movie overview can not be empty"),
+    check('vote_average').exists().withMessage("Please enter movie vote_average").notEmpty().withMessage("Movie vote_average can not be empty"),
+    check('release_date').exists().withMessage("Please enter movie release_date").notEmpty().withMessage("Movie release_date can not be empty"),
+    check('duration').exists().withMessage("Please enter movie duration").notEmpty().withMessage("Movie duration can not be empty"),
 ]
 
+const roomsValidator = [
+    check('name').exists().withMessage("Please enter room name").notEmpty().withMessage("Room name can not be empty"),
+    check('idmap').exists().withMessage("Please enter room idmap").notEmpty().withMessage("Room idmap can not be empty"),
+]
+
+const mapValidator = [
+    check('rowNum').exists().withMessage("Please enter row of map").notEmpty().withMessage("Row can not be empty"),
+    check('colNum').exists().withMessage("Please enter column of map").notEmpty().withMessage("Column can not be empty"),
+]
+
+const showtimeValidator = [
+    check('start').exists().withMessage("Please enter showtime start").notEmpty().withMessage("Showtime start can not be empty"),
+    check('day').exists().withMessage("Please enter showtime day").notEmpty().withMessage("Showtime day can not be empty"),
+    check('idphim').exists().withMessage("Please enter showtime idphim").notEmpty().withMessage("Showtime idphim can not be empty"),
+    check('idphongchieu').exists().withMessage("Please enter showtime idphongchieu").notEmpty().withMessage("Showtime idphongchieu can not be empty"),
+]
 module.exports = {
     registerValidator,
     loginValidator,
     changePassValidator,
-    
+
     EmployeeValidator,
-    
+
     productValidator,
     productEditValidator,
 
     newsValidator,
     newsEditValidator,
-    
+
     promotionValidator,
     promotionEditValidator,
 
     moviesValidator,
     moviesEditValidator,
-    
+
+    roomsValidator,
+
+    mapValidator,
+
+    showtimeValidator,
+
     validationResult
 }
