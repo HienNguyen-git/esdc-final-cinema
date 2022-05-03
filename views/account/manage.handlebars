@@ -1,20 +1,65 @@
 <section class="account-info-container">
-    <h3>Your account info</h3>
-    <div class="account-container">
-        <table>
-            <tr>
-                <td>Full name: {{data.name}}</td>
-            </tr>
-            <tr>
-                <td>Gender: {{data.gender}}</td>
-            </tr>
-            <tr>
-                <td>Phone: {{data.phone}}</td>
-            </tr>
-            <tr>
-                <td>Email: {{data.email}}</td>
-            </tr>
-        </table>
-        <a href="/account/changepassword">Change your password</a>
-    </div>
+  <h3>Your account info</h3>
+  <div class="account-container">
+    <table>
+      <tr>
+        <td>Full name: {{data.name}}</td>
+      </tr>
+      <tr>
+        <td>Gender: {{data.gender}}</td>
+      </tr>
+      <tr>
+        <td>Phone: {{data.phone}}</td>
+      </tr>
+      <tr>
+        <td>Email: {{data.email}}</td>
+      </tr>
+    </table>
+    <a href="/account/changepassword">Change your password</a>
+  </div>
 </section>
+<div class="admin-section-panel admin-section-panel4" id="booked-ticked">
+  <div class="admin-panel-section-header">
+    <h2>Booking history</h2>
+  </div>
+  <table
+    class="text-center p-3"
+    cellpadding="10"
+    cellspacing="10"
+    border="1"
+    style="width: 100%;"
+  >
+    <tr class="header">
+      <td>IDVe</td>
+      <td>Seat</td>
+      <td>Price</td>
+      <td>Action</td>
+    </tr>
+    <tbody id="tbody" class="p-3">
+      {{#each ticket}}
+        <tr class="item">
+          <td>{{idve}}</td>
+          <td>{{seat}}</td>
+          <td>{{price}}</td>
+          <td>
+            <button
+              class="btn btn-danger"
+              data-id="{{idve}}"
+            >Print</button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+
+<script>
+    const myRoot = location.origin
+    const bookedTicket = document.querySelector('#booked-ticked')
+    bookedTicket.addEventListener('click',e=>{
+        if(e.target.classList.contains('btn')){
+            location.href = myRoot+"/account/ticket?id="+e.target.dataset.id
+        }
+    })
+</script>

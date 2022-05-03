@@ -61,11 +61,21 @@ const getRoomById = (id) => new Promise((resolve,reject)=>{
     })
 })
 
+const getTicketsByCustomerId = (id) => new Promise((resolve,reject)=>{
+    connect.query('select * from ticket where idkh=?', [id], (err, result) => {
+        if (err) reject(err.message)
+        else {
+            resolve(result)
+        }
+    })
+})
+
 module.exports = {
     handleRegister,
     handleLogin,
     handleChangePass,
     getTicketByID,
     getCustomerById,
-    getRoomById
+    getRoomById,
+    getTicketsByCustomerId
 }

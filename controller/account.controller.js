@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator');
-const { formatDate, getDays, getMonths, getDates, getYears } = require('../config/helper');
+const { formatDate, getDays, getMonths, getDates, getYears, sleep } = require('../config/helper');
 const Login = require('../models/account.model');
 const { getMovieDetailById } = require('../models/movie.model');
 const { getScheduleByID } = require('../models/schedule.model');
@@ -89,11 +89,24 @@ const registerPost = async (req, res) => {
 
 
 const manageGet = async (req, res) => {
-    const data = await Login.handleLogin(req.session.user);
-    // console.log(data);
-    res.render('account/manage', { title: "Manage", path: "account/manage", data })
-}
+    let ticket
+    // if(req.session.user===undefined){
+    //     return res.redirect('/account/login')
+    // }else{
+    const data = await Login.handleLogin("tronghien@mail.com");
+    // console.log(ticketRaw)
+    const ticketRaw = await Login.getTicketsByCustomerId(data.idkh)
 
+    ticket = ticketRaw.map(e => ({
+        idve: e.idve,
+        price: e.price,
+        seat: e.seat,
+        schedule: e.idsuatchieu
+    }))
+    console.log(ticket)
+    res.render('account/manage', { title: "Manage", path: "account/manage", data, ticket })
+    // }
+}
 
 const changepasssGet = async (req, res) => {
     res.render('account/changepassword');
@@ -188,16 +201,35 @@ const getTicket = async (req, res) => {
         // Get room
         const roomRaw = await Login.getRoomById(schedule.idphongchieu)
         room = roomRaw.name
-        console.log(ticket)
+        console.log(await ticket)
     } catch (error) {
         console.log(error.message)
     }
 
 
     // File setting
-    const fileName = path.join(__dirname, 'docs', `${ticket.id}.pdf`)
+    // const fileName = path.join(__dirname, 'docs', `${ticket.id}.pdf`)
 
-    const filepath = 'http://localhost:3000/docs/' + fileName;
+    // const filepath = 'http://localhost:3000/docs/' + fileName;
+    // res.render('account/ticket', {
+    //     layout: false,
+    //     ticket,
+    //     schedule,
+    //     movie,
+    //     customer,
+    //     room
+    // }, (myErr, html) => {
+    //     pdf.create(html, options).toFile(filepath, (err, result) => {
+    //         if (err) return console.error(err.message)
+    //         else {
+    //             console.log(res)
+    //             const dataFile = fs.readFileSync(filepath)
+    //             res.header('content-type', 'application/pdf')
+    //             res.send(dataFile)
+    //         }
+    //     })
+    // })
+
     res.render('account/ticket', {
         layout: false,
         ticket,
@@ -205,28 +237,7 @@ const getTicket = async (req, res) => {
         movie,
         customer,
         room
-    }, (myErr, html) => {
-        pdf.create(html, options).toFile(filepath, (err, result) => {
-            if (err) return console.error(err.message)
-            else {
-                console.log(res)
-                const dataFile = fs.readFileSync(filepath)
-                res.header('content-type', 'application/pdf')
-                res.send(dataFile)
-            }
-        })
     })
-
-    // res.render(filepath)
-    // res.render('account/ticket', {
-    //     path: "not-header",
-    //     layout: false,
-    //     ticket,
-    //     schedule,
-    //     movie,
-    //     customer,
-    //     room
-    // })
 }
 
 module.exports = {
