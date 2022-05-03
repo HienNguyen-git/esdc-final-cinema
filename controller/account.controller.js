@@ -4,13 +4,6 @@ const Login = require('../models/account.model');
 const { getMovieDetailById } = require('../models/movie.model');
 const { getScheduleByID } = require('../models/schedule.model');
 
-<<<<<<< HEAD
-=======
-const fs = require('fs')
-const pdf = require('html-pdf')
-const path = require('path')
-const options = require('../config/ticket-format')
->>>>>>> b6a09ecd6dd63f6991f531a13ba0bcb0d868bc16
 // Handle login
 const loginGet = (req, res) => {
     res.render('account/login', { title: 'Login', path: "not-header" })
@@ -206,113 +199,13 @@ const getTicket = async (req, res) => {
     } catch (error) {
         console.log(error.message)
     }
-<<<<<<< HEAD
     console.log(schedule)
-=======
-
-
-    // File setting
-    // const fileName = path.join(__dirname, 'docs', `${ticket.id}.pdf`)
-
-    // const filepath = 'http://localhost:3000/docs/' + fileName;
-    // res.render('account/ticket', {
-    //     layout: false,
-    //     ticket,
-    //     schedule,
-    //     movie,
-    //     customer,
-    //     room
-    // }, (myErr, html) => {
-    //     pdf.create(html, options).toFile(filepath, (err, result) => {
-    //         if (err) return console.error(err.message)
-    //         else {
-    //             console.log(res)
-    //             const dataFile = fs.readFileSync(filepath)
-    //             res.header('content-type', 'application/pdf')
-    //             res.send(dataFile)
-    //         }
-    //     })
-    // })
-
-    res.render('account/ticket-view', {
-        layout: false,
-        ticket,
-        schedule,
-        movie,
-        customer,
-        room
-    })
-}
-
-
-const printTicket = async (req, res) => {
-    const id = req.query["id"]
-    if (id === undefined) return res.redirect('/')
-
-    let ticket
-    let schedule
-    let movie
-    let customer
-    let room
-
-    try {
-        // Get ticket
-        const ticketRaw = await Login.getTicketByID(id)
-        ticket = {
-            id: ticketRaw.idve,
-            price: ticketRaw.price,
-            seat: ticketRaw.seat,
-            idsuatchieu: ticketRaw.idsuatchieu,
-            idkh: ticketRaw.idkh,
-        }
-        // Get schedule
-        const scheduleRaw = await getScheduleByID(ticket.idsuatchieu)
-        schedule = {
-            idsuatchieu: scheduleRaw.idsuatchieu,
-            start: scheduleRaw.start.slice(0, -3),
-            day: getDays(scheduleRaw.day),
-            date: getDates(scheduleRaw.day),
-            month: getMonths(scheduleRaw.day),
-            year: getYears(scheduleRaw.day),
-            idphim: scheduleRaw.idphim,
-            idphongchieu: scheduleRaw.idphongchieu,
-        }
-        // Get movie
-        const movieRaw = await getMovieDetailById(schedule.idphim)
-        movie = movieRaw.title
-        // Get customer
-        const customerRaw = await Login.getCustomerById(ticket.idkh)
-        customer = customerRaw.name
-        // Get room
-        const roomRaw = await Login.getRoomById(schedule.idphongchieu)
-        room = roomRaw.name
-        console.log(await ticket)
-    } catch (error) {
-        console.log(error.message)
-    }
-
-    // File setting
-    const filepath = path.join(__dirname, 'docs', `${ticket.id}.pdf`)
->>>>>>> b6a09ecd6dd63f6991f531a13ba0bcb0d868bc16
     res.render('account/ticket', {
         ticket,
         schedule,
         movie,
         customer,
         room
-<<<<<<< HEAD
-=======
-    }, (myErr, html) => {
-        pdf.create(html, options).toFile(filepath, (err, result) => {
-            if (err) return console.error(err.message)
-            else {
-                console.log(res)
-                const dataFile = fs.readFileSync(filepath)
-                res.header('content-type', 'application/pdf')
-                res.send(dataFile)
-            }
-        })
->>>>>>> b6a09ecd6dd63f6991f531a13ba0bcb0d868bc16
     })
 }
 
