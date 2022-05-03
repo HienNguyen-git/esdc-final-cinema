@@ -4,13 +4,10 @@ const Login = require('../models/account.model');
 const { getMovieDetailById } = require('../models/movie.model');
 const { getScheduleByID } = require('../models/schedule.model');
 
-<<<<<<< HEAD
-=======
 const fs = require('fs')
 const pdf = require('html-pdf')
 const path = require('path')
 const options = require('../config/ticket-format')
->>>>>>> b6a09ecd6dd63f6991f531a13ba0bcb0d868bc16
 // Handle login
 const loginGet = (req, res) => {
     res.render('account/login', { title: 'Login', path: "not-header" })
@@ -165,6 +162,7 @@ const logout = (req, res) => {
 
 const getTicket = async (req, res) => {
     const id = req.query["id"]
+    //console.log(id);
     if (id === undefined) return res.redirect('/')
     let ticket
     let schedule
@@ -174,6 +172,13 @@ const getTicket = async (req, res) => {
     try {
         // Get ticket
         const ticketRaw = await Login.getTicketByID(id)
+        //console.log(ticketRaw.idve);
+        let billRaw = await Login.getBillById(ticketRaw.idve);
+        console.log(billRaw)
+        bill = {
+            name: billRaw.name,
+            quantity: billRaw.quantity
+        }
         ticket = {
             id: ticketRaw.idve,
             price: ticketRaw.price,
@@ -202,13 +207,11 @@ const getTicket = async (req, res) => {
         // Get room
         const roomRaw = await Login.getRoomById(schedule.idphongchieu)
         room = roomRaw.name
-        console.log(await ticket)
+        // console.log(await ticket)
+        
     } catch (error) {
         console.log(error.message)
     }
-<<<<<<< HEAD
-    console.log(schedule)
-=======
 
 
     // File setting
@@ -240,7 +243,8 @@ const getTicket = async (req, res) => {
         schedule,
         movie,
         customer,
-        room
+        room,
+        bill
     })
 }
 
@@ -293,15 +297,12 @@ const printTicket = async (req, res) => {
 
     // File setting
     const filepath = path.join(__dirname, 'docs', `${ticket.id}.pdf`)
->>>>>>> b6a09ecd6dd63f6991f531a13ba0bcb0d868bc16
     res.render('account/ticket', {
         ticket,
         schedule,
         movie,
         customer,
         room
-<<<<<<< HEAD
-=======
     }, (myErr, html) => {
         pdf.create(html, options).toFile(filepath, (err, result) => {
             if (err) return console.error(err.message)
@@ -312,7 +313,6 @@ const printTicket = async (req, res) => {
                 res.send(dataFile)
             }
         })
->>>>>>> b6a09ecd6dd63f6991f531a13ba0bcb0d868bc16
     })
 }
 

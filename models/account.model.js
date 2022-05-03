@@ -70,6 +70,15 @@ const getTicketsByCustomerId = (id) => new Promise((resolve,reject)=>{
     })
 })
 
+const getBillById = (id) => new Promise((resolve,reject) =>{
+    connect.query('select * from billdetail,product where billdetail.idsp = product.idsp and idve=?', [id], (err, result) => {
+        if (err) reject(err.message)
+        else {
+            resolve(result)
+        }
+    })
+})
+
 module.exports = {
     handleRegister,
     handleLogin,
@@ -77,5 +86,6 @@ module.exports = {
     getTicketByID,
     getCustomerById,
     getRoomById,
+    getBillById,
     getTicketsByCustomerId
 }
