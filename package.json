@@ -30,7 +30,6 @@
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.1",
     "pdf-creator-node": "^2.3.4",
-    "puppeteer": "^13.7.0",
     "throttle": "^1.0.3"
   }
 }
