@@ -293,6 +293,8 @@
 
 
 <script>
+        let productFood = [];
+
     let currentSeat = 0
     const selectedSeatList = []
 
@@ -358,13 +360,15 @@
           bookedMap: chooseSeat.dataset.bookedMap,
           idsuatchieu: idSchedule,
           price: price,
-          idkn: 1
+          idkn: 1,
+          productFood
         }),
         headers: {
           'Content-Type': 'application/json'
           //'Content-Type': 'application/x-www-form-urlencoded',
         },
       })
+      
 
       
       ////////////////*******************
@@ -513,7 +517,6 @@
               stopAddFood(countFood);
             }
         }
-        let productFood = [];
         //lấy id trong food so sánh với bill
         let trfirst = document.querySelectorAll('.tr_first');
         function selectTrAll(id,count,option){
@@ -525,19 +528,26 @@
               //console.log(e.dataset.product, e.dataset.quantity);
               
               if(option === true){ //thêm
-                if(productFood.findIndex(e.dataset.product) === e.dataset.product){
-                  e.dataset.quantity = count;  
-                }else{
+              e.dataset.quantity = count
+              //console.log(e.dataset.product)
+              //console.log(e.dataset.quantity)
+              addProduct(e.dataset.product,e.dataset.quantity,count);
+                //productFood.push(
+                //  {
+                //  idsp: e.dataset.product, 
+                //  quantity: e.dataset.quantity
+                //  }
+                //)
+                //console.log(productFood)
+                //productFood.map(pf => {
 
-                  productFood.push(
-                    {
-                    idsp: e.dataset.idsp, 
-                    quantity: e.dataset.quantity
-                  }
-                  )
-                }
+                  //console.log(pf)
+                    
+                //});
+                
+                //console.log(productFood);
               }
-              console.log(productFood);
+              //console.log(productFood);
               //remove Popcorn Bill
               if(count === 0){
                 e.style.display = 'none';
@@ -546,6 +556,30 @@
             });
         }
         
+        function addProduct(id,quantity, count){
+          let productFoodId = productFood.find(e => e.idsp === id)
+          //console.log(productFoodId)
+          if(productFoodId === undefined){
+            productFood.push(
+                  {
+                  idsp: +id, 
+                  quantity: +quantity
+                  }
+                )
+          }else{
+            //console.log(count)
+            quantity = count
+            productFood.map(pf => {
+              if(pf.idsp === id){
+                pf.quantity = count;
+                return {...pf}
+              }
+            }
+             )
+          }
+        }
+        
+
         function totalprice(t1,t2){
           total.innerHTML = t1+t2
         }

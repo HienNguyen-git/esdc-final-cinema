@@ -14,14 +14,33 @@ const getRoomByID = async (id) => new Promise((resolve, reject) => {
         resolve(result[0])
     })
 })
-// INSERT INTO `ticket`(`idve`, `price`, `seat`, `idsuatchieu`, `idkh`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]')
-const postBookTicket = async (seat, idsuatchieu, price, idkh) => new Promise((resolve, reject) => {
-    connect.query("Insert into ticket(price, seat, idsuatchieu, idkh) value(?,?,?,?)", [price, seat, idsuatchieu, idkh], (err, result) => {
+
+
+const postBillDetail = async detail => new Promise((resolve, reject) => {
+    // let tmp = ""
+    // detail.forEach(e => {
+    //    tmp+="(?,?,?)"
+    // });
+    console.log(detail)
+    connect.query("Insert into billdetail(idsp,quantity,idve) values ?", [detail], (err, result) => {
         if (err) {
+            
             console.error(err.message)
             reject(false)
         }
         resolve(true)
+    })
+})
+
+// INSERT INTO `ticket`(`idve`, `price`, `seat`, `idsuatchieu`, `idkh`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]')
+const postBookTicket = async (seat, idsuatchieu, price, idkh) => new Promise((resolve, reject) => {
+    connect.query("Insert into ticket(price, seat, idsuatchieu, idkh) value(?,?,?,?)", [price, seat, idsuatchieu, idkh], (err, result) => {
+        if (err) {
+            
+            console.error(err.message)
+            reject(false)
+        }
+        resolve(result.insertId)
     })
 })
 
@@ -79,5 +98,6 @@ module.exports = {
     getCustomerPoint,
     handleCustomerPoint,
     getScheduleSeatMapByID,
-    updateScheduleSeatMap
+    updateScheduleSeatMap,
+    postBillDetail
 }

@@ -1,6 +1,6 @@
 const e = require("express")
 const { formatDate, reverseDate, dataProcess, sleep } = require("../config/helper")
-const { getRoomMapByID, getRoomByID, getTicketPrice, postBookTicket, handleCustomerPoint, getScheduleSeatMapByID, updateScheduleSeatMap } = require("../models/booking.model")
+const { getRoomMapByID, getRoomByID, getTicketPrice, postBookTicket, handleCustomerPoint, getScheduleSeatMapByID, updateScheduleSeatMap, postBillDetail } = require("../models/booking.model")
 const { getALlMovieID, getMovieDetailById } = require("../models/movie.model")
 const { getScheduleByDate, getScheduleDateList, getScheduleByMovie, getScheduleByID } = require("../models/schedule.model")
 const adminProduct = require('../models/adminProduct.model');
@@ -207,7 +207,7 @@ const getBookingOption = async (req, res) => {
 
 const bookTicket = async (req, res) => {
     console.log(req.body)
-    let { seats, bookedMap, idsuatchieu, price, idkn } = req.body
+    let { seats, bookedMap, idsuatchieu, price, idkn,productFood } = req.body
     if (!seats) {
         return res.json({
             code: 1,
@@ -221,7 +221,9 @@ const bookTicket = async (req, res) => {
         })
     } else {
         try {
-            if (await postBookTicket(seats, idsuatchieu, price, idkn)) {
+            let ticketId = await postBookTicket(seats, idsuatchieu, price, idkn);
+            
+            if (ticketId) {
                 // Convert string to array
                 bookedMap = bookedMap.split(",").map(e => +e)
                 // Get seat map
@@ -237,18 +239,60 @@ const bookTicket = async (req, res) => {
                 }
                 if (checkCount === 0) {
                     getMap = [...getMap, ...bookedMap]
+                    let scheduleStatus = await updateScheduleSeatMap(idsuatchieu, JSON.stringify(getMap))
+                    //handle booking food
+                    if(productFood.length === 0) {
+                        
+                        if (scheduleStatus == true) {
+                            return res.json({
+                                code: 0,
+                                message: "Book ticket successfully"
+                            })
+                        } else {
+                            return res.json({
+                                code: 1,
+                                message: "Something went wrong!"
+                            })
+                        }
+                    }else{
+                        // let result;
+                        // let re
+                        let ticketArray = [ticketId]
+                        // console.log(ticketArray)
+                        // var output = productFood.map(function(obj) {
+                        //     return Object.keys(obj).sort().map(function(key) { 
+                        //       return obj[key];
+                        //     });
+                        //   });
+                        // console.log(output)
+                        var output = []
+                        productFood.forEach(e => {
 
-                    if (await updateScheduleSeatMap(idsuatchieu, JSON.stringify(getMap)) == true) {
-                        return res.json({
-                            code: 0,
-                            message: "Book ticket successfully"
+                            output = [...output,[e.idsp,e.quantity,ticketId]]
                         })
-                    } else {
-                        return res.json({
-                            code: 1,
-                            message: "Something went wrong!"
-                        })
+                        //console.log(output);
+
+                        // for(let pf of productFood){
+                            // console.log(pf);
+                            // result =  Object.keys(pf).map((key) => [pf[key]]);
+                            // re = result.concat(ticketArray)
+                            // console.log(re)
+                        // }
+
+                        // console.log(ticketId)
+                        if(await postBillDetail(output) ){
+                            return res.json({
+                                code: 0,
+                                message: "Book ticket successfully"
+                            })
+                        } else {
+                            return res.json({
+                                code: 1,
+                                message: "Something went wrong!"
+                            })
+                        }
                     }
+
                 } else {
                     return res.json({
                         code: 1,
@@ -270,10 +314,16 @@ const bookTicket = async (req, res) => {
     }
 }
 
+const bookProduct = (req,res) =>{
+    let { productFood } = req.body;
+    console.log(productFood);
+    // productFood.forEach(p => console.log(p.idsp))
+}
 
 module.exports = {
     getScheduleList,
     getMovieSchedule,
     getBookingOption,
-    bookTicket
+    bookTicket,
+    bookProduct
 }
