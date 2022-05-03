@@ -43,10 +43,10 @@
       <table class="table-box-2" style="width: 100%;" >
         <tbody id="table-tbody-2">
           {{#each resultArray}}
-            <tr class="tr_first" data-product="{{idsp}}" style="display: none;">
+            <tr class="tr_first" data-product="{{idsp}}" data-quantity="0" style="display: none;">
               <td class="td-first"><span class="names">{{name}}</span></td>
               <td class="td-second align-right" style="width: 110px">
-                <span class="sol">1</span> x {{price}} VNĐ
+                <span  class="sol">1</span> x {{price}} VNĐ
               </td>
             </tr>
           {{/each}}
@@ -365,6 +365,8 @@
           //'Content-Type': 'application/x-www-form-urlencoded',
         },
       })
+
+      
       ////////////////*******************
       // Send booking ticket request to server
       const res = await myFetch.json()
@@ -484,7 +486,7 @@
               let price = Number($(ob).find('.price-num').html());
               sum-= price;
               let idsanpham = $(ob).find('.inputPrice').val()
-              selectTrAll(idsanpham,sl);
+              selectTrAll(idsanpham,sl,false);
               totalprice(total1,sum);
               countFood-=1;
               stopAddFood(countFood);
@@ -505,20 +507,37 @@
               sum+= price;
               let idsanpham = $(ob).find('.inputPrice').val()
               //console.log(idsanpham);
-              selectTrAll(idsanpham,sl);
+              selectTrAll(idsanpham,sl,true);
               totalprice(total1,sum);
               countFood+=1;
               stopAddFood(countFood);
             }
         }
-
+        let productFood = [];
         //lấy id trong food so sánh với bill
         let trfirst = document.querySelectorAll('.tr_first');
-        function selectTrAll(id,count){
+        function selectTrAll(id,count,option){
           trfirst.forEach(e => {
             if(id === e.dataset.product){
               e.style.display = '';
               e.querySelector('.sol').innerHTML = count
+              //e.dataset.quantity = count
+              //console.log(e.dataset.product, e.dataset.quantity);
+              
+              if(option === true){ //thêm
+                if(productFood.findIndex(e.dataset.product) === e.dataset.product){
+                  e.dataset.quantity = count;  
+                }else{
+
+                  productFood.push(
+                    {
+                    idsp: e.dataset.idsp, 
+                    quantity: e.dataset.quantity
+                  }
+                  )
+                }
+              }
+              console.log(productFood);
               //remove Popcorn Bill
               if(count === 0){
                 e.style.display = 'none';
@@ -532,7 +551,7 @@
         }
         //console.log(circle)
         function stopAddFood(countF){
-          console.log(countF)
+          //console.log(countF)
           let circle = document.querySelectorAll('.fa-plus-circle');
           if(countF>=10){
                 showAlert("Maximum is 10 products");
