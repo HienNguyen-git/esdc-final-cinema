@@ -4,8 +4,8 @@ const Login = require('../models/account.model');
 const { getMovieDetailById } = require('../models/movie.model');
 const { getScheduleByID } = require('../models/schedule.model');
 
-const fs = require('fs-extra')
-const puppeteer = require('puppeteer')
+const fs = require('fs')
+const pdf = require('html-pdf')
 const path = require('path')
 const options = require('../config/ticket-format')
 // Handle login
@@ -193,38 +193,11 @@ const getTicket = async (req, res) => {
         console.log(error.message)
     }
 
-    console.log({
-        ticket,
-        schedule,
-        movie,
-        customer,
-        room
-    })
-
-    try {
-        const browser = await puppeteer.launch()
-        const page = await browser.newPage()
-
-        await page.setContent(`<h1>${movie}</h1>`)
-        await page.emulateMediaType("screen")
-        await page.pdf({
-            path: 'demo.pdf',
-            format: 'A4',
-            printBackground: true
-        })
-        
-        console.log("Done")
-        await browser.close()
-        process.exit()
-    } catch (error) {
-        console.log("Some error: ", e)
-    }
-
-
-
 
     // File setting
+    const fileName = path.join(__dirname, 'docs', `${ticket.id}.pdf`)
 
+    const filepath = 'http://localhost:3000/docs/' + fileName;
     res.render('account/ticket', {
         layout: false,
         ticket,
@@ -233,49 +206,26 @@ const getTicket = async (req, res) => {
         customer,
         room
     }, (myErr, html) => {
-        pdf.create(html, options).toFile(fileName, async (err, result) => {
-            if (err) return res.redirect('/')
+        pdf.create(html, options).toFile(filepath, (err, result) => {
+            if (err) return console.error(err.message)
             else {
-                try {
-                    const browser = await puppeteer.launch()
-                    const page = await browser.newPage()
-                    await page.setContent(html)
-                    await page.emulateMediaType("screen")
-                    await page.pdf({
-                        path: 'demo.pdf',
-                        format: 'A4',
-                        printBackground: true
-                    })
-                    console.log("Done")
-                } catch (error) {
-                    console.log("Some error: ", e)
-                }
                 console.log(res)
-                const dataFile = fs.readFileSync(fileName)
+                const dataFile = fs.readFileSync(filepath)
                 res.header('content-type', 'application/pdf')
-                return res.send(dataFile)
+                res.send(dataFile)
             }
         })
     })
 
-    // const fileName = path.join(__dirname,'docs',`${ticket.id}.pdf`)
-    //     res.render('account/ticket', {
+    // res.render(filepath)
+    // res.render('account/ticket', {
+    //     path: "not-header",
     //     layout: false,
     //     ticket,
     //     schedule,
     //     movie,
     //     customer,
     //     room
-    // }, (myErr,html)=>{
-    //     pdf.create(html, options).toFile(fileName, (err, result)=>{
-    //         if(err) return res.redirect('/')
-    //         else{
-    //             console.log(res)
-    //             const dataFile = fs.readFileSync(fileName)
-    //             res.header('content-type', 'application/pdf')
-    //             return res.send(dataFile)
-    //         }
-    //     })
     // })
 }
 
