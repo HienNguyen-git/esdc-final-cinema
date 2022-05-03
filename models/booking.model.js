@@ -40,6 +40,7 @@ const postBookTicket = async (seat, idsuatchieu, price, idkh) => new Promise((re
             console.error(err.message)
             reject(false)
         }
+        console.log(result)
         resolve(result.insertId)
     })
 })
