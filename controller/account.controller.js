@@ -90,13 +90,13 @@ const registerPost = async (req, res) => {
 
 const manageGet = async (req, res) => {
     let ticket
-    // if(req.session.user===undefined){
-    //     return res.redirect('/account/login')
-    // }else{
-    const data = await Login.handleLogin("tronghien@mail.com");
-    // console.log(ticketRaw)
+    if(req.session.user===undefined){
+        return res.redirect('/account/login')
+    }else{
+    const data = await Login.handleLogin(req.session.user);
+    console.log(data.idkh)
     const ticketRaw = await Login.getTicketsByCustomerId(data.idkh)
-
+    
     ticket = ticketRaw.map(e => ({
         idve: e.idve,
         price: e.price,
@@ -105,7 +105,7 @@ const manageGet = async (req, res) => {
     }))
     console.log(ticket)
     res.render('account/manage', { title: "Manage", path: "account/manage", data, ticket })
-    // }
+    }
 }
 
 const changepasssGet = async (req, res) => {

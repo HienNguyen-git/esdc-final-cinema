@@ -59,7 +59,7 @@
     const bookedTicket = document.querySelector('#booked-ticked')
     bookedTicket.addEventListener('click',e=>{
         if(e.target.classList.contains('btn')){
-            location.href = myRoot+"/account/ticket?id="+e.target.dataset.id
+            location.href = myRoot+"/account/ticket-preview?id="+e.target.dataset.id
         }
     })
 </script>
