@@ -166,16 +166,12 @@ const getTicket = async (req, res) => {
     let movie
     let customer
     let room
+    let bill
     try {
         // Get ticket
         const ticketRaw = await Login.getTicketByID(id)
-        //console.log(ticketRaw.idve);
-        let billRaw = await Login.getBillById(ticketRaw.idve);
-        console.log(billRaw)
-        bill = {
-            name: billRaw.name,
-            quantity: billRaw.quantity
-        }
+        
+        // console.log(bill)
         ticket = {
             id: ticketRaw.idve,
             price: ticketRaw.price,
@@ -195,6 +191,17 @@ const getTicket = async (req, res) => {
             idphim: scheduleRaw.idphim,
             idphongchieu: scheduleRaw.idphongchieu,
         }
+
+        //Get popcorn list
+        let billRaw = await Login.getBillById(ticketRaw.idve);
+        // console.log(ticketRaw.idve);
+        // console.log(billRaw)
+        bill = billRaw.map(b=>({
+            name: b.name,
+            quantity: b.quantity
+        }))
+        // console.log(bill)
+
         // Get movie
         const movieRaw = await getMovieDetailById(schedule.idphim)
         movie = movieRaw.title
@@ -209,13 +216,14 @@ const getTicket = async (req, res) => {
     } catch (error) {
         console.log(error.message)
     }
-    console.log(schedule)
+    // console.log(schedule)
     res.render('account/ticket', {
         ticket,
         schedule,
         movie,
         customer,
-        room
+        room,
+        bill
     })
 }
 
