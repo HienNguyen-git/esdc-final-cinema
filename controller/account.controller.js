@@ -86,21 +86,22 @@ const registerPost = async (req, res) => {
 
 const manageGet = async (req, res) => {
     let ticket
-    if(req.session.user===undefined){
+    if (req.session.user === undefined) {
         return res.redirect('/account/login')
-    }else{
-    const data = await Login.handleLogin(req.session.user);
-    console.log(data.idkh)
-    const ticketRaw = await Login.getTicketsByCustomerId(data.idkh)
-    
-    ticket = ticketRaw.map(e => ({
-        idve: e.idve,
-        price: e.price,
-        seat: e.seat,
-        schedule: e.idsuatchieu
-    }))
-    console.log(ticket)
-    res.render('account/manage', { title: "Manage", path: "account/manage", data, ticket })
+    } else {
+        const data = await Login.handleLogin(req.session.user);
+        
+        const ticketRaw = await Login.getTicketsByCustomerId(data.idkh)
+
+        ticket = ticketRaw.map(e => ({
+            idve: e.idve,
+            price: e.price,
+            seat: e.seat,
+            schedule: e.idsuatchieu
+        }))
+        
+        console.log(ticket)
+        res.render('account/manage', { title: "Manage", path: "account/manage", data, ticket })
     }
 }
 
@@ -217,6 +218,61 @@ const getTicket = async (req, res) => {
         room
     })
 }
+
+
+const printTicket = async (req, res) => {
+    const id = req.query["id"]
+    if (id === undefined) return res.redirect('/')
+    let ticket
+    let schedule
+    let movie
+    let customer
+    let room
+    try {
+        // Get ticket
+        const ticketRaw = await Login.getTicketByID(id)
+        ticket = {
+            id: ticketRaw.idve,
+            price: ticketRaw.price,
+            seat: ticketRaw.seat,
+            idsuatchieu: ticketRaw.idsuatchieu,
+            idkh: ticketRaw.idkh,
+        }
+        // Get schedule
+        const scheduleRaw = await getScheduleByID(ticket.idsuatchieu)
+        schedule = {
+            idsuatchieu: scheduleRaw.idsuatchieu,
+            start: scheduleRaw.start.slice(0, -3),
+            day: getDays(scheduleRaw.day),
+            date: getDates(scheduleRaw.day),
+            month: getMonths(scheduleRaw.day),
+            year: getYears(scheduleRaw.day),
+            idphim: scheduleRaw.idphim,
+            idphongchieu: scheduleRaw.idphongchieu,
+        }
+        // Get movie
+        const movieRaw = await getMovieDetailById(schedule.idphim)
+        movie = movieRaw.title
+        // Get customer
+        const customerRaw = await Login.getCustomerById(ticket.idkh)
+        customer = customerRaw.name
+        // Get room
+        const roomRaw = await Login.getRoomById(schedule.idphongchieu)
+        room = roomRaw.name
+        console.log(await ticket)
+    } catch (error) {
+        console.log(error.message)
+    }
+    console.log(schedule)
+    res.render('account/ticket', {
+        ticket,
+        schedule,
+        movie,
+        customer,
+        room
+    })
+}
+
 
 module.exports = {
     loginGet,

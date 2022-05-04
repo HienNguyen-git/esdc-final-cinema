@@ -262,6 +262,7 @@ const bookTicket = async (req, res) => {
                         if (scheduleStatus == true) {
                             return res.json({
                                 code: 0,
+                                ticketId,
                                 message: "Book ticket successfully"
                             })
                         } else {
