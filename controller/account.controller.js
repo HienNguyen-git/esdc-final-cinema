@@ -90,7 +90,7 @@ const manageGet = async (req, res) => {
         return res.redirect('/account/login')
     } else {
         const data = await Login.handleLogin(req.session.user);
-        
+
         const ticketRaw = await Login.getTicketsByCustomerId(data.idkh)
 
         ticket = ticketRaw.map(e => ({
@@ -201,7 +201,7 @@ const getTicket = async (req, res) => {
         console.log(error.message)
     }
     console.log(schedule)
-    res.render('account/ticket', {
+    res.render('account/ticket-view', {
         ticket,
         schedule,
         movie,
