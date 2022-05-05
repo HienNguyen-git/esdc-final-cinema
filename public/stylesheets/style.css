@@ -1078,6 +1078,8 @@ footer {
 }
 
 .schedule-item {
+  display: flex;
+  flex-direction: column;
   padding: 15px;
   background-color: #6e5a11;
   margin-right: 10px;
@@ -1085,6 +1087,11 @@ footer {
   cursor: pointer;
   transition: all 0.5s ease;
   text-align: center;
+  cursor: pointer;
+}
+
+.schedule-item span{
+  pointer-events: none;
 }
 
 .bill-item {
@@ -1107,6 +1114,7 @@ footer {
   color: #fff;
   transform: scale(1.08);
   transition: transform 5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  cursor: pointer;
 }
 
 .schedule-item-selected {

@@ -6,7 +6,7 @@
       <div class="schedule-date font-weight-bold">{{this.date}}</div>
       <div class="hall-type">
       {{#each list}}
-        <div class="schedule-item" data-show="{{idsuatchieu}}">{{start}}</div>
+        <div class="schedule-item" data-show="{{idsuatchieu}}"><span>{{start}}</span><span style="color:#ffc107">{{bookedNum}}/{{quantity}}</span></div>
       {{/each}}
       </div>
     {{/each}}

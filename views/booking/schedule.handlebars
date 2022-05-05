@@ -30,7 +30,7 @@
                             <div>
                                 <div class="schedule-item"><i class="far fa-clock"></i></div>
                                 {{#each schedules}}
-                                <div class="schedule-item" data-show="{{schedule.idsuatchieu}}">{{schedule.start}}</div>
+                                <div class="schedule-item" data-show="{{schedule.idsuatchieu}}"><span>{{schedule.start}}</span><span style="color:#ffc107">{{schedule.bookedNum}}/{{schedule.quantity}}</span></div>
                                 {{/each}}
                             </div>
                         </div>
