@@ -1,10 +1,23 @@
-const { sleep } = require("../config/helper")
 const connect = require("../database/db")
 
 const getRoomMapByID = async (id) => new Promise((resolve, reject) => {
     connect.query("Select * from map where id=?", [id], (err, result) => {
         if (err) reject(err.message)
         resolve(result[0])
+    })
+})
+
+const getQuantitySeatOfRoom = async(id)=> new Promise((resolve,reject)=>{
+    connect.query("SELECT numrow,numcolumn FROM map, room where room.idmap=map.id and room.idphongchieu=?", [id], (err, result) => {
+        if (err) reject(err.message)
+        resolve(result[0])
+    })
+})
+
+const getListQuantitySeatOfRoom = async(id)=> new Promise((resolve,reject)=>{
+    connect.query("SELECT * FROM map, room where room.idmap=map.id", (err, result) => {
+        if (err) reject(err.message)
+        resolve(result)
     })
 })
 
@@ -100,5 +113,7 @@ module.exports = {
     handleCustomerPoint,
     getScheduleSeatMapByID,
     updateScheduleSeatMap,
-    postBillDetail
+    postBillDetail,
+    getQuantitySeatOfRoom,
+    getListQuantitySeatOfRoom
 }

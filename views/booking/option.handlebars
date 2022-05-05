@@ -388,7 +388,7 @@
           showAlert(res.message)
         }
       } else{
-        showAlert(res.message+ ". Your ticket will be ready in a second", "alert-success")
+        window.alert(res.message)
         window.location.href = myLocalhost+"/account/ticket-preview?id="+res.ticketId
       }
       ////////////////*******************
@@ -403,7 +403,6 @@
       chooseSeat.dataset.bookedMap = tmp
 
       const seatInfo = seatIndex.map(e=>convertIndexToSeat(e)).toString()
-      console.log(seatInfo)
       updateSeatList(seatInfo)
 
       const selectedSeatsCount = selectedSeats.length;

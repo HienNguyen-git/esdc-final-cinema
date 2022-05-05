@@ -148,9 +148,29 @@
         </div>
       </div>
     </div>
+    {{#checkPage path}}
+    <div
+      class="btn-container text-light"
+      style="position: fixed;
+            bottom: 20%;
+            right: 5;
+            transform: translateX(10px);
+            margin: 10px;"
+    >
+      <btn
+        id="printBtn"
+        class="btn btn-danger"
+      >Print</btn>
+    </div>
+    {{/checkPage}}
 
   </body>
   <script src="/javascripts/jquery-3.3.1.min.js "></script>
   <script src="/javascripts/script.js "></script>
-
+  <script>
+    const myRoot = location.href
+    document.querySelector('#printBtn').addEventListener('click',(e)=>{
+      location.href = location.href+"&&print=true"
+    })
+  </script>
 </html>

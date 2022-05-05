@@ -1,6 +1,6 @@
 const e = require("express")
 const { formatDate, reverseDate, dataProcess, sleep } = require("../config/helper")
-const { getRoomMapByID, getRoomByID, getTicketPrice, postBookTicket, handleCustomerPoint, getScheduleSeatMapByID, updateScheduleSeatMap, postBillDetail } = require("../models/booking.model")
+const { getRoomMapByID, getRoomByID, getTicketPrice, postBookTicket, handleCustomerPoint, getScheduleSeatMapByID, updateScheduleSeatMap, postBillDetail, getQuantitySeatOfRoom, getListQuantitySeatOfRoom } = require("../models/booking.model")
 const { getALlMovieID, getMovieDetailById } = require("../models/movie.model")
 const { getScheduleByDate, getScheduleDateList, getScheduleByMovie, getScheduleByID } = require("../models/schedule.model")
 const adminProduct = require('../models/adminProduct.model');
@@ -19,6 +19,7 @@ const getScheduleList = async (req, res) => {
         const movieIdList = await getALlMovieID()
         const data = await getScheduleByDate(date)
         const scheduleValue = dataProcess(data)
+        const listRoomQuantity = dataProcess(await getListQuantitySeatOfRoom())
         dataProcess(movieIdList).forEach(async i => {
             let tmp = scheduleValue.filter(e => e.idphim === i.idphim)
             const movieDataRaw = await getMovieDetailById(i.idphim)
@@ -35,17 +36,26 @@ const getScheduleList = async (req, res) => {
                     duration: movieDataRaw.duration
                 }
 
-                tmp = tmp.map(e => ({
-                    schedule: {
-                        idsuatchieu: e.idsuatchieu,
-                        start: e.start.slice(0, -3),
-                        day: formatDate(e.day),
-                        idphim: e.idphim,
-                        idphongchieu: e.idphongchieu,
-                        seatmap: JSON.parse(e.seatmap)
-                    },
-                }
-                ))
+                tmp = tmp.map(e =>{
+                    const getValue = listRoomQuantity.find(i => i.idphongchieu === e.idphongchieu)
+                    const roomQuantity = getValue.numcolumn*getValue.numcolumn
+                    const mySeatMap = JSON.parse(e.seatmap)
+                    return ({
+                        schedule: {
+                            idsuatchieu: e.idsuatchieu,
+                            start: e.start.slice(0, -3),
+                            day: formatDate(e.day),
+                            idphim: e.idphim,
+                            idphongchieu: e.idphongchieu,
+                            bookedNum: roomQuantity-mySeatMap.length,
+                            quantity: roomQuantity,
+                            seatmap: mySeatMap
+                        },
+                    }
+                    )
+                } 
+                
+                )
                 context = [
                     ...context,
                     {
@@ -72,7 +82,6 @@ const getScheduleList = async (req, res) => {
     })
 }
 
-
 const getMovieSchedule = async (req, res) => {
     const id = req.query['id']
     if (id === undefined) {
@@ -82,19 +91,29 @@ const getMovieSchedule = async (req, res) => {
     let scheduleDateList = []
     try {
         const scheduleDateListRaw = dataProcess(await getScheduleByMovie(id))
+        const listRoomQuantity = dataProcess(await getListQuantitySeatOfRoom())
         const dateList = (new Set(scheduleDateListRaw.map(e => e.day)))
-        dateList.forEach(e => {
+        dateList.forEach(async e => {
             let tmp = scheduleDateListRaw.filter(i => i.day === e)
-
-            tmp = tmp.map(e => ({
-                idsuatchieu: e.idsuatchieu,
-                start: e.start.slice(0, -3),
-                day: formatDate(e.day),
-                idphim: e.idphim,
-                idphongchieu: e.idphongchieu,
-                seatmap: JSON.parse(e.seatmap)
+            tmp = tmp.map(e => {
+                const getValue = listRoomQuantity.find(i => i.idphongchieu === e.idphongchieu)
+                const roomQuantity = getValue.numcolumn*getValue.numcolumn
+                const mySeatMap = JSON.parse(e.seatmap)
+                return ({
+                    idsuatchieu: e.idsuatchieu,
+                    start: e.start.slice(0, -3),
+                    day: formatDate(e.day),
+                    idphim: e.idphim,
+                    idphongchieu: e.idphongchieu,
+                    seatmap: mySeatMap,
+                    bookedNum: roomQuantity-mySeatMap.length,
+                    quantity: roomQuantity
+                }
+                )
             }
-            ))
+            )
+            // console.log(tmp)
+
             scheduleDateList = [
                 ...scheduleDateList,
                 {
@@ -130,9 +149,9 @@ const getMovieSchedule = async (req, res) => {
 }
 
 const getBookingOption = async (req, res) => {
-    if(req.session.user===undefined){
+    if (req.session.user === undefined) {
         return res.redirect('/account/login')
-    }else{
+    } else {
 
         const idSchedule = req.query["id"]
         let schedule
@@ -141,11 +160,11 @@ const getBookingOption = async (req, res) => {
         let roomData
         let price
         let idkh
-    
+
         if (idSchedule === undefined) {
             return res.redirect('/')
         }
-    
+
         try {
             //popcorn
             const adminProducts = await adminProduct.handleReadProduct();
@@ -168,12 +187,12 @@ const getBookingOption = async (req, res) => {
                 idphongchieu: scheduleRaw.idphongchieu,
                 seatmap: JSON.parse(scheduleRaw.seatmap)
             }
-    
-    
+
+
             if (schedule) {
                 const movieDataRaw = await getMovieDetailById(schedule.idphim)
                 const roomDataRaw = await getRoomByID(schedule.idphongchieu)
-    
+
                 movieData = {
                     id: movieDataRaw.idphim,
                     img: movieDataRaw.poster_path,
@@ -183,29 +202,29 @@ const getBookingOption = async (req, res) => {
                     release_date: formatDate(movieDataRaw.release_date),
                     duration: movieDataRaw.duration
                 }
-    
+
                 roomData = {
                     id: roomDataRaw.idphongchieu,
                     name: roomDataRaw.name,
                     idMap: roomDataRaw.idmap
                 }
-    
+
                 const roomMapRaw = await getRoomMapByID(roomData.idMap)
-    
+
                 roomMap = {
                     id: roomMapRaw.id,
                     numRow: roomMapRaw.numrow,
                     numColumn: roomMapRaw.numcolumn,
                 }
             }
-    
+
         } catch (error) {
             console.error(error.message)
         }
-    
+
         await sleep(100)
-    
-    
+
+
         res.render('booking/option', {
             title: "Book ticket & more options",
             path: "option",
@@ -222,7 +241,7 @@ const getBookingOption = async (req, res) => {
 
 const bookTicket = async (req, res) => {
     console.log(req.body)
-    let { seats, bookedMap, idsuatchieu, price, idkh,productFood } = req.body
+    let { seats, bookedMap, idsuatchieu, price, idkh, productFood } = req.body
     let ticketId
     if (!seats) {
         return res.json({
@@ -238,7 +257,7 @@ const bookTicket = async (req, res) => {
     } else {
         try {
             ticketId = await postBookTicket(seats, idsuatchieu, price, idkh);
-            
+
             if (ticketId) {
                 // Convert string to array
                 bookedMap = bookedMap.split(",").map(e => +e)
@@ -257,8 +276,8 @@ const bookTicket = async (req, res) => {
                     getMap = [...getMap, ...bookedMap]
                     let scheduleStatus = await updateScheduleSeatMap(idsuatchieu, JSON.stringify(getMap))
                     //handle booking food
-                    if(productFood.length === 0) {
-                        
+                    if (productFood.length === 0) {
+
                         if (scheduleStatus == true) {
                             return res.json({
                                 code: 0,
@@ -271,7 +290,7 @@ const bookTicket = async (req, res) => {
                                 message: "Something went wrong!"
                             })
                         }
-                    }else{
+                    } else {
                         // let result;
                         // let re
                         let ticketArray = [ticketId]
@@ -284,19 +303,19 @@ const bookTicket = async (req, res) => {
                         // console.log(output)
                         var output = []
                         productFood.forEach(e => {
-                            output = [...output,[e.idsp,e.quantity,ticketId]]
+                            output = [...output, [e.idsp, e.quantity, ticketId]]
                         })
                         //console.log(output);
 
                         // for(let pf of productFood){
-                            // console.log(pf);
-                            // result =  Object.keys(pf).map((key) => [pf[key]]);
-                            // re = result.concat(ticketArray)
-                            // console.log(re)
+                        // console.log(pf);
+                        // result =  Object.keys(pf).map((key) => [pf[key]]);
+                        // re = result.concat(ticketArray)
+                        // console.log(re)
                         // }
 
                         // console.log(ticketId)
-                        if(await postBillDetail(output) ){
+                        if (await postBillDetail(output)) {
                             return res.json({
                                 code: 0,
                                 ticketId,
@@ -331,7 +350,7 @@ const bookTicket = async (req, res) => {
     }
 }
 
-const bookProduct = (req,res) =>{
+const bookProduct = (req, res) => {
     let { productFood } = req.body;
     console.log(productFood);
     // productFood.forEach(p => console.log(p.idsp))

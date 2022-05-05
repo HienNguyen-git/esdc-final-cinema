@@ -61,6 +61,10 @@ app.engine('handlebars', expressHandlebars.engine({
     },
     printValue(value){
       return value
+    },
+    getSeatLength(seat){
+      console.log(seat)
+      return 0
     }
   }
 }))
