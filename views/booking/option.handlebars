@@ -361,7 +361,7 @@
           seats: chooseSeat.dataset.seatList,
           bookedMap: chooseSeat.dataset.bookedMap,
           idsuatchieu: idSchedule,
-          price: price,
+          price: total.dataset.total,
           idkh,
           productFood
         }),
@@ -586,6 +586,7 @@
 
         function totalprice(t1,t2){
           total.innerHTML = t1+t2
+          total.dataset.total = t1+t2;
         }
         //console.log(circle)
         function stopAddFood(countF){

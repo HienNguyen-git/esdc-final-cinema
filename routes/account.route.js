@@ -9,7 +9,7 @@ router.get('/register', registerGet);
 router.get('/manage', manageGet);
 router.get('/changepassword', changepasssGet);
 router.get('/ticket-preview', getTicket)
-router.get('/print-ticket', printTicket)
+// router.get('/print-ticket', printTicket)
 router.get('/demo', (req,res)=>{
     res.render("account/ticket")
 })
