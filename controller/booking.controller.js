@@ -39,6 +39,7 @@ const getScheduleList = async (req, res) => {
                 tmp = tmp.map(e =>{
                     const getValue = listRoomQuantity.find(i => i.idphongchieu === e.idphongchieu)
                     const roomQuantity = getValue.numcolumn*getValue.numcolumn
+                    const mySeatMap = JSON.parse(e.seatmap)
                     return ({
                         schedule: {
                             idsuatchieu: e.idsuatchieu,
@@ -46,9 +47,9 @@ const getScheduleList = async (req, res) => {
                             day: formatDate(e.day),
                             idphim: e.idphim,
                             idphongchieu: e.idphongchieu,
-                            bookedNum: JSON.parse(e.seatmap).length,
+                            bookedNum: roomQuantity-mySeatMap.length,
                             quantity: roomQuantity,
-                            seatmap: JSON.parse(e.seatmap)
+                            seatmap: mySeatMap
                         },
                     }
                     )
@@ -97,14 +98,15 @@ const getMovieSchedule = async (req, res) => {
             tmp = tmp.map(e => {
                 const getValue = listRoomQuantity.find(i => i.idphongchieu === e.idphongchieu)
                 const roomQuantity = getValue.numcolumn*getValue.numcolumn
+                const mySeatMap = JSON.parse(e.seatmap)
                 return ({
                     idsuatchieu: e.idsuatchieu,
                     start: e.start.slice(0, -3),
                     day: formatDate(e.day),
                     idphim: e.idphim,
                     idphongchieu: e.idphongchieu,
-                    seatmap: JSON.parse(e.seatmap),
-                    bookedNum: JSON.parse(e.seatmap).length,
+                    seatmap: mySeatMap,
+                    bookedNum: roomQuantity-mySeatMap.length,
                     quantity: roomQuantity
                 }
                 )
