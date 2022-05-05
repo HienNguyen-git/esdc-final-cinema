@@ -58,42 +58,17 @@
             FOOD &amp; BEVERAGES
           </p>
           <div class="ticket-number">
-            <table class="table-box-2" style="width: 100%;">
+            <table class="table-box-2" style="margin-left: 16px;width: 90%;">
               <tbody id="table-tbody-2">
+                {{#each bill}}
                 <tr class="tr_first">
-                  <td class="td-first"><span class="names">iBIG SHARE Combo</span></td>
+                  <td class="td-first"><span class="names">{{name}}</span></td>
                   <td class="td-second align-right" style="width: 110px">
-                    x<span class="sol">1</span>
+                    x<span class="sol">{{quantity}}</span>
                   </td>
                 </tr>
-                <tr class="tr_first">
-                  <td class="td-first"><span class="names">iBIG SHARE Combo</span></td>
-                  <td class="td-second align-right" style="width: 110px">
-                    <span class="sol">1</span>
-                    x 97,000 VNĐ
-                  </td>
-                </tr>
-                <tr class="tr_first">
-                  <td class="td-first"><span class="names">iBIG SHARE Combo</span></td>
-                  <td class="td-second align-right" style="width: 110px">
-                    <span class="sol">1</span>
-                    x 97,000 VNĐ
-                  </td>
-                </tr>
-                <tr class="tr_first">
-                  <td class="td-first"><span class="names">iBIG SHARE Combo</span></td>
-                  <td class="td-second align-right" style="width: 110px">
-                    <span class="sol">1</span>
-                    x 97,000 VNĐ
-                  </td>
-                </tr>
-                <tr class="tr_first">
-                  <td class="td-first"><span class="names">iBIG SHARE Combo</span></td>
-                  <td class="td-second align-right" style="width: 110px">
-                    <span class="sol">1</span>
-                    x 97,000 VNĐ
-                  </td>
-                </tr>
+                {{/each}}
+                
               </tbody>
             </table>
           </div>
