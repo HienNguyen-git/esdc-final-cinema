@@ -559,21 +559,23 @@
         }
         
         function addProduct(id,quantity, count){
-          let productFoodId = productFood.find(e => e.idsp === id)
-          //console.log(productFoodId)
+          console.log(productFood);
+          let productFoodId = productFood.find(e => +e.idsp === +id)
+          //console.log("day la productFoodId " + productFoodId);
           if(productFoodId === undefined){
             productFood.push(
-                  {
-                  idsp: +id, 
-                  quantity: +quantity
-                  }
-                )
+              {
+              idsp: +id, 
+              quantity: +quantity
+              }
+            )
           }else{
             //console.log(count)
-            quantity = count
+            //quantity = count
             productFood.map(pf => {
-              if(pf.idsp === id){
+              if(+pf.idsp === +id){
                 pf.quantity = count;
+                //console.log(pf.quantity)
                 return {...pf}
               }
             }

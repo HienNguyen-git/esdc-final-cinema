@@ -34,7 +34,7 @@ const postBillDetail = async detail => new Promise((resolve, reject) => {
     // detail.forEach(e => {
     //    tmp+="(?,?,?)"
     // });
-    console.log(detail)
+    // console.log(detail)
     connect.query("Insert into billdetail(idsp,quantity,idve) values ?", [detail], (err, result) => {
         if (err) {
             
@@ -53,7 +53,7 @@ const postBookTicket = async (seat, idsuatchieu, price, idkh) => new Promise((re
             console.error(err.message)
             reject(false)
         }
-        console.log(result)
+        // console.log(result)
         resolve(result.insertId)
     })
 })

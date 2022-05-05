@@ -240,7 +240,7 @@ const getBookingOption = async (req, res) => {
 }
 
 const bookTicket = async (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     let { seats, bookedMap, idsuatchieu, price, idkh, productFood } = req.body
     let ticketId
     if (!seats) {
@@ -305,7 +305,7 @@ const bookTicket = async (req, res) => {
                         productFood.forEach(e => {
                             output = [...output, [e.idsp, e.quantity, ticketId]]
                         })
-                        //console.log(output);
+                        // console.log(output);
 
                         // for(let pf of productFood){
                         // console.log(pf);
@@ -352,7 +352,7 @@ const bookTicket = async (req, res) => {
 
 const bookProduct = (req, res) => {
     let { productFood } = req.body;
-    console.log(productFood);
+    // console.log(productFood);
     // productFood.forEach(p => console.log(p.idsp))
 }
 
