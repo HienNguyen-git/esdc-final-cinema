@@ -4,6 +4,11 @@ const Login = require('../models/account.model');
 const { getMovieDetailById } = require('../models/movie.model');
 const { getScheduleByID } = require('../models/schedule.model');
 
+const pdf = require('html-pdf')
+const options = require('../config/ticket-format')
+const path = require('path')
+const fs = require('fs')
+
 // Handle login
 const loginGet = (req, res) => {
     res.render('account/login', { title: 'Login', path: "not-header" })
@@ -99,8 +104,7 @@ const manageGet = async (req, res) => {
             seat: e.seat,
             schedule: e.idsuatchieu
         }))
-        
-        console.log(ticket)
+
         res.render('account/manage', { title: "Manage", path: "account/manage", data, ticket })
     }
 }
@@ -123,7 +127,6 @@ const changepassPost = async (req, res) => {
             return res.redirect('/account/changepassword');
         }
         else if (await Login.handleChangePass(newpass, req.session.user)) {
-            console.log(newpass, req.session.user);
             req.session.flash = {
                 type: "success",
                 intro: "Congratulation!",
@@ -159,6 +162,7 @@ const logout = (req, res) => {
 
 const getTicket = async (req, res) => {
     const id = req.query["id"]
+    const isPrint = req.query["print"]
     if (id === undefined) return res.redirect('/')
     let ticket
     let schedule
@@ -196,18 +200,48 @@ const getTicket = async (req, res) => {
         // Get room
         const roomRaw = await Login.getRoomById(schedule.idphongchieu)
         room = roomRaw.name
-        console.log(await ticket)
     } catch (error) {
         console.log(error.message)
     }
-    console.log(schedule)
-    res.render('account/ticket-view', {
-        ticket,
-        schedule,
-        movie,
-        customer,
-        room
-    })
+
+    // Handle ticket
+    if (!isPrint) { // Preview ticket
+        return res.render('account/ticket', {
+            ticket,
+            schedule,
+            movie,
+            customer,
+            room
+        })
+    } else { // Print ticket
+        return res.render('account/ticket', {
+            path: "not-header",
+            title: `Ticket ${id}`,
+            ticket,
+            schedule,
+            movie,
+            customer,
+            room
+        }
+            , (err, html) => {
+                if (err) {
+                    return;
+                } else {
+                    const filePath = path.join(__dirname,'..', 'tmp', `${id}.pdf`)
+                    console.log(filePath)
+                    pdf.create(html, options).toFile(filePath, (err) => {
+                        if (err) return res.redirect('/')
+                        else {
+                            const readTicketFile = fs.readFileSync(filePath)
+                            res.header('content-type', 'application/pdf')
+                            res.send(readTicketFile)
+                        }
+                    })
+                }
+            }
+        )
+    }
+
 }
 
 
@@ -250,18 +284,22 @@ const printTicket = async (req, res) => {
         // Get room
         const roomRaw = await Login.getRoomById(schedule.idphongchieu)
         room = roomRaw.name
-        console.log(await ticket)
     } catch (error) {
         console.log(error.message)
     }
-    console.log(schedule)
+
+
     res.render('account/ticket', {
         ticket,
         schedule,
         movie,
         customer,
         room
-    })
+    }
+        // , (err,html)=>{
+        //     pdf.create(html,options).toFile()
+        // }
+    )
 }
 
 
