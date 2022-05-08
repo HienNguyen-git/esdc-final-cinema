@@ -51,6 +51,34 @@ const loginValidator = [
         })),
 ]
 
+const loginaddminValidator = [
+    check('email').exists().withMessage("Please enter your email").notEmpty().withMessage("Email can not be empty").isEmail().withMessage("This email is not valid").custom((value) => {
+        // Check email already exists in database
+        return new Promise((resolve, reject) => {
+            connect.query('select * from account where email=?', [value], (err, result) => {
+                if (err) reject(new Error(err.message))
+                else if (result.length === 0) reject(new Error("This email has not been registered yet."))
+                resolve(true)
+            })
+        })
+    }),
+    check('password').exists().withMessage("Please enter your password").notEmpty().withMessage("Password can not be empty").custom((value, { req }) =>
+        new Promise((resolve, reject) => { // Check password is match 
+            connect.query('select * from account where email=?', [req.body.email], (err, result) => {
+                if (err) reject(new Error("Something went wrong!"))
+                else if (!result.length) reject(new Error("Something went wrong!"))
+                else {
+                    const accPass = result[0].password
+                    userSession = result[0].name
+                    const isMatch = bcrypt.compareSync(value, accPass)
+                    if (!isMatch) reject("Your email address or password are not match")
+                    resolve(isMatch)
+                }
+            })
+        })),
+]
+
+
 const changePassValidator = [
     check('password').exists().withMessage("Please enter your old password").notEmpty().withMessage("Old Password can not be empty").custom((value, { req }) =>
         new Promise((resolve, reject) => { // Check password is match 
@@ -161,6 +189,7 @@ const showtimeValidator = [
 module.exports = {
     registerValidator,
     loginValidator,
+    loginaddminValidator,
     changePassValidator,
 
     EmployeeValidator,

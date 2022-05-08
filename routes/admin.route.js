@@ -4,7 +4,7 @@ var router = express.Router();
 const multer = require('multer')
 const upload = multer({ dest: 'public/images/popcorn' })
 
-const { registerValidator, loginValidator,
+const { registerValidator, loginValidator,loginaddminValidator,
   EmployeeValidator,
   productValidator, productEditValidator,
   newsValidator, newsEditValidator,
@@ -34,7 +34,7 @@ router.get('/bookings', adminBookingsGet);
 router.post('/bookings/delete', adminBookingDelPost);
 
 router.get('/login', loginGet);
-router.post('/login', loginValidator, loginPost);
+router.post('/login', loginaddminValidator, loginPost);
 router.get('/register', registerGet);
 router.post('/register', registerValidator, registerPost);
 

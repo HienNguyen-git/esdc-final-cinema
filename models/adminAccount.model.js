@@ -24,6 +24,8 @@ const handleLogin = (email) => new Promise((resolve, reject) => {
     })
 })
 
+
+
 module.exports = {
     handleRegister,
     handleLogin
