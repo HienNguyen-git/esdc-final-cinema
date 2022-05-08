@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2022 at 12:03 PM
+-- Generation Time: May 08, 2022 at 12:11 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `esdc_cinema`
 --
+CREATE DATABASE IF NOT EXISTS `esdc_cinema` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `esdc_cinema`;
 
 -- --------------------------------------------------------
 
