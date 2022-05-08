@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2022 at 07:31 PM
+-- Generation Time: May 08, 2022 at 12:03 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `esdc_cinema`
 --
-CREATE DATABASE IF NOT EXISTS `esdc_cinema` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `esdc_cinema`;
 
 -- --------------------------------------------------------
 
@@ -33,7 +31,7 @@ CREATE TABLE `account` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL
+  `password` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -41,8 +39,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`id`, `name`, `email`, `password`) VALUES
-(1, 'admin', 'admin@gmail.com', '$2b$10$ak4WspIlG.uH6vrHM8HXreGrA4o1g0euADdKjK30CClDh21clVeUe'),
-(2, 'asdasd', 'asdasd@gmail.com', '$2b$10$3grtVr0ge/PLXzE8wKs1WOeqV5ts.MJzdd3ooqW0.l1zirld4WdO2');
+(5, 'admin', 'admin@gmail.com', '$2b$10$juTZdCXGGLUEgCbu1zPH7OCgqH241FbX8GAWTmA89/FqILsoChHZa');
 
 -- --------------------------------------------------------
 
@@ -128,7 +125,8 @@ INSERT INTO `customer` (`idkh`, `name`, `gender`, `phone`, `email`, `password`, 
 (2, 'Nguyen Dang', 'male', 395675163, 'imdang@gmail.com', '$2b$10$C8qUs37Hs//UVtd2mmmZuOx7DT5Qwj48V7xgLNZKE62WGRk82sNPe', 0),
 (3, 'Trong Hien', 'male', 908577456, 'tronghien@mail.com', '$2b$10$Vp7HD6VIN02/3t0/NmlXG.bl2qzncUjl1sFZD.wwPWWZd2EVZ/hp.', 0),
 (4, 'Gia Bao', 'male', 92789456, 'giabao@mail.com', '$2b$10$Or1BO4ma16xFjNTmUZSM5O7FNHRVvlTLEE8M7pEgI1RizHLdbfiXO', 0),
-(5, 'Thu Ngan', 'female', 908665345, 'thungan@mail.com', '$2b$10$.VK3DVlZec81r..P8SQVnehko3vWmY5nFoTLsLyxwxw4Ekm23vBiy', 0);
+(5, 'Thu Ngan', 'female', 908665345, 'thungan@mail.com', '$2b$10$.VK3DVlZec81r..P8SQVnehko3vWmY5nFoTLsLyxwxw4Ekm23vBiy', 0),
+(6, 'admin2', 'male', 908577456, 'admin2@gmail.com', '$2b$10$uyc64ep3xsoG7DkqUQNVdOPrR9EEXMVYZhwgxci1FEyzkwAK5ghgC', 0);
 
 -- --------------------------------------------------------
 
@@ -518,7 +516,7 @@ ALTER TABLE `ticket`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `billdetail`
@@ -530,7 +528,7 @@ ALTER TABLE `billdetail`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `idkh` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idkh` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `employee`
